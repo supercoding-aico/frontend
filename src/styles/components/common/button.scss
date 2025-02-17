@@ -1,0 +1,25 @@
+.button {
+  width: 100%;
+  border-radius: $border-radius-sm;
+  padding: $padding-sm;
+
+  &.primary {
+    background-color: $color-primary;
+    color: #fff;
+  }
+
+  &.success {
+    background-color: $color-success;
+    color: #fff;
+  }
+
+  &.cancel {
+    background-color: $color-error;
+    color: #fff;
+  }
+
+  &.disabled {
+    background-color: $color-section;
+    cursor: not-allowed;
+  }
+}

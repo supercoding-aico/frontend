@@ -1,0 +1,24 @@
+// TODO: 추후에 수정
+
+// 컬러 팔레트
+$color-background: #fcfbfb; // 기본 배경색
+$color-section: #e3e2e2; // 섹션 배경색
+$color-primary: #333333; // 주제색, 텍스트색
+$color-secondary: #cac9c9; // 보조 텍스트, 마우스 오버 시 배경색
+$color-success: #00472c; // 성공 상태 색상
+$color-error: #a30029; // 에러 상태 색상
+
+// 브레이크 포인트
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// 레이아웃
+$padding-sm: 1rem;
+$padding-md: 2rem;
+$padding-lg: 3rem;
+
+$border-radius-sm: 0.5rem;
+$border-radius-md: 1rem;
+$border-radius-lg: 2rem;
