@@ -1,4 +1,4 @@
-import '../../styles/components/common/button.scss';
+import '@styles/components/common/button.scss';
 
 /**
  * 공용 버튼 컴포넌트
