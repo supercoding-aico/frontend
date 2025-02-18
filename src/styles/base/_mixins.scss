@@ -1,5 +1,6 @@
-@use 'variables' as *;
+@use './variables' as *;
 
+// 반응형 레이아웃
 @mixin respond-to($breakpoint) {
   @if $breakpoint == sm {
     @media (max-width: $breakpoint-sm) {
@@ -20,4 +21,16 @@
   } @else {
     @error "Invalid breakpoint: #{$breakpoint}.";
   }
+}
+
+// 버튼
+@mixin button($bg-color) {
+  background-color: $bg-color;
+  padding: 0.5rem 1.5rem;
+  border-radius: $border-radius-md;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
 }

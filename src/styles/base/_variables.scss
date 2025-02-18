@@ -1,9 +1,9 @@
 // 컬러 팔레트
 $color-background: #fcfcfc; // 기본 배경색
 $color-section: #f7f7fa; // 섹션 배경색
-$color-primary: #222222; // 기본 텍스트색
+$color-primary: #222222; // 기본 텍스트, 버튼 배경색
 $color-secondary: #c2c2c4; // 보조 텍스트
-$color-error: #e15170; // 실패, 경고 시
+$color-error: #e15170; // 실패, 경고 텍스트, 취소 버튼 배경색
 $color-key-1: #eae4e9; // 일정 표기 색상 1
 $color-key-2: #fff1e6; // 일정 표기 색상 2
 $color-key-3: #fde2e4; // 일정 표기 색상 3
@@ -13,7 +13,7 @@ $color-key-6: #bee1e6; // 일정 표기 색상 6
 $color-key-7: #f0efeb; // 일정 표기 색상 7
 $color-key-8: #dfe7fd; // 일정 표기 색상 8
 $color-key-9: #cddafd; // 일정 표기 색상 9
-$mouseover: opacity(0.3); // 마우스오버 시
+$mouseover-opacity: 0.7; // 마우스오버 시
 
 // 브레이크 포인트
 $breakpoint-sm: 576px;
@@ -22,12 +22,9 @@ $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 
 // 레이아웃
-$padding-sm: 1rem;
-$padding-md: 2rem;
-$padding-lg: 3rem;
 $border-radius-sm: 0.5rem;
 $border-radius-md: 1rem;
 $border-radius-lg: 2rem;
 
-// shadow
+// 그림자
 $shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
