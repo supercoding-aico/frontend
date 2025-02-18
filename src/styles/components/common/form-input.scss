@@ -1,0 +1,22 @@
+.form-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  position: relative;
+
+  &__label {
+    margin-bottom: 0.25rem;
+  }
+
+  &__input {
+    padding: 0.5rem;
+    background-color: $color-background;
+    border: 1px solid $color-secondary;
+    border-radius: $border-radius-xs;
+  }
+
+  &__helptext {
+    position: absolute;
+    bottom: -1rem;
+  }
+}
