@@ -1,4 +1,4 @@
-import '@styles/components/common/text.scss';
+import '@styles/components/common/p.scss';
 
 /**
  * 텍스트 컴포넌트
