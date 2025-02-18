@@ -23,6 +23,14 @@
   }
 }
 
+// 텍스트
+@mixin text-style($font-size, $line-height, $color, $font-weight: normal) {
+  font-size: $font-size;
+  line-height: $line-height;
+  font-weight: $font-weight;
+  color: $color;
+}
+
 // 버튼
 @mixin button($bg-color) {
   background-color: $bg-color;
