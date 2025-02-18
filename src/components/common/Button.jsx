@@ -11,7 +11,7 @@ const Button = ({ type, name, theme = 'primary', onClick }) => {
   return (
     <button
       type={type}
-      className={`button-${theme}`}
+      className={`button--${theme}`}
       onClick={onClick}
       disabled={theme === 'disabled'}
     >

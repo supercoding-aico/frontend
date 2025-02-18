@@ -1,18 +1,18 @@
-.button-primary {
+.button--primary {
   @include mixins.button($color-primary);
   &:hover {
     opacity: $mouseover-opacity;
   }
 }
 
-.button-cancel {
+.button--cancel {
   @include mixins.button($color-error);
   &:hover {
     opacity: $mouseover-opacity;
   }
 }
 
-.button-disabled {
+.button--disabled {
   @include mixins.button($color-secondary);
   cursor: not-allowed;
 }
