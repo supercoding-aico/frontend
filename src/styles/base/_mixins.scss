@@ -34,3 +34,11 @@
   border: none;
   cursor: pointer;
 }
+
+// 카드
+@mixin card {
+  background-color: $color-section;
+  border-radius: $border-radius-md;
+  padding: 1.5rem 1rem;
+  box-shadow: $shadow;
+}
