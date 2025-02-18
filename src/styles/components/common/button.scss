@@ -1,25 +1,18 @@
-.button {
-  width: 100%;
-  border-radius: $border-radius-sm;
-  padding: $padding-sm;
-
-  &.primary {
-    background-color: $color-primary;
-    color: #fff;
+.button--primary {
+  @include mixins.button($color-primary);
+  &:hover {
+    opacity: $mouseover-opacity;
   }
+}
 
-  &.success {
-    background-color: $color-success;
-    color: #fff;
+.button--cancel {
+  @include mixins.button($color-error);
+  &:hover {
+    opacity: $mouseover-opacity;
   }
+}
 
-  &.cancel {
-    background-color: $color-error;
-    color: #fff;
-  }
-
-  &.disabled {
-    background-color: $color-section;
-    cursor: not-allowed;
-  }
+.button--disabled {
+  @include mixins.button($color-secondary);
+  cursor: not-allowed;
 }
