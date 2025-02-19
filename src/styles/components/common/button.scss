@@ -1,12 +1,12 @@
 .button--primary {
-  @include mixins.button($color-primary);
+  @include mixins.button($color-tertiary);
   &:hover {
     opacity: $mouseover-opacity;
   }
 }
 
-.button--cancel {
-  @include mixins.button($color-error);
+.button--accent {
+  @include mixins.button($color-accent);
   &:hover {
     opacity: $mouseover-opacity;
   }

@@ -24,9 +24,8 @@
 }
 
 // 텍스트
-@mixin text-style($font-size, $line-height, $color, $font-weight: normal) {
+@mixin text-style($font-size, $color, $font-weight: normal) {
   font-size: $font-size;
-  line-height: $line-height;
   font-weight: $font-weight;
   color: $color;
 }
@@ -38,7 +37,6 @@
   border-radius: $border-radius-md;
   color: #fff;
   font-size: 0.875rem;
-  font-weight: 600;
   border: none;
   cursor: pointer;
 }
