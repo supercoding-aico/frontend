@@ -5,6 +5,7 @@
   position: relative;
 
   &__label {
+    @include mixins.text-style(1rem, $color-primary, 600);
     margin-bottom: 0.25rem;
   }
 
@@ -16,6 +17,7 @@
   }
 
   &__helptext {
+    @include mixins.text-style(0.875rem, $color-error);
     position: absolute;
     bottom: -1rem;
   }

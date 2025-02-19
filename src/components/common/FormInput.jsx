@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import '@styles/components/common/form-input.scss';
-import P from '@components/common/P';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 
 const FormInput = ({ label, type, required = true, regex, helpText }) => {
@@ -24,7 +23,7 @@ const FormInput = ({ label, type, required = true, regex, helpText }) => {
   return (
     <div className='form-input'>
       <label className='form-input__label' htmlFor={`form-${label}`}>
-        <P theme='span'>{label}</P>
+        {label}
       </label>
       <input
         className='form-input__input'
@@ -35,11 +34,7 @@ const FormInput = ({ label, type, required = true, regex, helpText }) => {
         onChange={handleInputValue}
         autoComplete='off'
       />
-      {!isValid && helpText && (
-        <div className='form-input__helptext'>
-          <P theme='helptext'>{helpText}</P>
-        </div>
-      )}
+      {!isValid && helpText && <p className='form-input__helptext'>{helpText}</p>}
     </div>
   );
 };
