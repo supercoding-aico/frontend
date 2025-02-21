@@ -1,18 +1,25 @@
-.button--primary {
-  @include mixins.button($color-tertiary);
-  &:hover {
+.button {
+  @include mixins.button();
+  width: auto;
+
+  &--primary {
+    background-color: $color-tertiary;
+  }
+
+  &--accent {
+    background-color: $color-accent;
+  }
+
+  &--disabled {
+    background-color: $color-secondary;
+    cursor: not-allowed;
+  }
+
+  &--full {
+    width: 100%;
+  }
+
+  &:not(&--disabled):hover {
     opacity: $mouseover-opacity;
   }
-}
-
-.button--accent {
-  @include mixins.button($color-accent);
-  &:hover {
-    opacity: $mouseover-opacity;
-  }
-}
-
-.button--disabled {
-  @include mixins.button($color-secondary);
-  cursor: not-allowed;
 }

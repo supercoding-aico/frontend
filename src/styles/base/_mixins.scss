@@ -31,20 +31,16 @@
 }
 
 // 버튼
-@mixin button($bg-color) {
-  background-color: $bg-color;
-  padding: $padding-sm $padding-md;
-  border-radius: $border-radius-md;
+@mixin button {
+  padding: $padding-xs $padding-md;
+  border-radius: $border-radius-sm;
   color: #fff;
   font-size: 0.875rem;
-  border: none;
-  cursor: pointer;
 }
 
 // 섹션
 @mixin section($width: 100%, $height: auto) {
   width: $width;
-  height: $height;
   background-color: $color-section;
   border-radius: $border-radius-md;
   padding: $padding-md;
