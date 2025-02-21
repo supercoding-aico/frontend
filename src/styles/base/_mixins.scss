@@ -33,7 +33,7 @@
 // 버튼
 @mixin button($bg-color) {
   background-color: $bg-color;
-  padding: 0.5rem 1.5rem;
+  padding: $padding-sm $padding-md;
   border-radius: $border-radius-md;
   color: #fff;
   font-size: 0.875rem;
@@ -45,6 +45,6 @@
 @mixin card {
   background-color: $color-section;
   border-radius: $border-radius-md;
-  padding: 1.5rem 1rem;
+  padding: $padding-md;
   box-shadow: $shadow;
 }
