@@ -37,8 +37,8 @@ const AuthForm = () => {
       helpText: '이메일 형식에 맞지 않습니다.',
     },
     password: {
-      regex: /^[A-Za-z0-9]{8,20}$/,
-      helpText: '비밀번호는 8~20자 사이의 영문자와 숫자만 가능합니다.',
+      regex: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+      helpText: '비밀번호는 8~20자 사이의 영문자, 숫자, 특수문자만 가능합니다.',
     },
     passwordConfirm: {
       regex: /^[A-Za-z0-9]{8,20}$/,
