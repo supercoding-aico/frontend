@@ -1,9 +1,12 @@
+import '@styles/pages/auth-page.scss';
 import AuthForm from '@components/auth-page/AuthForm';
 
 const AuthPage = () => {
   return (
     <div className='auth-page'>
-      <AuthForm />
+      <section className='auth-page__form-container'>
+        <AuthForm />
+      </section>
     </div>
   );
 };

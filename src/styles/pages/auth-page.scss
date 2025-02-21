@@ -1,3 +1,18 @@
 .auth-page {
+  height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__form-container {
+    @include mixins.section(30%);
+
+    @include mixins.respond-to(lg) {
+      @include mixins.section(60%);
+    }
+
+    @include mixins.respond-to(sm) {
+      @include mixins.section(90%);
+    }
+  }
 }
