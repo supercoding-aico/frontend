@@ -41,8 +41,10 @@
   cursor: pointer;
 }
 
-// 카드
-@mixin card {
+// 섹션
+@mixin section($width: 100%, $height: auto) {
+  width: $width;
+  height: $height;
   background-color: $color-section;
   border-radius: $border-radius-md;
   padding: $padding-md;
