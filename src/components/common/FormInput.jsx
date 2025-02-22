@@ -2,7 +2,15 @@ import { useState } from 'react';
 import '@styles/components/common/form-input.scss';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 
-const FormInput = ({ label, type, required = true, validator, helpText, onclick = undefined }) => {
+const FormInput = ({
+  label,
+  type,
+  onChange,
+  required = true,
+  validator,
+  helpText,
+  onclick = undefined,
+}) => {
   const [value, setValue] = useState('');
   const [isValid, setIsValid] = useState(true);
 
@@ -14,9 +22,12 @@ const FormInput = ({ label, type, required = true, validator, helpText, onclick 
     }
 
     setValue(value);
+    if (onChange) {
+      onChange(value);
+    }
 
     if (validator) {
-      setIsValid(validator.test(value));
+      setIsValid(typeof validator === 'function' ? validator(value) : validator.test(value));
     }
   };
 

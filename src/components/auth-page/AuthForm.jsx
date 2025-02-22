@@ -9,30 +9,35 @@ const AuthForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [password, setPassword] = useState('');
+
   const pathname = location.pathname.split('/')[1];
 
   const authFormFields =
     pathname === 'login'
       ? [
-          { id: 'email', label: '이메일', type: 'email', required: true },
+          { id: 'email', label: '이메일', type: 'email' },
           {
             id: 'password',
             label: '비밀번호',
             type: 'password',
-            required: true,
           },
         ]
       : [
-          { id: 'email', label: '이메일', type: 'email', required: true, onclick: () => {} },
+          { id: 'email', label: '이메일', type: 'email', onclick: () => {} },
           {
             id: 'password',
             label: '비밀번호',
             type: 'password',
-            required: true,
-            isButton: false,
+            onChange: (value) => setPassword(value),
           },
-          { id: 'nickname', label: '닉네임', type: 'text', required: true, onclick: () => {} },
-          { id: 'tel', label: '전화번호', type: 'tel', required: true },
+          {
+            id: 'passwordConfirm',
+            label: '비밀번호 재확인',
+            type: 'password',
+          },
+          { id: 'nickname', label: '닉네임', type: 'text', onclick: () => {} },
+          { id: 'tel', label: '전화번호', type: 'tel' },
         ];
 
   const authValidators = {
@@ -43,6 +48,10 @@ const AuthForm = () => {
     password: {
       validator: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
       helpText: '비밀번호는 8~20자 사이의 영문자, 숫자, 특수문자만 가능합니다.',
+    },
+    passwordConfirm: {
+      validator: (value) => value === password,
+      helpText: '비밀번호가 일치하지 않습니다.',
     },
     tel: {
       validator: /^[\d-]+$/,
@@ -78,7 +87,8 @@ const AuthForm = () => {
           <FormInput
             key={field.id}
             label={field.label}
-            fieldData={field}
+            type={field.type}
+            onChange={field.onChange}
             validator={authValidators[field.id]?.validator}
             helpText={authValidators[field.id]?.helpText}
             onclick={authValidators[field.id]?.onclick}
