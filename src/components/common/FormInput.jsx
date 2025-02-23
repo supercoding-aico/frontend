@@ -3,6 +3,7 @@ import '@styles/components/common/form-input.scss';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 
 const FormInput = ({
+  name,
   label,
   type,
   onChange,
@@ -39,6 +40,7 @@ const FormInput = ({
       <input
         className='form-input__input'
         id={`form-${label}`}
+        name={name}
         type={type}
         value={value}
         required={required}

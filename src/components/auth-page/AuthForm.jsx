@@ -1,11 +1,14 @@
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { __signup, __login } from '@redux/slice/userSlice';
 import '@styles/components/auth-page/auth-form.scss';
 import P from '@components/common/P';
 import FormInput from '@components/common/FormInput';
 import Button from '@components/common/Button';
 
 const AuthForm = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,7 +40,7 @@ const AuthForm = () => {
             type: 'password',
           },
           { id: 'nickname', label: '닉네임', type: 'text', onclick: () => {} },
-          { id: 'tel', label: '전화번호', type: 'tel' },
+          { id: 'phoneNumber', label: '전화번호', type: 'tel' },
         ];
 
   const authValidators = {
@@ -53,7 +56,7 @@ const AuthForm = () => {
       validator: (value) => value === password,
       helpText: '비밀번호가 일치하지 않습니다.',
     },
-    tel: {
+    phoneNumber: {
       validator: /^[\d-]+$/,
       helpText: '전화번호를 확인해주세요',
     },
@@ -68,15 +71,16 @@ const AuthForm = () => {
       formValues[key] = value;
     });
 
-    // if (pathname === '/signup') {
-    //   dispatch(__signup(formValues)).then((res) => {
-    //     navigate('/login');
-    //   });
-    // } else if (pathname === '/login') {
-    //   dispatch(__login(formValues)).then((res) => {
-    //     navigate('/', { replace: true });
-    //   });
-    // }
+    // TODO: 코드 깔끔하게 수정+예외처리
+    if (pathname === 'signup') {
+      dispatch(__signup(formValues)).then((res) => {
+        navigate('/login');
+      });
+    } else if (pathname === 'login') {
+      dispatch(__login(formValues)).then((res) => {
+        navigate('/', { replace: true });
+      });
+    }
   };
 
   return (
@@ -86,6 +90,7 @@ const AuthForm = () => {
         {authFormFields.map((field) => (
           <FormInput
             key={field.id}
+            name={field.id}
             label={field.label}
             type={field.type}
             onChange={field.onChange}
