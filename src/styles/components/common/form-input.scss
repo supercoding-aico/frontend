@@ -6,11 +6,11 @@
 
   &__label {
     @include mixins.text-style(1rem, $color-primary, 600);
-    margin-bottom: 0.25rem;
+    margin-bottom: $padding-xs;
   }
 
   &__input {
-    padding: 0.5rem;
+    padding: $padding-xs;
     background-color: $color-background;
     border: 1px solid $color-secondary;
     border-radius: $border-radius-xs;

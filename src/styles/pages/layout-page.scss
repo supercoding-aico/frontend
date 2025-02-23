@@ -1,14 +1,14 @@
-.layout {
+.layout-page {
   display: flex;
   min-height: 100vh;
 
-  &--aside {
+  &__aside {
     width: 20rem;
     background-color: $color-section;
-    padding: 2rem;
+    padding: $padding-md;
   }
 
-  &--main {
-    padding: 2rem;
+  &__main {
+    padding: $padding-md;
   }
 }

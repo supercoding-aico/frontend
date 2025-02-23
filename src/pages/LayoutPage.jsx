@@ -3,9 +3,9 @@ import '@styles/pages/layout-page.scss';
 
 const LayoutPage = () => {
   return (
-    <div className='layout'>
-      <aside className='layout--aside'></aside>
-      <main className='layout--main'>
+    <div className='layout-page'>
+      <aside className='layout-page__aside'></aside>
+      <main className='layout-page__main'>
         <Outlet />
       </main>
     </div>

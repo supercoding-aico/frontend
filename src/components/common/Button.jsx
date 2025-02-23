@@ -5,17 +5,18 @@ import '@styles/components/common/button.scss';
  * @param {string} type
  * @param {string} name
  * @param {'primary' | 'accent' | 'disabled'} theme
+ * @param {boolean} isFull
  * @param {function} onClick
  */
-const Button = ({ type, name, theme = 'primary', onClick }) => {
+const Button = ({ children, type, theme = 'primary', isFull = false, onClick = undefined }) => {
   return (
     <button
       type={type}
-      className={`button--${theme}`}
+      className={`button button--${theme} ${isFull ? 'button--full' : ''}`}
       onClick={onClick}
       disabled={theme === 'disabled'}
     >
-      {name}
+      {children}
     </button>
   );
 };
