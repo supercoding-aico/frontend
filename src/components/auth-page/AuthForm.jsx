@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, useMemo } from 'react';
 import { __signup, __login } from '@redux/slice/userSlice';
 import '@styles/components/auth-page/auth-form.scss';
 import P from '@components/common/P';
@@ -12,54 +12,57 @@ const AuthForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [password, setPassword] = useState('');
+  const passwordRef = useRef('');
 
   const pathname = location.pathname.split('/')[1];
+  const isLogin = pathname === 'login';
 
-  const authFormFields =
-    pathname === 'login'
-      ? [
-          { id: 'email', label: '이메일', type: 'email' },
-          {
-            id: 'password',
-            label: '비밀번호',
-            type: 'password',
-          },
-        ]
-      : [
-          { id: 'email', label: '이메일', type: 'email', onclick: () => {} },
-          {
-            id: 'password',
-            label: '비밀번호',
-            type: 'password',
-            onChange: (value) => setPassword(value),
-          },
-          {
-            id: 'passwordConfirm',
-            label: '비밀번호 재확인',
-            type: 'password',
-          },
-          { id: 'nickname', label: '닉네임', type: 'text', onclick: () => {} },
-          { id: 'phoneNumber', label: '전화번호', type: 'tel' },
-        ];
+  const authFormFields = useMemo(() => {
+    const fields = [
+      { id: 'email', label: '이메일', type: 'email', onClick: () => checkDuplicate('email') },
+      {
+        id: 'password',
+        label: '비밀번호',
+        type: 'password',
+        onChange: (value) => (passwordRef.current = value),
+      },
+    ];
 
-  const authValidators = {
-    email: {
-      validator: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      helpText: '이메일 형식에 맞지 않습니다.',
-    },
-    password: {
-      validator: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-      helpText: '비밀번호는 8~20자 사이의 영문자, 숫자, 특수문자만 가능합니다.',
-    },
-    passwordConfirm: {
-      validator: (value) => value === password,
-      helpText: '비밀번호가 일치하지 않습니다.',
-    },
-    phoneNumber: {
-      validator: /^[\d-]+$/,
-      helpText: '전화번호를 확인해주세요',
-    },
+    if (!isLogin) {
+      fields.push(
+        { id: 'passwordConfirm', label: '비밀번호 재확인', type: 'password' },
+        {
+          id: 'nickname',
+          label: '닉네임',
+          type: 'text',
+          onClick: () => checkDuplicate('nickname'),
+        },
+        { id: 'phoneNumber', label: '전화번호', type: 'tel' }
+      );
+    }
+
+    return fields;
+  }, [isLogin]);
+
+  const authValidators = useMemo(
+    () => ({
+      email: { validator: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, helpText: '이메일 형식에 맞지 않습니다.' },
+      password: {
+        validator: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+        helpText: '비밀번호는 8~20자 사이의 영문자, 숫자, 특수문자만 가능합니다.',
+      },
+      passwordConfirm: {
+        validator: (value) => value === passwordRef.current,
+        helpText: '비밀번호가 일치하지 않습니다.',
+      },
+      phoneNumber: { validator: /^[\d-]+$/, helpText: '전화번호를 확인해주세요' },
+    }),
+    []
+  );
+
+  // TODO: 중복확인 API 호출
+  const checkDuplicate = (fieldId) => {
+    console.log(fieldId);
   };
 
   const handleSubmit = (e) => {
@@ -67,25 +70,23 @@ const AuthForm = () => {
 
     const formData = new FormData(e.target);
     const formValues = {};
+    const action = isLogin ? __login : __signup;
+
     formData.forEach((value, key) => {
+      if (key === 'passwordConfirm') return;
       formValues[key] = value;
     });
 
-    // TODO: 코드 깔끔하게 수정+예외처리
-    if (pathname === 'signup') {
-      dispatch(__signup(formValues)).then((res) => {
-        navigate('/login');
-      });
-    } else if (pathname === 'login') {
-      dispatch(__login(formValues)).then((res) => {
-        navigate('/', { replace: true });
-      });
-    }
+    // TODO: 예외처리 추가
+    dispatch(action(formValues)).then((res) => {
+      console.log('Dispatch Result', res);
+      navigate(isLogin ? '/' : '/login', { replace: isLogin });
+    });
   };
 
   return (
     <form onSubmit={handleSubmit} className='auth-form'>
-      <P theme='title'>{pathname === 'login' ? '로그인' : '회원가입'}</P>
+      <P theme='title'>{isLogin ? '로그인' : '회원가입'}</P>
       <div>
         {authFormFields.map((field) => (
           <FormInput
@@ -94,14 +95,14 @@ const AuthForm = () => {
             label={field.label}
             type={field.type}
             onChange={field.onChange}
+            onClick={field.onClick}
             validator={authValidators[field.id]?.validator}
             helpText={authValidators[field.id]?.helpText}
-            onclick={authValidators[field.id]?.onclick}
           />
         ))}
       </div>
       <Button type='submit' theme='accent' isFull={true}>
-        {pathname === 'login' ? '로그인' : '회원가입'}
+        {isLogin ? '로그인' : '회원가입'}
       </Button>
     </form>
   );
