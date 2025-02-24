@@ -3,6 +3,7 @@ const path = require('path');
 const config = {
   webpack: {
     alias: {
+      '@api': path.resolve(__dirname, 'src/api'),
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@axios': path.resolve(__dirname, 'src/axios'),
       '@components': path.resolve(__dirname, 'src/components'),

@@ -6,6 +6,7 @@ import '@styles/components/auth-page/auth-form.scss';
 import P from '@components/common/P';
 import FormInput from '@components/common/FormInput';
 import Button from '@components/common/Button';
+import { useSignup, useLogin } from '@hooks/useAuth';
 
 const AuthForm = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,9 @@ const AuthForm = () => {
 
   const pathname = location.pathname.split('/')[1];
   const isLogin = pathname === 'login';
+
+  const { mutate: signupMutate } = useSignup();
+  const { mutate: loginMutate } = useLogin();
 
   const authFormFields = useMemo(() => {
     const fields = [
@@ -70,7 +74,6 @@ const AuthForm = () => {
 
     const formData = new FormData(e.target);
     const formValues = {};
-    const action = isLogin ? __login : __signup;
 
     formData.forEach((value, key) => {
       if (key === 'passwordConfirm') return;
@@ -78,10 +81,11 @@ const AuthForm = () => {
     });
 
     // TODO: 예외처리 추가
-    dispatch(action(formValues)).then((res) => {
-      console.log('Dispatch Result', res);
-      navigate(isLogin ? '/' : '/login', { replace: isLogin });
-    });
+    if (isLogin) {
+      loginMutate(formValues);
+    } else {
+      signupMutate(formValues);
+    }
   };
 
   return (
