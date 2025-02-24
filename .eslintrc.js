@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended', // 기본 ESLint 추천 규칙을 사용
     'plugin:react/recommended', // React 관련 추천 규칙을 사용
     'plugin:prettier/recommended', // Prettier와 ESLint 통합 설정
+    'plugin:@tanstack/eslint-plugin-query/recommended', // TanStack Query 관련 추천 규칙을 사용
   ],
   parserOptions: {
     ecmaVersion: 12, // ECMAScript 2021 문법을 사용할 수 있도록 설정
