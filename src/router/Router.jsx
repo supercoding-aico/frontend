@@ -5,6 +5,8 @@ import LayoutPage from '@pages/LayoutPage';
 import HomePage from '@pages/HomePage';
 import NotFoundPage from '@pages/NotFoundPage';
 import AuthPage from '@pages/AuthPage';
+import TeamPage from '@pages/TeamPage';
+import TeamDetailPage from '@pages/TeamDetailPage';
 
 const Router = () => {
   return (
@@ -15,6 +17,8 @@ const Router = () => {
         <Route path='*' element={<NotFoundPage />} />
         <Route element={<LayoutPage />}>
           <Route path='/' element={<HomePage />} />
+          <Route path='/team' element={<TeamPage />} />
+          <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

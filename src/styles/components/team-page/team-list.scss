@@ -1,0 +1,14 @@
+.team-list {
+  padding: 1rem;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+
+    &__title {
+      margin: 10px 0 10px 0;
+      cursor: pointer;
+    }
+  }
+}

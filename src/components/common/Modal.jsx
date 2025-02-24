@@ -20,8 +20,16 @@ const Modal = ({ children, onClose, onClick }) => {
         </header>
         {children}
         <footer className='modal__footer'>
-          {onClose && <Button type='button' name='취소' theme='cancel' onClick={onClose} />}
-          {onClick && <Button type='button' name='확인' theme='primary' onClick={onClick} />}
+          {onClose && (
+            <Button type='button' theme='cancel' onClick={onClose}>
+              취소
+            </Button>
+          )}
+          {onClick && (
+            <Button type='button' theme='primary' onClick={onClick}>
+              확인
+            </Button>
+          )}
         </footer>
       </div>
     </div>,
