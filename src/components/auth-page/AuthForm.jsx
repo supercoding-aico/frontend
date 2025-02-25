@@ -77,6 +77,12 @@ const AuthForm = () => {
 
     formData.forEach((value, key) => {
       if (key === 'passwordConfirm') return;
+
+      if (key === 'phoneNumber') {
+        formValues[key] = value.replace(/-/g, '');
+        return;
+      }
+
       formValues[key] = value;
     });
 
