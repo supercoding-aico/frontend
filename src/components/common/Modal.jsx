@@ -21,12 +21,12 @@ const Modal = ({ children, onClose, onClick }) => {
         {children}
         <footer className='modal__footer'>
           {onClose && (
-            <Button type='button' theme='cancel' onClick={onClose}>
+            <Button type='button' theme='primary' onClick={onClose}>
               취소
             </Button>
           )}
           {onClick && (
-            <Button type='button' theme='primary' onClick={onClick}>
+            <Button type='button' theme='accent' onClick={onClick}>
               확인
             </Button>
           )}

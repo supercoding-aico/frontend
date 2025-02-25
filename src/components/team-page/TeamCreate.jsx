@@ -25,7 +25,7 @@ const TeamCreate = () => {
   };
   return (
     <div className='team-create'>
-      <Button type='button' theme='accent' isFull={true} onClick={handleCreateTeam}>
+      <Button type='button' theme='accent' onClick={handleCreateTeam}>
         팀 만들기
       </Button>
 
