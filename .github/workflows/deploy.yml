@@ -1,0 +1,49 @@
+name: CI/CD for React App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Dependencies 설치
+        run: npm ci
+
+      - name: 환경변수 설정 및 .env.production 생성
+        run: |
+          echo "REACT_APP_ENDPOINT=${{ secrets.REACT_APP_ENDPOINT }}" >> .env.production
+
+      - name: Build
+        env:
+          REACT_APP_ENDPOINT: ${{ secrets.REACT_APP_ENDPOINT }}
+        run: CI=false npm run build
+
+      - name: main 브랜치 GitHub Pages로 배포
+        if: github.ref == 'refs/heads/main' && success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.REACT_APP_GH_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          add_to_branch: true
+
+      - name: GitHub Pages로 배포
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.REACT_APP_GH_TOKEN }}
+          publish_dir: ./build
