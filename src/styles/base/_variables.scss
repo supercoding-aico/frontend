@@ -1,12 +1,21 @@
-// TODO: 추후에 수정
-
 // 컬러 팔레트
-$color-background: #fcfbfb; // 기본 배경색
-$color-section: #e3e2e2; // 섹션 배경색
-$color-primary: #333333; // 주제색, 텍스트색
-$color-secondary: #cac9c9; // 보조 텍스트, 마우스 오버 시 배경색
-$color-success: #00472c; // 성공 상태 색상
-$color-error: #a30029; // 에러 상태 색상
+$color-background: #fcfcfc; // 기본 배경색
+$color-section: #f7f7fa; // 섹션 배경색
+$color-primary: #222222; // 기본 텍스트
+$color-secondary: #c2c2c4; // 보조 텍스트
+$color-tertiary: #565656; // 기본 버튼 (강조되지 않을 때)
+$color-accent: #6d9de0; // 강조되어야 할 영역
+$color-error: #e15170; // 실패, 경고 텍스트
+$color-key-1: #eae4e9; // 일정 표기 색상 1
+$color-key-2: #fff1e6; // 일정 표기 색상 2
+$color-key-3: #fde2e4; // 일정 표기 색상 3
+$color-key-4: #fad2e1; // 일정 표기 색상 4
+$color-key-5: #e2ece9; // 일정 표기 색상 5
+$color-key-6: #bee1e6; // 일정 표기 색상 6
+$color-key-7: #f0efeb; // 일정 표기 색상 7
+$color-key-8: #dfe7fd; // 일정 표기 색상 8
+$color-key-9: #cddafd; // 일정 표기 색상 9
+$mouseover-opacity: 0.7; // 마우스오버 시
 
 // 브레이크 포인트
 $breakpoint-sm: 576px;
@@ -15,10 +24,15 @@ $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 
 // 레이아웃
-$padding-sm: 1rem;
+$padding-xs: 0.5rem;
+$padding-sm: 0.875rem;
 $padding-md: 2rem;
-$padding-lg: 3rem;
+$padding-lg: 4rem;
 
+$border-radius-xs: 0.325rem;
 $border-radius-sm: 0.5rem;
 $border-radius-md: 1rem;
 $border-radius-lg: 2rem;
+
+// 그림자
+$shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

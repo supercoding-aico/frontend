@@ -1,0 +1,15 @@
+.title {
+  @include mixins.text-style(2rem, $color-primary, bold);
+}
+
+.text {
+  @include mixins.text-style(1rem, $color-primary);
+}
+
+.subtext {
+  @include mixins.text-style(0.875rem, $color-secondary);
+}
+
+.helptext {
+  @include mixins.text-style(0.75rem, $color-error);
+}

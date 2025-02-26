@@ -1,21 +1,22 @@
-import '../../styles/components/common/button.scss';
+import '@styles/components/common/button.scss';
 
 /**
  * 공용 버튼 컴포넌트
+ * @param {React.ReactNode} children
  * @param {string} type
- * @param {string} name
- * @param {'primary' | 'success' | 'cancel' | 'disabled'} theme
+ * @param {'primary' | 'accent' | 'disabled'} theme
+ * @param {boolean} isFull
  * @param {function} onClick
  */
-const Button = ({ type, name, theme = 'primary', onClick }) => {
+const Button = ({ children, type, theme = 'primary', isFull = false, onClick = undefined }) => {
   return (
     <button
       type={type}
-      className={`button ${theme}`}
+      className={`button button--${theme} ${isFull ? 'button--full' : ''}`}
       onClick={onClick}
       disabled={theme === 'disabled'}
     >
-      {name}
+      {children}
     </button>
   );
 };

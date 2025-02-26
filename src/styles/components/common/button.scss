@@ -1,25 +1,25 @@
 .button {
-  width: 100%;
-  border-radius: $border-radius-sm;
-  padding: $padding-sm;
+  @include mixins.button();
+  width: auto;
 
-  &.primary {
-    background-color: $color-primary;
-    color: #fff;
+  &--primary {
+    background-color: $color-tertiary;
   }
 
-  &.success {
-    background-color: $color-success;
-    color: #fff;
+  &--accent {
+    background-color: $color-accent;
   }
 
-  &.cancel {
-    background-color: $color-error;
-    color: #fff;
-  }
-
-  &.disabled {
-    background-color: $color-section;
+  &--disabled {
+    background-color: $color-secondary;
     cursor: not-allowed;
+  }
+
+  &--full {
+    width: 100%;
+  }
+
+  &:not(&--disabled):hover {
+    opacity: $mouseover-opacity;
   }
 }
