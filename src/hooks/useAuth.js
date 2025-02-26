@@ -10,7 +10,7 @@ export const useSignup = () => {
     mutationFn: signup,
     onSuccess: (data) => {
       // TODO: 회원가입 처리
-      console.log(data);
+      // console.log(data);
     },
     onError: (err) => {
       // TODO: 예외처리 추가
