@@ -1,12 +1,13 @@
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useRef, useMemo } from 'react';
-import { __signup, __login } from '@redux/slice/userSlice';
+import { CheckCircle } from 'react-feather';
+import { useRef, useState, useMemo } from 'react';
 import '@styles/components/auth-page/auth-form.scss';
 import P from '@components/common/P';
 import FormInput from '@components/common/FormInput';
 import Button from '@components/common/Button';
 import { useSignup, useLogin } from '@hooks/useAuth';
+import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
 
 const AuthForm = () => {
   const dispatch = useDispatch();
@@ -14,16 +15,36 @@ const AuthForm = () => {
   const location = useLocation();
 
   const passwordRef = useRef('');
-
-  const pathname = location.pathname.split('/')[1];
-  const isLogin = pathname === 'login';
+  const formValuesRef = useRef({ email: '', nickname: '' });
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
   const { mutate: signupMutate } = useSignup();
   const { mutate: loginMutate } = useLogin();
 
+  const pathname = location.pathname.split('/')[1];
+  const isLogin = pathname === 'login';
+
   const authFormFields = useMemo(() => {
     const fields = [
-      { id: 'email', label: '이메일', type: 'email', onClick: () => checkDuplicate('email') },
+      {
+        id: 'email',
+        label: '이메일',
+        type: 'email',
+        onChange: (value) => (
+          (formValuesRef.current = { ...formValuesRef.current, email: value }),
+          setIsEmailChecked(false)
+        ),
+        buttonProps: isLogin ? undefined : (
+          <Button
+            type='button'
+            theme={isEmailChecked ? 'disabled' : 'primary'}
+            onClick={() => checkDuplicate('email')}
+          >
+            {isEmailChecked ? <CheckCircle size={16} /> : '중복 확인'}
+          </Button>
+        ),
+      },
       {
         id: 'password',
         label: '비밀번호',
@@ -39,14 +60,26 @@ const AuthForm = () => {
           id: 'nickname',
           label: '닉네임',
           type: 'text',
-          onClick: () => checkDuplicate('nickname'),
+          onChange: (value) => (
+            (formValuesRef.current = { ...formValuesRef.current, nickname: value }),
+            setIsNicknameChecked(false)
+          ),
+          buttonProps: (
+            <Button
+              type='button'
+              theme={isNicknameChecked ? 'disabled' : 'primary'}
+              onClick={() => checkDuplicate('nickname')}
+            >
+              {isNicknameChecked ? <CheckCircle size={16} /> : '중복 확인'}
+            </Button>
+          ),
         },
         { id: 'phoneNumber', label: '전화번호', type: 'tel' }
       );
     }
 
     return fields;
-  }, [isLogin]);
+  }, [isLogin, isEmailChecked, isNicknameChecked]);
 
   const authValidators = useMemo(
     () => ({
@@ -64,9 +97,18 @@ const AuthForm = () => {
     []
   );
 
-  // TODO: 중복확인 API 호출
-  const checkDuplicate = (fieldId) => {
-    console.log(fieldId);
+  const checkDuplicate = async (fieldId) => {
+    if (fieldId === 'email') {
+      const res = await isEmailAvailable({ email: formValuesRef.current.email });
+      if (res?.data.check) {
+        setIsEmailChecked(true);
+      }
+    } else if (fieldId === 'nickname') {
+      const res = await isNicknameAvailable({ nickname: formValuesRef.current.nickname });
+      if (res?.data.check) {
+        setIsNicknameChecked(true);
+      }
+    }
   };
 
   const handleSubmit = (e) => {
@@ -105,7 +147,7 @@ const AuthForm = () => {
             label={field.label}
             type={field.type}
             onChange={field.onChange}
-            onClick={field.onClick}
+            button={field.buttonProps}
             validator={authValidators[field.id]?.validator}
             helpText={authValidators[field.id]?.helpText}
           />

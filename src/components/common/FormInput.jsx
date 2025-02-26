@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import '@styles/components/common/form-input.scss';
-import Button from '@components/common/Button';
-import { CheckCircle } from 'react-feather';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 
 const FormInput = ({
@@ -9,7 +7,7 @@ const FormInput = ({
   label,
   type,
   onChange,
-  onClick = undefined,
+  button = undefined,
   required = true,
   validator,
   helpText,
@@ -36,13 +34,13 @@ const FormInput = ({
 
   return (
     <div className='form-input'>
-      <label className='form-input__label' htmlFor={`form-${label}`}>
+      <label className='form-input__label' htmlFor={`form-${name}`}>
         {label}
       </label>
       <div className='form-input__input-container'>
         <input
           className='form-input__input'
-          id={`form-${label}`}
+          id={`form-${name}`}
           name={name}
           type={type}
           value={value}
@@ -50,11 +48,7 @@ const FormInput = ({
           onChange={handleInputValue}
           autoComplete='off'
         />
-        {onClick && (
-          <Button type='button' onClick={onClick}>
-            중복 확인
-          </Button>
-        )}
+        {button}
       </div>
       {!isValid && helpText && <p className='form-input__helptext'>{helpText}</p>}
     </div>
