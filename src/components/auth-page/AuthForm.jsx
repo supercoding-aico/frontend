@@ -1,5 +1,4 @@
-import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
 import { useRef, useState, useMemo } from 'react';
 import '@styles/components/auth-page/auth-form.scss';
@@ -10,12 +9,11 @@ import { useSignup, useLogin } from '@hooks/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
 
 const AuthForm = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const passwordRef = useRef('');
   const formValuesRef = useRef({ email: '', nickname: '' });
+  const [errorMessage, setErrorMessage] = useState('');
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
@@ -130,7 +128,16 @@ const AuthForm = () => {
 
     // TODO: 예외처리 추가
     if (isLogin) {
-      loginMutate(formValues);
+      loginMutate(formValues, {
+        onError: (err) => {
+          const code = err.response.status;
+          switch (code) {
+            case 406:
+              setErrorMessage(window.errorMessages.auth.INVALID_CREDENTIALS);
+              break;
+          }
+        },
+      });
     } else {
       signupMutate(formValues);
     }
@@ -153,6 +160,7 @@ const AuthForm = () => {
           />
         ))}
       </div>
+      <P theme='helptext'>{errorMessage}</P>
       <Button type='submit' theme='accent' isFull={true}>
         {isLogin ? '로그인' : '회원가입'}
       </Button>

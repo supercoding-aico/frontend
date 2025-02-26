@@ -1,5 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { signup, login } from '@api/authApi';
+import { extractToken, clearToken } from '@utils/handleToken';
+import { setUser, clearUser } from '@redux/slice/userSlice';
 
 export const useSignup = () => {
   return useMutation({
@@ -8,23 +12,27 @@ export const useSignup = () => {
       // TODO: 회원가입 처리
       console.log(data);
     },
-    onError: (error) => {
+    onError: (err) => {
       // TODO: 예외처리 추가
-      console.error(error);
+      console.error(err);
     },
   });
 };
 
 export const useLogin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      // TODO: 로그인 처리
-      console.log(data);
+      extractToken(data);
+      dispatch(setUser(data.data));
+      navigate('/', { replace: true });
     },
-    onError: (error) => {
-      // TODO: 예외처리 추가
-      console.error(error);
+    onError: () => {
+      clearToken();
+      dispatch(clearUser());
     },
   });
 };
