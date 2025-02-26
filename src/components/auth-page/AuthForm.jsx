@@ -1,5 +1,4 @@
-import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
 import { useRef, useState, useMemo } from 'react';
 import '@styles/components/auth-page/auth-form.scss';
@@ -10,8 +9,6 @@ import { useSignup, useLogin } from '@hooks/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
 
 const AuthForm = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const passwordRef = useRef('');
