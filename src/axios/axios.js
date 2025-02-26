@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getToken } from '@utils/handleToken';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_ENDPOINT,
@@ -10,19 +11,17 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const accessToken = getToken();
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
 
 instance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // TODO: 예외처리 디테일 추가 필요
-    console.error('API 요청 실패:', error.response?.data || error.message);
-    return Promise.reject(error);
+  (err) => {
+    return Promise.reject(err);
   }
 );
 
