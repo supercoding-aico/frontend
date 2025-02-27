@@ -10,7 +10,7 @@ import TeamDetailPage from '@pages/TeamDetailPage';
 
 const Router = () => {
   return (
-    <BrowserRouter basename='/frontend'>
+    <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
       <Routes>
         <Route path='/login' element={<AuthPage />} />
         <Route path='/signup' element={<AuthPage />} />
