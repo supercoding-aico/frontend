@@ -42,6 +42,7 @@ jobs:
           github_token: ${{ secrets.REACT_APP_GH_TOKEN }}
           publish_dir: ./build
           publish_branch: gh-pages
+          force_orphan: true
 
       - name: GitHub Pages로 배포
         if: success()
