@@ -15,6 +15,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: 버전 정보 추출
+        id: extract_version_name
+        run: |
+          VERSION=$(echo "${{ github.event.head_commit.message }}" | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' || echo "")
+          if [[ -z "$VERSION" ]]; then
+            echo "No version found. Skipping release."
+            exit 0
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Release 생성
+        if: env.VERSION != ''
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.REACT_APP_GH_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+
       - name: Node.js 설정
         uses: actions/setup-node@v3
         with:
@@ -25,12 +46,18 @@ jobs:
 
       - name: 환경변수 설정 및 .env.production 생성
         run: |
+          echo "REACT_APP_GH_TOKEN=${{ secrets.REACT_APP_GH_TOKEN }}" >> .env.production
+          echo "REACT_APP_PUBLIC_URL=${{ secrets.REACT_APP_PUBLIC_URL }}" >> .env.production
           echo "REACT_APP_ENDPOINT=${{ secrets.REACT_APP_ENDPOINT }}" >> .env.production
+          echo "REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }}" >> .env.production
 
       - name: Build
         env:
           REACT_APP_ENDPOINT: ${{ secrets.REACT_APP_ENDPOINT }}
         run: CI=false npm run build
+
+      - name: CNAME 파일을 build 폴더에 추가
+        run: echo ${{ secrets.REACT_APP_PUBLIC_URL }} > build/CNAME
 
       - name: .nojekyll 파일 추가
         run: touch build/.nojekyll
