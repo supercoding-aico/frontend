@@ -10,7 +10,7 @@ import TeamDetailPage from '@pages/TeamDetailPage';
 
 const Router = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/frontend'>
       <Routes>
         <Route path='/login' element={<AuthPage />} />
         <Route path='/signup' element={<AuthPage />} />
