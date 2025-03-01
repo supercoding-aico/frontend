@@ -6,6 +6,7 @@ const FormInput = ({
   name,
   label,
   type,
+  placeholder,
   onChange,
   button = undefined,
   required = true,
@@ -44,6 +45,7 @@ const FormInput = ({
           name={name}
           type={type}
           value={value}
+          placeholder={placeholder}
           required={required}
           onChange={handleInputValue}
           autoComplete='off'

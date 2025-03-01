@@ -1,5 +1,11 @@
+import TeamDetail from '@components/team-detail-page/TeamDetail';
+
 const TeamDetailPage = () => {
-  return <div>TeamDetail</div>;
+  return (
+    <div className='team-detail-page'>
+      <TeamDetail />
+    </div>
+  );
 };
 
 export default TeamDetailPage;

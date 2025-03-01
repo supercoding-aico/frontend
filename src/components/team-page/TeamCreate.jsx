@@ -1,4 +1,4 @@
-import instance from '@axios/axios';
+import { createTeam } from '@api/teamApi';
 import Button from '@components/common/Button';
 import FormInput from '@components/common/FormInput';
 import Modal from '@components/common/Modal';
@@ -25,23 +25,17 @@ const TeamCreate = () => {
 
   const handleConfirmTeamCreation = async () => {
     try {
-      console.log('📤 팀 생성 요청 시작...');
-      console.log('📤 보내는 데이터:', JSON.stringify({ name: teamName }));
-      console.log('📏 Content-Length:', JSON.stringify({ name: teamName }).length);
-      const response = await instance.post('/api/team', { name: teamName });
-
-      console.log('✅ Response received:', response);
-
-      if (response.status === 200) {
+      const data = await createTeam({ name: teamName });
+      if (data.status === 200 || data.status === 201) {
         alert('팀이 생성되었습니다');
         setIsModalOpen(false);
       } else {
-        console.error('Failed to create team', response);
+        console.error('Failed to create team', data);
       }
     } catch (error) {
       console.error('Error creating team:', error);
 
-      if (error.response?.status === 401) {
+      if (error.data?.status === 401) {
         alert('로그인이 필요합니다');
         navigate('/login');
       }

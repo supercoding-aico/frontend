@@ -5,7 +5,7 @@ import '@styles/components/team-page/team-list.scss';
 import { FiMoreVertical } from 'react-icons/fi';
 import Modal from '@components/common/Modal';
 import FormInput from '@components/common/FormInput';
-import instance from '@axios/axios';
+import { deleteTeam, getTeamList, updateTeam } from '@api/teamApi';
 
 const TeamList = () => {
   const navigate = useNavigate();
@@ -19,10 +19,11 @@ const TeamList = () => {
   useEffect(() => {
     const fetchTeamData = async () => {
       try {
-        const response = await instance.get('/api/team/all');
-        setTeamData(response.data.data.content);
+        const data = await getTeamList();
+        console.log(data, '데이터');
+        setTeamData(data.data.content);
       } catch (error) {
-        console.error('❌ 팀 데이터를 가져오는 중 오류 발생:', error);
+        console.error('팀 데이터를 가져오는 중 오류 발생:', error);
       }
     };
     fetchTeamData();
@@ -49,25 +50,26 @@ const TeamList = () => {
   // 팀 삭제 API 요청
   const handleDeleteTeam = async (teamId) => {
     try {
-      await instance.delete(`/api/team/${teamId}`);
-      alert('✅ 팀이 삭제되었습니다.');
+      const data = await deleteTeam(teamId);
+      console.log(data);
+      alert('팀이 삭제되었습니다.');
       setTeamData(teamData.filter((team) => team.teamId !== teamId));
     } catch (error) {
-      console.error('❌ 팀 삭제 중 오류 발생:', error);
-      alert('🚨 팀 삭제 실패! 다시 시도해 주세요.');
+      console.error('팀 삭제 중 오류 발생:', error);
+      alert('팀 삭제 실패! 다시 시도해 주세요.');
     }
     setDropdownOpen(null);
   };
 
   // 팀 이름 변경 API 요청
-  const handleEditedNameSend = async () => {
+  const handleEditedNameSend = async (teamId) => {
     if (!editedName.trim()) {
-      alert('⚠️ 팀 이름을 입력해 주세요.');
+      alert('팀 이름을 입력해 주세요.');
       return;
     }
 
     try {
-      await instance.put(`/api/team/${selectedTeam.teamId}`, { name: editedName });
+      const data = await updateTeam(selectedTeam.teamId, { name: editedName });
       alert('팀 이름이 수정되었습니다.');
 
       setTeamData((prevTeams) =>
@@ -75,7 +77,6 @@ const TeamList = () => {
           team.teamId === selectedTeam.teamId ? { ...team, name: editedName } : team
         )
       );
-
       setEditModalOpen(false);
     } catch (error) {
       console.error(' 팀 수정 중 오류 발생:', error);
