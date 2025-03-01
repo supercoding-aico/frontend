@@ -6,11 +6,12 @@ import { extractToken, clearToken } from '@utils/handleToken';
 import { setUser, clearUser } from '@redux/slice/userSlice';
 
 export const useSignup = () => {
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
-      // TODO: 회원가입 처리
-      console.log(data);
+      navigate('/', { replace: true });
     },
     onError: (err) => {
       // TODO: 예외처리 추가
