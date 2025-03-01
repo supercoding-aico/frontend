@@ -2,8 +2,8 @@ import '@styles/components/common/button.scss';
 
 /**
  * 공용 버튼 컴포넌트
- * @param {React.ReactNode} children
  * @param {string} type
+ * @param {string} name
  * @param {'primary' | 'accent' | 'disabled'} theme
  * @param {boolean} isFull
  * @param {function} onClick
