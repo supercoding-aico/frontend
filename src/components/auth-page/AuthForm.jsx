@@ -183,7 +183,7 @@ const AuthForm = () => {
       <P theme='helptext'>{errorMessage}</P>
       <Button
         type='submit'
-        theme={isEmailChecked && isNicknameChecked ? 'accent' : 'disabled'}
+        theme={isLogin ? 'accent' : isEmailChecked && isNicknameChecked ? 'accent' : 'disabled'}
         isFull={true}
       >
         {isLogin ? '로그인' : '회원가입'}
