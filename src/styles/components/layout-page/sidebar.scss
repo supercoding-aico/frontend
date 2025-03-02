@@ -1,8 +1,15 @@
 .sidebar {
   width: 100%;
+
+  &__subtitle {
+    color: $color-secondary;
+    font-size: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
 }
 
 .header {
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

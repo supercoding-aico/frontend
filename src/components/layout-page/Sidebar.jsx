@@ -34,12 +34,12 @@ const Sidebar = () => {
       <SidebarMenuGroup menus={homeMenu} />
 
       {/* Menu Group 2 */}
-      <h2>팀스페이스</h2>
+      <h2 className='sidebar__subtitle'>팀스페이스</h2>
       <div>드롭다운</div>
       <SidebarMenuGroup menus={teamMenu} />
 
       {/* Menu Group 3 */}
-      <h2>마이스페이스</h2>
+      <h2 className='sidebar__subtitle'>마이스페이스</h2>
       <SidebarMenuGroup menus={userMenu} />
     </section>
   );
