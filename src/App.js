@@ -1,5 +1,5 @@
 import Router from '@router/Router';
-import { errorMessages } from '@constants/errorMessages';
+import { ERROR_MESSAGES as errorMessages } from '@constants/errorMessages';
 
 function App() {
   if (!window.errorMessages) window.errorMessages = errorMessages;
