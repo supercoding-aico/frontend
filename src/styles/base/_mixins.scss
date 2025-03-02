@@ -30,6 +30,12 @@
   color: $color;
 }
 
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // 버튼
 @mixin button {
   padding: $padding-xs $padding-md;
@@ -45,4 +51,24 @@
   border-radius: $border-radius-md;
   padding: $padding-md;
   box-shadow: $shadow;
+}
+
+// 애니메이션
+@mixin translate-y-animation($max-height: 200px, $duration: 0.3s) {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-1rem);
+  transition:
+    opacity $duration ease,
+    transform $duration ease,
+    max-height $duration ease,
+    visibility $duration ease;
+
+  &--show {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: $max-height;
+    visibility: visible;
+  }
 }
