@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import P from '@components/common/P';
 import '@styles/components/team-page/team-list.scss';
-import { FiMoreVertical } from 'react-icons/fi';
 import Modal from '@components/common/Modal';
 import FormInput from '@components/common/FormInput';
 import { deleteTeam, getTeamList, updateTeam } from '@api/teamApi';
+import { AlignJustify } from 'react-feather';
 
 const TeamList = () => {
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ const TeamList = () => {
             {team.name}
           </span>
 
-          <FiMoreVertical
+          <AlignJustify
             className='team-list-item__menu'
             onClick={() => toggleDropdown(team.teamId)}
           />
