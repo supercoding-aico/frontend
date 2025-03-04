@@ -1,5 +1,6 @@
 import { CheckCircle } from 'react-feather';
-import { useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import '@styles/pages/auth-page.scss';
 import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
@@ -96,7 +97,7 @@ const AuthPage = () => {
     const validator = authValidators[fieldId]?.validator;
 
     if (!value) {
-      setErrorMessage(`${fieldId === 'email' ? '이메일' : '닉네임'}을 입력해주세요.`);
+      setErrorMessage(window.errMsgs.validation.EMPTY_VALUE);
       return;
     }
 
@@ -118,10 +119,10 @@ const AuthPage = () => {
       if (res?.data.check) {
         setErrorMessage('');
       } else {
-        setErrorMessage(`이미 사용 중인 ${fieldId === 'email' ? '이메일' : '닉네임'}입니다.`);
+        setErrorMessage(window.errMsgs.auth.ALREADY_EXISTS);
       }
     } catch (error) {
-      setErrorMessage('중복 확인 중 오류가 발생했습니다.');
+      setErrorMessage(window.errMsgs.network.UNKNOWN);
     }
   };
 
@@ -152,27 +153,37 @@ const AuthPage = () => {
       }
     });
 
+    console.log('!!!', hasError);
+
     if (hasError) return;
 
     // TODO: 예외처리 추가
-    if (isLogin) {
+    if (!hasError && isLogin) {
       loginMutate(formValues, {
         onError: (err) => {
           const code = err.response.status;
           switch (code) {
             case 406:
-              setErrorMessage(window.errorMessages.auth.INVALID_CREDENTIALS);
+              setErrorMessage(window.errMsgs.auth.INVALID_CREDENTIALS);
               break;
           }
         },
       });
-    } else {
+    } else if (!hasError && !isLogin) {
       signupMutate(formValues);
     }
   };
 
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+    setErrorMessage('');
+  }, [errorMessage]);
+
   return (
     <div className='auth-page'>
+      <ToastContainer position='top-right' autoClose={3000} />
       <section className='auth-page__form-container'>
         <AuthForm
           authFormFields={authFormFields}
