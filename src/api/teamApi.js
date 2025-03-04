@@ -35,3 +35,9 @@ export const inviteMember = async (teamId, payload) => {
   const response = await axios.post(`/api/team/${teamId}/invite`, payload);
   return response.data;
 };
+
+/** 팀 탈퇴*/
+export const removeMember = async (teamId, payload) => {
+  const response = await axios.delete(`api/team/leave/${teamId}`, payload);
+  return response.data;
+};

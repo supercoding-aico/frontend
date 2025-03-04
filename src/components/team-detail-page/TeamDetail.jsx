@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import '@styles/components/team-detail-page/team-detail.scss';
-import Button from '@components/common/Button';
-import FormInput from '@components/common/FormInput';
 import { getTeamList, inviteMember } from '@api/teamApi';
 import TeamMemberList from './TeamMemberList';
 import TeamInvite from './TeamInvites';
+import TeamLeave from './TeamLeave';
 
 const TeamDetail = () => {
   const { teamId } = useParams();
@@ -14,6 +13,7 @@ const TeamDetail = () => {
   const [memberData, setMemberData] = useState([]);
   const [openAccordion, setOpenAccordion] = useState(null);
   const [inviteEmail, setInviteEmail] = useState('');
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -21,8 +21,9 @@ const TeamDetail = () => {
         const data = await getTeamList();
         const teamInfo = data.data.content.find((team) => team.teamId === Number(teamId));
         setTeamData(teamInfo);
+        setLoggedInUserId(teamInfo.loggedInUserId);
       } catch (error) {
-        console.error('❌ 팀 정보를 가져오는 중 오류 발생:', error);
+        console.error('팀 정보를 가져오는 중 오류 발생:', error);
       }
     };
 
@@ -50,7 +51,7 @@ const TeamDetail = () => {
             className='team-detail__accordion-item-header'
             onClick={() => toggleAccordion('members')}
           >
-            <span>👥 팀 멤버</span>
+            <span>팀 멤버</span>
             <MdOutlineArrowDropDownCircle
               className={`team-detail__icon ${openAccordion === 'members' ? 'rotated' : ''}`}
             />
@@ -63,7 +64,7 @@ const TeamDetail = () => {
             className='team-detail__accordion-item-header'
             onClick={() => toggleAccordion('invite')}
           >
-            <span>📩 팀 멤버 초대</span>
+            <span>팀 멤버 초대</span>
             <MdOutlineArrowDropDownCircle
               className={`team-detail__icon ${openAccordion === 'invite' ? 'rotated' : ''}`}
             />
@@ -77,26 +78,13 @@ const TeamDetail = () => {
             className='team-detail__accordion-item-header'
             onClick={() => toggleAccordion('leave')}
           >
-            <span>🚪 팀 탈퇴</span>
+            <span>팀 탈퇴</span>
             <MdOutlineArrowDropDownCircle
               className={`team-detail__icon ${openAccordion === 'leave' ? 'rotated' : ''}`}
             />
           </button>
           {openAccordion === 'leave' && (
-            <div className='team-detail__accordion-item-opened-content'>
-              <Button>팀 탈퇴하기</Button>
-              <select className='team-detail__select'>
-                <option value='' disabled>
-                  탈퇴시킬 멤버 선택
-                </option>
-                {memberData.map((member) => (
-                  <option key={member.userId} value={member.userId}>
-                    {member.nickname} ({member.teamRole})
-                  </option>
-                ))}
-              </select>
-              <Button>팀 멤버 탈퇴시키기</Button>
-            </div>
+            <TeamLeave teamId={teamId} loggedInUserId={loggedInUserId} />
           )}
         </div>
       </div>

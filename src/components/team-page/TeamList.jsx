@@ -105,7 +105,7 @@ const TeamList = () => {
 
           {dropdownOpen === team.teamId && (
             <div className='team-list-item__dropdown'>
-              <button onClick={() => handleEditTeam(team)}>팀 수정</button>
+              <button onClick={() => handleEditTeam(team)}>팀 이름 수정</button>
               <button onClick={() => handleDeleteTeam(team.teamId)}>팀 삭제</button>
             </div>
           )}
