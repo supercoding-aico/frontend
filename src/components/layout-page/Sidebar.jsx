@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { Bell, Menu } from 'react-feather';
 import { useState } from 'react';
 import '@styles/components/layout-page/sidebar.scss';
@@ -12,6 +13,8 @@ import {
 import placeholder from '@assets/images/profile-placeholder.png';
 
 const Sidebar = () => {
+  const user = useSelector((state) => state.user.userInfo);
+
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const mockTeams = [
@@ -42,10 +45,14 @@ const Sidebar = () => {
         {/* Menu Header */}
         <div className='header'>
           <div className='profile'>
-            <img src={placeholder} alt='사용자 프로필 사진' className='profile__img' />
+            <img
+              src={user.imageUrl ?? placeholder}
+              alt='사용자 프로필 사진'
+              className='profile__img'
+            />
             <div className='profile__info'>
-              <span className='profile__info--nickname'>nickname</span>
-              <span className='profile__info--email'>test@test.com</span>
+              <span className='profile__info--nickname'>{user.nickname}</span>
+              <span className='profile__info--email'>{user.email}</span>
             </div>
           </div>
           <div className='buttons'>
