@@ -4,21 +4,26 @@ import { toast, ToastContainer } from 'react-toastify';
 import '@styles/pages/auth-page.scss';
 import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
-import { useSignup, useLogin } from '@hooks/useAuth';
+import { useSignup, useLogin } from '@hooks/auth/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
+import { regExp } from '@constants/regExp';
+import { ERROR_MESSAGES } from '@constants/errorMessages';
 
 const AuthPage = () => {
   const passwordRef = useRef('');
   const formValuesRef = useRef({ email: '', nickname: '' });
-  const [errorMessage, setErrorMessage] = useState(''); // toast에 적용
+  const [errorMessage, setErrorMessage] = useState('');
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
   const { mutate: signupMutate } = useSignup();
   const { mutate: loginMutate } = useLogin();
 
+  const { authMsg, validationMsg } = ERROR_MESSAGES;
+
   const pathname = location.pathname.split('/')[1];
   const isLogin = pathname === 'login';
+  let hasError = false;
 
   const authFormFields = useMemo(() => {
     const fields = [
@@ -78,16 +83,17 @@ const AuthPage = () => {
 
   const authValidators = useMemo(
     () => ({
-      email: { validator: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, helpText: '이메일 형식에 맞지 않습니다.' },
+      email: { validator: regExp.email, helpText: validationMsg.EMAIL_FORMAT },
       password: {
-        validator: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-        helpText: '비밀번호는 8~20자 사이의 영문자, 숫자, 특수문자만 가능합니다.',
+        validator: regExp.password,
+        helpText: validationMsg.PASSWORD_WEAK,
       },
       passwordConfirm: {
         validator: (value) => value === passwordRef.current,
-        helpText: '비밀번호가 일치하지 않습니다.',
+        helpText: validationMsg.PASSWORD_MISMATCH,
       },
-      phoneNumber: { validator: /^[\d-]+$/, helpText: '전화번호를 확인해주세요' },
+      nickname: { validator: regExp.nickname, helpText: validationMsg.NICKNAME_WEAK },
+      phoneNumber: { validator: regExp.phoneNumber, helpText: validationMsg.PHONE_NUMBER_FORMAT },
     }),
     []
   );
@@ -97,7 +103,7 @@ const AuthPage = () => {
     const validator = authValidators[fieldId]?.validator;
 
     if (!value) {
-      setErrorMessage(window.errMsgs.validation.EMPTY_VALUE);
+      setErrorMessage(validationMsg.EMPTY_VALUE);
       return;
     }
 
@@ -119,10 +125,10 @@ const AuthPage = () => {
       if (res?.data.check) {
         setErrorMessage('');
       } else {
-        setErrorMessage(window.errMsgs.auth.ALREADY_EXISTS);
+        setErrorMessage(authMsg.ALREADY_EXISTS);
       }
     } catch (error) {
-      setErrorMessage(window.errMsgs.network.UNKNOWN);
+      setErrorMessage(authMsg.DEFAULT);
     }
   };
 
@@ -131,7 +137,6 @@ const AuthPage = () => {
 
     const formData = new FormData(e.target);
     const formValues = {};
-    let hasError = false;
 
     formData.forEach((value, key) => {
       if (key === 'passwordConfirm') return;
@@ -152,8 +157,6 @@ const AuthPage = () => {
         }
       }
     });
-
-    console.log('!!!', hasError);
 
     if (hasError) return;
 
@@ -188,7 +191,7 @@ const AuthPage = () => {
         <AuthForm
           authFormFields={authFormFields}
           authValidators={authValidators}
-          onSubmit={handleSubmit}
+          handleSubmit={handleSubmit}
           isFormAvailable={isEmailChecked && isNicknameChecked}
         />
       </section>
