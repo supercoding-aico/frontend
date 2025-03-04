@@ -96,16 +96,36 @@ const AuthForm = () => {
   );
 
   const checkDuplicate = async (fieldId) => {
-    if (fieldId === 'email') {
-      const res = await isEmailAvailable({ email: formValuesRef.current.email });
-      if (res?.data.check) {
-        setIsEmailChecked(true);
+    const value = formValuesRef.current[fieldId];
+    const validator = authValidators[fieldId]?.validator;
+
+    if (!value) {
+      setErrorMessage(`${fieldId === 'email' ? '이메일' : '닉네임'}을 입력해주세요.`);
+      return;
+    }
+
+    if (validator instanceof RegExp && !validator.test(value)) {
+      setErrorMessage(authValidators[fieldId].helpText);
+      return;
+    }
+
+    try {
+      let res;
+      if (fieldId === 'email') {
+        res = await isEmailAvailable({ email: value });
+        setIsEmailChecked(res?.data.check);
+      } else if (fieldId === 'nickname') {
+        res = await isNicknameAvailable({ nickname: value });
+        setIsNicknameChecked(res?.data.check);
       }
-    } else if (fieldId === 'nickname') {
-      const res = await isNicknameAvailable({ nickname: formValuesRef.current.nickname });
+
       if (res?.data.check) {
-        setIsNicknameChecked(true);
+        setErrorMessage('');
+      } else {
+        setErrorMessage(`이미 사용 중인 ${fieldId === 'email' ? '이메일' : '닉네임'}입니다.`);
       }
+    } catch (error) {
+      setErrorMessage('중복 확인 중 오류가 발생했습니다.');
     }
   };
 
@@ -161,7 +181,11 @@ const AuthForm = () => {
         ))}
       </div>
       <P theme='helptext'>{errorMessage}</P>
-      <Button type='submit' theme='accent' isFull={true}>
+      <Button
+        type='submit'
+        theme={isLogin ? 'accent' : isEmailChecked && isNicknameChecked ? 'accent' : 'disabled'}
+        isFull={true}
+      >
         {isLogin ? '로그인' : '회원가입'}
       </Button>
     </form>

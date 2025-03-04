@@ -1,0 +1,47 @@
+.dropdown {
+  margin-bottom: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  &__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    &--name {
+      @include mixins.text-ellipsis();
+    }
+  }
+}
+
+.options {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  width: 100%;
+  background-color: $color-background;
+  border-radius: $border-radius-sm;
+  padding: 0.8rem;
+  overflow-y: auto;
+  box-shadow: $shadow;
+  @include mixins.translate-y-animation(9rem, 0.3s);
+
+  &__button {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: $border-radius-sm;
+    font-size: 1rem;
+    text-align: left;
+    @include mixins.text-ellipsis();
+  }
+
+  &__button:hover {
+    background-color: $color-section;
+  }
+}

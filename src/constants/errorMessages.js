@@ -1,4 +1,4 @@
-export const errorMessages = {
+export const ERROR_MESSAGES = {
   auth: {
     INVALID_CREDENTIALS: '이메일 또는 비밀번호가 잘못되었습니다.',
     EMAIL_ALREADY_EXISTS: '이미 가입된 이메일입니다.',

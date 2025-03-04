@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getToken } from '@utils/handleToken';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_ENDPOINT,
@@ -8,14 +7,6 @@ const instance = axios.create({
   },
   timeout: 2000,
   withCredentials: true,
-});
-
-instance.interceptors.request.use((config) => {
-  const accessToken = getToken();
-  if (accessToken) {
-    config.headers.Authorization = `${accessToken}`;
-  }
-  return config;
 });
 
 instance.interceptors.response.use(
