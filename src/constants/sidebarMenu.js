@@ -40,7 +40,6 @@ export const SIDEBAR_MENU_USER = [
   {
     id: 'profile',
     name: '프로필',
-    path: '/profile',
     icon: <User />,
   },
 ];
