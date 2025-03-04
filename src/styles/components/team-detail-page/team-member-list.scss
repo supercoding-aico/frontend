@@ -1,0 +1,43 @@
+.team-member-list {
+  margin: 0 auto;
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  &__header {
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+  }
+
+  &__row {
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__name,
+  &__role {
+    padding: 10px;
+  }
+
+  &__icon {
+    width: 1rem;
+    cursor: pointer;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 15px;
+    color: #888;
+  }
+
+  &__loading,
+  &__error {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
