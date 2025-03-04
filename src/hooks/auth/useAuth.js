@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { signup, login, verifyLogin, logout } from '@api/authApi';
+import { signup, login, verifyLogin, logout, withdraw } from '@api/authApi';
 
 export const useSignup = () => {
   const navigate = useNavigate();
@@ -15,11 +15,13 @@ export const useSignup = () => {
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       queryClient.setQueryData(['user'], data.data);
+      navigate('/', { replace: true });
     },
     onError: () => {
       queryClient.removeQueries(['user']);
@@ -27,14 +29,19 @@ export const useLogin = () => {
   });
 };
 
-export const useVerifyLogin = () => {
+export const useCurrentUser = () => {
+  const queryClient = useQueryClient();
+
   return useQuery({
     queryKey: ['user'],
     queryFn: async () => {
+      const cachedUser = queryClient.getQueryData(['user']);
+      if (cachedUser) return cachedUser;
+
       const res = await verifyLogin();
       return res.data;
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: Infinity,
     retry: false,
   });
 };
@@ -54,7 +61,7 @@ export const useWithdraw = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: logout,
+    mutationFn: withdraw,
     onSuccess: () => {
       queryClient.removeQueries(['user']);
     },

@@ -7,12 +7,12 @@ export const signup = async (payload) => {
 
 export const login = async (payload) => {
   const resp = await axios.post(`api/auth/login`, payload);
-  return resp;
+  return resp.data;
 };
 
 export const verifyLogin = async () => {
   const resp = await axios.get(`api/auth/login-valid`);
-  return resp;
+  return resp.data;
 };
 
 //TODO: API 수정
