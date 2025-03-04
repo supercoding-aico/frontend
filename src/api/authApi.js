@@ -10,8 +10,19 @@ export const login = async (payload) => {
   return resp;
 };
 
-export const verifyLogin = async (payload) => {
-  const resp = await axios.post(`api/auth/login-valid`, payload);
+export const verifyLogin = async () => {
+  const resp = await axios.get(`api/auth/login-valid`);
+  return resp;
+};
+
+//TODO: API 수정
+export const logout = async () => {
+  const resp = await axios.put(`api/auth/logout`);
+  return resp;
+};
+
+export const withdraw = async () => {
+  const resp = await axios.delete(`api/user/info`);
   return resp;
 };
 
