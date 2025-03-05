@@ -4,7 +4,7 @@ import { useState } from 'react';
 import '@styles/components/layout-page/sidebar.scss';
 import SidebarMenuGroup from '@components/layout-page/SidebarMenuGroup';
 import SidebarDropdown from '@components/layout-page/SidebarDropdown';
-import ProfileModal from './ProfileModal';
+import ProfileModal from '@components/layout-page/ProfileModal';
 import {
   SIDEBAR_MENU_HOME as homeMenu,
   SIDEBAR_MENU_TEAM as teamMenu,
@@ -59,9 +59,10 @@ const Sidebar = () => {
             <button className='buttons__icon buttons--notification'>
               <Bell />
             </button>
-            <button className='buttons__icon buttons--menu'>
+            {/* //TODO: 기능 구현 완료 후 추가 */}
+            {/* <button className='buttons__icon buttons--menu'>
               <Menu />
-            </button>
+            </button> */}
           </div>
         </div>
 

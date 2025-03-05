@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'react-feather';
 import { useState, useRef } from 'react';
-import '@styles/components/layout-page/sidebar-dropdown.scss';
 import { useEventListener } from '@hooks/useEventListener';
+import '@styles/components/layout-page/sidebar-dropdown.scss';
 
 const SidebarDropdown = ({ teams }) => {
   const navigate = useNavigate();
