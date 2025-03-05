@@ -59,9 +59,10 @@ const Sidebar = () => {
             <button className='buttons__icon buttons--notification'>
               <Bell />
             </button>
-            <button className='buttons__icon buttons--menu'>
+            {/* //TODO: 기능 구현 완료 후 추가 */}
+            {/* <button className='buttons__icon buttons--menu'>
               <Menu />
-            </button>
+            </button> */}
           </div>
         </div>
 
