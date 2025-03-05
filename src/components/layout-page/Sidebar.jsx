@@ -4,7 +4,7 @@ import { useState } from 'react';
 import '@styles/components/layout-page/sidebar.scss';
 import SidebarMenuGroup from '@components/layout-page/SidebarMenuGroup';
 import SidebarDropdown from '@components/layout-page/SidebarDropdown';
-import ProfileModal from './ProfileModal';
+import ProfileModal from '@components/layout-page/ProfileModal';
 import {
   SIDEBAR_MENU_HOME as homeMenu,
   SIDEBAR_MENU_TEAM as teamMenu,
