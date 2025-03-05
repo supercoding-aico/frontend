@@ -38,6 +38,6 @@ export const inviteMember = async (teamId, payload) => {
 
 /** 팀 탈퇴*/
 export const removeMember = async (teamId, payload) => {
-  const response = await axios.delete(`api/team/leave/${teamId}`, payload);
+  const response = await axios.delete(`api/team/leave/${teamId}`, { data: payload });
   return response.data;
 };

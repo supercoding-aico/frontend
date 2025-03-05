@@ -38,7 +38,6 @@ const TeamLeave = ({ teamId, loggedInUserId }) => {
       alert('팀 탈퇴에 실패했습니다.');
     }
   };
-
   // 멤버 탈퇴 처리(관리자만 가능)
   const handleRemoveMember = async () => {
     if (!selectedMember) {

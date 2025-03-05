@@ -13,16 +13,16 @@
 
   &__date {
     font-size: 14px;
-    color: gray;
+    color: $color-primary;
     text-align: center;
     margin-bottom: 20px;
   }
 
   &__accordion {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid $color-key-1;
 
     &-item {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid $color-key-1;
       &-opened-content {
         display: flex;
         align-items: center;
@@ -38,7 +38,6 @@
         font-weight: bold;
         cursor: pointer;
         border: none;
-        background: #f8f8f8;
         transition: background 0.3s;
 
         &:hover {

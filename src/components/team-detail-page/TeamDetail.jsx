@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '@styles/components/team-detail-page/team-detail.scss';
 import { useQuery } from '@tanstack/react-query';
@@ -7,11 +7,12 @@ import TeamMemberList from './TeamMemberList';
 import TeamInvite from './TeamInvites';
 import TeamLeave from './TeamLeave';
 import { ArrowDownCircle } from 'react-feather';
-import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 const TeamDetail = () => {
   const { teamId } = useParams();
   const [openAccordion, setOpenAccordion] = useState(null);
+  const loggedInUserId = useSelector((state) => state.user.userInfo.userId);
 
   // 리액트 쿼리로 팀 데이터 가져오기
   const {
@@ -50,7 +51,9 @@ const TeamDetail = () => {
               className={`team-detail__icon ${openAccordion === 'members' ? 'rotated' : ''}`}
             />
           </button>
-          {openAccordion === 'members' && <TeamMemberList teamId={Number(teamId)} />}
+          {openAccordion === 'members' && (
+            <TeamMemberList teamId={Number(teamId)} loggedInUserId={loggedInUserId} />
+          )}
         </div>
 
         {/* 팀 초대 */}

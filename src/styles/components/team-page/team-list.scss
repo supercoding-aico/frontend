@@ -17,14 +17,14 @@
       font-weight: 500;
 
       &:hover {
-        color: #007bff;
+        color: $color-accent;
       }
     }
 
     &__menu {
       cursor: pointer;
       font-size: 30px;
-      color: #666;
+      color: $color-tertiary;
       padding: 5px;
     }
 
@@ -32,10 +32,10 @@
       position: absolute;
       right: 10px;
       top: 30px;
-      background: white;
-      border: 1px solid #ddd;
+      border: 1px solid $color-key-1;
       border-radius: 4px;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      background-color: $color-section;
+      box-shadow: 2px 2px 5px $color-primary(0, 0, 0, 0.2);
       padding: 5px;
       width: 120px;
       z-index: 10;
@@ -51,7 +51,7 @@
         cursor: pointer;
 
         &:hover {
-          background: #f5f5f5;
+          background: $color-key-1;
         }
       }
     }
