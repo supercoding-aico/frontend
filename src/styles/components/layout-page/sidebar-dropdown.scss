@@ -30,7 +30,7 @@
   padding: 0.8rem;
   overflow-y: auto;
   box-shadow: $shadow;
-  @include mixins.translate-y-animation(9rem, 0.3s);
+  @include mixins.translate-animation(bottom, 9rem, 0.3s);
 
   &__button {
     width: 100%;

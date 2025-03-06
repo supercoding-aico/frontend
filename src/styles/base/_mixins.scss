@@ -54,11 +54,21 @@
 }
 
 // 애니메이션
-@mixin translate-y-animation($max-height: 200px, $duration: 0.3s) {
+@mixin translate-animation($direction: top, $max-height: 200px, $duration: 0.3s) {
   max-height: 0;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-1rem);
+
+  @if $direction == 'top' {
+    transform: translateY(-1rem);
+  } @else if $direction == 'bottom' {
+    transform: translateY(1rem);
+  } @else if $direction == 'left' {
+    transform: translateX(-1rem);
+  } @else if $direction == 'right' {
+    transform: translateX(1rem);
+  }
+
   transition:
     opacity $duration ease,
     transform $duration ease,
@@ -67,7 +77,7 @@
 
   &--show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(0, 0);
     max-height: $max-height;
     visibility: visible;
   }
