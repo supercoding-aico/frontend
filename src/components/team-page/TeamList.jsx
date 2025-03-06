@@ -4,13 +4,14 @@ import P from '@components/common/P';
 import '@styles/components/team-page/team-list.scss';
 import Modal from '@components/common/Modal';
 import FormInput from '@components/common/FormInput';
-import { deleteTeam, getTeamList, updateTeam } from '@api/teamApi';
+import { getTeamList } from '@api/teamApi';
 import { AlignJustify } from 'react-feather';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useTeamMutations from '@hooks/team/useTeam';
+import { useQuery } from '@tanstack/react-query';
 
 const TeamList = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const { deleteMutation, updateMutation } = useTeamMutations();
 
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -18,29 +19,31 @@ const TeamList = () => {
   const [editedName, setEditedName] = useState('');
 
   // 팀 목록 가져오기
-  const {
-    data: teamData = [],
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: teamData = [] } = useQuery({
     queryKey: ['teamList'],
     queryFn: getTeamList,
     select: (data) => data?.data?.content ?? [],
   });
 
-  // 팀 삭제 Mutation
-  const deleteMutation = useMutation({
-    mutationFn: deleteTeam,
-    onSuccess: (_, deletedTeamId) => {
-      queryClient.setQueryData(['teamList'], (oldData) =>
-        oldData ? oldData.filter((team) => team.teamId !== deletedTeamId) : []
-      );
-      alert('팀이 삭제되었습니다.');
-    },
-    onError: () => {
-      alert('팀 삭제 실패! 다시 시도해 주세요.');
-    },
-  });
+  // 팀 수정 변경 핸들러
+  const handleTeamNameChange = (editedTeamName) => {
+    setEditedName(editedTeamName);
+  };
+
+  // 팀 삭제 실행
+  const handleDeleteTeam = (teamId) => {
+    deleteMutation.mutate(teamId);
+    setDropdownOpen(null);
+  };
+
+  // 팀 수정 실행
+  const handleEditedNameSend = () => {
+    if (!editedName.trim()) {
+      alert('팀 이름을 입력해 주세요.');
+      return;
+    }
+    updateMutation.mutate({ teamId: selectedTeam.teamId, name: editedName });
+  };
 
   // 팀 상세 페이지 이동
   const handleTitleClick = (team) => {
@@ -58,41 +61,6 @@ const TeamList = () => {
     setEditedName(team.name);
     setEditModalOpen(true);
     setDropdownOpen(null);
-  };
-
-  // 팀 이름 변경 API 요청
-  const updateMutation = useMutation({
-    mutationFn: ({ teamId, name }) => updateTeam(teamId, { name }),
-    onSuccess: (_, { teamId, name }) => {
-      queryClient.setQueryData(['teamList'], (oldData) =>
-        oldData ? oldData.map((team) => (team.teamId === teamId ? { ...team, name } : team)) : []
-      );
-      alert('팀 이름이 수정되었습니다');
-      setEditModalOpen(false);
-    },
-    onError: () => {
-      alert('팀 수정 실패! 다시 시도해 주세요.');
-    },
-  });
-
-  // 팀 이름 입력 변경 핸들러
-  const handleTeamNameChange = (editedTeamName) => {
-    setEditedName(editedTeamName);
-  };
-
-  // 팀 삭제 실행
-  const handleDeleteTeam = (teamId) => {
-    deleteMutation.mutate(teamId);
-    setDropdownOpen(null);
-  };
-
-  // 팀 이름 변경 실행
-  const handleEditedNameSend = () => {
-    if (!editedName.trim()) {
-      alert('팀 이름을 입력해 주세요.');
-      return;
-    }
-    updateMutation.mutate({ teamId: selectedTeam.teamId, name: editedName });
   };
 
   return (
