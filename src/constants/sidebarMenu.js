@@ -1,4 +1,4 @@
-import { Home, Calendar, Folder, MessageCircle, Settings, User } from 'react-feather';
+import { Home, Calendar, Folder, MessageCircle, Settings, User, List } from 'react-feather';
 
 export const SIDEBAR_MENU_HOME = [
   {
@@ -41,5 +41,11 @@ export const SIDEBAR_MENU_USER = [
     id: 'profile',
     name: '프로필',
     icon: <User />,
+  },
+  {
+    id: 'userTeam',
+    name: '나의 팀 목록',
+    path: '/team',
+    icon: <List />,
   },
 ];
