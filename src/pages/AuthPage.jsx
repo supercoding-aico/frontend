@@ -9,6 +9,7 @@ import { useSignup, useLogin } from '@hooks/auth/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
 import { regExp } from '@constants/regExp';
 import { ERROR_MESSAGES } from '@constants/errorMessages';
+import logo from '@assets/images/logo.png';
 
 const AuthPage = () => {
   const passwordRef = useRef('');
@@ -188,12 +189,15 @@ const AuthPage = () => {
   return (
     <>
       <div className='auth-page'>
-        <section className='auth-page__form-container'>
+        <section className='form-container'>
+          <img src={logo} alt='AI-Co 로고' className='form-container__logo' />
+          <p className='form-container__title'>{isLogin ? '로그인' : '회원가입'}</p>
           <AuthForm
             authFormFields={authFormFields}
             authValidators={authValidators}
             handleSubmit={handleSubmit}
             isFormAvailable={isEmailChecked && isNicknameChecked}
+            isLogin={isLogin}
           />
         </section>
         <Link to={isLogin ? '/signup' : '/login'} className='link'>

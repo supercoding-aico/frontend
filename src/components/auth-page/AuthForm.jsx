@@ -1,18 +1,10 @@
-import { useLocation } from 'react-router-dom';
 import '@styles/components/auth-page/auth-form.scss';
-import P from '@components/common/P';
 import FormInput from '@components/common/FormInput';
 import Button from '@components/common/Button';
 
-const AuthForm = ({ authFormFields, authValidators, handleSubmit, isFormAvailable }) => {
-  const location = useLocation();
-
-  const pathname = location.pathname.split('/')[1];
-  const isLogin = pathname === 'login';
-
+const AuthForm = ({ authFormFields, authValidators, handleSubmit, isFormAvailable, isLogin }) => {
   return (
     <form onSubmit={handleSubmit} className='auth-form'>
-      <P theme='title'>{isLogin ? '로그인' : '회원가입'}</P>
       <div>
         {authFormFields.map((field) => (
           <FormInput

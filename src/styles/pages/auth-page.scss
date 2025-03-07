@@ -5,16 +5,45 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
 
-  &__form-container {
-    @include mixins.section(50%);
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 
-    @include mixins.respond-to(lg) {
-      @include mixins.section(70%);
-    }
+  @include mixins.section(30%);
 
-    @include mixins.respond-to(sm) {
-      @include mixins.section(90%);
+  @include mixins.respond-to(lg) {
+    @include mixins.section(60%);
+  }
+
+  @include mixins.respond-to(sm) {
+    @include mixins.section(90%);
+  }
+
+  & > *:not(:first-child) {
+    width: 100%;
+  }
+
+  &__logo {
+    width: 10rem;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &::before,
+    &::after {
+      content: '';
+      flex-grow: 1;
+      height: 1px;
+      background-color: $color-secondary;
     }
   }
 }
