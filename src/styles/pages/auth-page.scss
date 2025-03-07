@@ -1,18 +1,29 @@
 .auth-page {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 
   &__form-container {
-    @include mixins.section(30%);
+    @include mixins.section(50%);
 
     @include mixins.respond-to(lg) {
-      @include mixins.section(60%);
+      @include mixins.section(70%);
     }
 
     @include mixins.respond-to(sm) {
       @include mixins.section(90%);
     }
+  }
+}
+
+.link {
+  color: $color-accent;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
   }
 }

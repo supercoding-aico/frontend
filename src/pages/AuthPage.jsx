@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -185,17 +186,22 @@ const AuthPage = () => {
   }, [errorMessage]);
 
   return (
-    <div className='auth-page'>
+    <>
+      <div className='auth-page'>
+        <section className='auth-page__form-container'>
+          <AuthForm
+            authFormFields={authFormFields}
+            authValidators={authValidators}
+            handleSubmit={handleSubmit}
+            isFormAvailable={isEmailChecked && isNicknameChecked}
+          />
+        </section>
+        <Link to={isLogin ? '/signup' : '/login'} className='link'>
+          {isLogin ? '새로운 계정 만들기' : '기존 계정으로 로그인하기'}
+        </Link>
+      </div>
       <ToastContainer position='top-right' autoClose={3000} />
-      <section className='auth-page__form-container'>
-        <AuthForm
-          authFormFields={authFormFields}
-          authValidators={authValidators}
-          handleSubmit={handleSubmit}
-          isFormAvailable={isEmailChecked && isNicknameChecked}
-        />
-      </section>
-    </div>
+    </>
   );
 };
 
