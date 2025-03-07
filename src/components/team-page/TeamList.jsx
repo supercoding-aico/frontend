@@ -18,25 +18,21 @@ const TeamList = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [editedName, setEditedName] = useState('');
 
-  // 팀 목록 가져오기
   const { data: teamData = [] } = useQuery({
     queryKey: ['teamList'],
     queryFn: getTeamList,
     select: (data) => data?.data?.content ?? [],
   });
 
-  // 팀 수정 변경 핸들러
   const handleTeamNameChange = (editedTeamName) => {
     setEditedName(editedTeamName);
   };
 
-  // 팀 삭제 실행
   const handleDeleteTeam = (teamId) => {
     deleteMutation.mutate(teamId);
     setDropdownOpen(null);
   };
 
-  // 팀 수정 실행
   const handleEditedNameSend = () => {
     if (!editedName.trim()) {
       alert('팀 이름을 입력해 주세요.');
@@ -45,17 +41,14 @@ const TeamList = () => {
     updateMutation.mutate({ teamId: selectedTeam.teamId, name: editedName });
   };
 
-  // 팀 상세 페이지 이동
   const handleTitleClick = (team) => {
     navigate(`/team/detail/${team.teamId}`);
   };
 
-  // 드롭다운 토글
   const toggleDropdown = (teamId) => {
     setDropdownOpen(dropdownOpen === teamId ? null : teamId);
   };
 
-  // 팀 수정 버튼 클릭 시
   const handleEditTeam = (team) => {
     setSelectedTeam(team);
     setEditedName(team.name);

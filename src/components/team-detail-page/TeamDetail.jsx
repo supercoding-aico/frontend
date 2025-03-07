@@ -14,6 +14,10 @@ const TeamDetail = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const loggedInUserId = useSelector((state) => state.user.userInfo.userId);
 
+  useEffect(() => {
+    console.log(loggedInUserId);
+  }, []);
+
   // 리액트 쿼리로 팀 데이터 가져오기
   const {
     data: teamData,
@@ -81,7 +85,9 @@ const TeamDetail = () => {
               className={`team-detail__icon ${openAccordion === 'leave' ? 'rotated' : ''}`}
             />
           </button>
-          {openAccordion === 'leave' && <TeamLeave teamId={teamId} />}
+          {openAccordion === 'leave' && (
+            <TeamLeave teamId={teamId} loggedInUserId={loggedInUserId} />
+          )}
         </div>
       </div>
     </div>

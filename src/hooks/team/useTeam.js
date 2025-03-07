@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createTeam, deleteTeam, updateTeam } from '@api/teamApi';
+import { createTeam, deleteTeam, inviteMember, removeMember, updateTeam } from '@api/teamApi';
 import { useNavigate } from 'react-router-dom';
 
 const useTeamMutations = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // 팀 생성
   const createMutation = useMutation({
     mutationFn: createTeam,
     onSuccess: (data) => {
@@ -27,7 +26,6 @@ const useTeamMutations = () => {
     },
   });
 
-  // 팀 삭제
   const deleteMutation = useMutation({
     mutationFn: deleteTeam,
     onSuccess: (data, deletedTeamId) => {
@@ -44,7 +42,6 @@ const useTeamMutations = () => {
     },
   });
 
-  // 팀 수정
   const updateMutation = useMutation({
     mutationFn: ({ teamId, name }) => updateTeam(teamId, { name }),
     onSuccess: (data, { teamId, name }) => {
@@ -61,7 +58,36 @@ const useTeamMutations = () => {
     },
   });
 
-  return { createMutation, deleteMutation, updateMutation };
+  const inviteMemberMutation = (teamId) =>
+    useMutation({
+      mutationFn: (email) => inviteMember(teamId, { email }),
+      onSuccess: (data) => {
+        if (data.code === 200) {
+          alert('Invitation sent successfully.');
+        }
+      },
+      onError: (error) => {
+        console.error('Invite Failed:', error);
+        alert('Failed to send the invitation. Please try again.');
+      },
+    });
+
+  const leaveMutation = (teamId, loggedInUserId) =>
+    useMutation({
+      mutationFn: () => removeMember(teamId, loggedInUserId),
+      onSuccess: (data) => {
+        if (data.code === 201) {
+          alert('팀에서 탈퇴했습니다.');
+          navigate('/team');
+        }
+      },
+      onError: (error) => {
+        console.error('팀 탈퇴 중 오류 발생:', error);
+        alert('팀 탈퇴에 실패했습니다.');
+      },
+    });
+
+  return { createMutation, deleteMutation, updateMutation, inviteMemberMutation, leaveMutation };
 };
 
 export default useTeamMutations;
