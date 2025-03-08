@@ -8,6 +8,7 @@ import { getTeamList } from '@api/teamApi';
 import { AlignJustify } from 'react-feather';
 import useTeamMutations from '@hooks/team/useTeam';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 const TeamList = () => {
   const navigate = useNavigate();
@@ -35,10 +36,18 @@ const TeamList = () => {
 
   const handleEditedNameSend = () => {
     if (!editedName.trim()) {
-      alert('팀 이름을 입력해 주세요.');
+      toast.error('팀 이름을 입력해 주세요.');
       return;
     }
-    updateMutation.mutate({ teamId: selectedTeam.teamId, name: editedName });
+    updateMutation.mutate(
+      { teamId: selectedTeam.teamId, name: editedName },
+      {
+        onSuccess: () => {
+          setEditModalOpen(false);
+          setEditedName('');
+        },
+      }
+    );
   };
 
   const handleTitleClick = (team) => {

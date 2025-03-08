@@ -4,11 +4,18 @@ import '@styles/components/team-detail-page/team-detail.scss';
 
 const TeamLeave = ({ teamId, loggedInUserId }) => {
   const { leaveMutation } = useTeamMutations();
-  const leaveTeam = leaveMutation(teamId, loggedInUserId);
+  const leaveTeam = leaveMutation(teamId, { userId: loggedInUserId });
 
   return (
     <div className='team-leave'>
-      <Button onClick={() => leaveTeam.mutate()}>팀 탈퇴하기</Button>
+      <Button
+        onClick={() => {
+          console.log(loggedInUserId);
+          leaveTeam.mutate();
+        }}
+      >
+        팀 탈퇴하기
+      </Button>
     </div>
   );
 };

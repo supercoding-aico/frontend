@@ -1,12 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getTeamMember, removeMember } from '@api/teamApi';
+import { useQuery } from '@tanstack/react-query';
+import { getTeamMember } from '@api/teamApi';
 import '@styles/components/team-detail-page/team-member-list.scss';
 import { AlignJustify } from 'react-feather';
 import { useState } from 'react';
+import useTeamMutations from '@hooks/team/useTeam';
 
 const TeamMemberList = ({ teamId, loggedInUserId }) => {
-  const queryClient = useQueryClient();
   const [dropdownOpen, setDropdownOpen] = useState(null);
+  const { removeMemberMutation } = useTeamMutations();
 
   const {
     data: memberData,
@@ -21,21 +22,9 @@ const TeamMemberList = ({ teamId, loggedInUserId }) => {
   const loggedInUserRole =
     memberData?.data?.find((member) => member.userId === loggedInUserId)?.teamRole || 'MEMBER';
 
-  const removeMemberMutation = useMutation({
-    mutationFn: ({ teamId, userId }) => removeMember(teamId, userId),
-    onSuccess: (_, { userId }) => {
-      queryClient.setQueryData(['teamMembers', teamId], (oldData) =>
-        oldData ? { ...oldData, data: oldData.data.filter((m) => m.userId !== userId) } : oldData
-      );
-      alert('멤버를 성공적으로 탈퇴시켰습니다.');
-      setDropdownOpen(null);
-    },
-    onError: () => alert('멤버 탈퇴에 실패했습니다.'),
-  });
-
   const handleRemoveMember = (userId) => {
-    console.log(userId);
     removeMemberMutation.mutate({ teamId, userId });
+    setDropdownOpen(null);
   };
 
   if (isLoading) return <div className='team-member-list__loading'>로딩 중...</div>;

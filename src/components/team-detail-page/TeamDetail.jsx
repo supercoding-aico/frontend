@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '@styles/components/team-detail-page/team-detail.scss';
 import { useQuery } from '@tanstack/react-query';
@@ -14,16 +14,8 @@ const TeamDetail = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const loggedInUserId = useSelector((state) => state.user.userInfo.userId);
 
-  useEffect(() => {
-    console.log(loggedInUserId);
-  }, []);
-
   // 리액트 쿼리로 팀 데이터 가져오기
-  const {
-    data: teamData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: teamData } = useQuery({
     queryKey: ['teamDetail', teamId],
     queryFn: async () => {
       const data = await getTeamList();
@@ -36,15 +28,12 @@ const TeamDetail = () => {
     setOpenAccordion(openAccordion === section ? null : section);
   };
 
-  if (isLoading) return <p>⏳ 팀 정보를 불러오는 중...</p>;
-  if (isError || !teamData) return <p>🚨 팀 정보를 불러오지 못했습니다.</p>;
-
   return (
     <div className='team-detail'>
       <h1 className='team-detail__title'>{teamData.name}</h1>
 
       <div className='team-detail__accordion'>
-        {/* 🟢 팀 멤버 리스트 */}
+        {/* 팀 멤버 리스트 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'

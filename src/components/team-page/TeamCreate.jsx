@@ -4,16 +4,17 @@ import Modal from '@components/common/Modal';
 import useTeamMutations from '@hooks/team/useTeam';
 import '@styles/components/team-page/team-create.scss';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const TeamCreate = () => {
-  const { createMutation } = useTeamMutations();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [teamName, setTeamName] = useState('');
 
+  const { createMutation } = useTeamMutations(setIsModalOpen, setTeamName);
+
   const handleCreateTeam = () => {
     if (!teamName.trim()) {
-      alert('팀 이름을 입력해주세요.');
+      toast.error('팀 이름을 입력해주세요.');
       return;
     }
     createMutation.mutate(
