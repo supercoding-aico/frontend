@@ -13,9 +13,9 @@ import NotFoundPage from '@pages/NotFoundPage';
 import AuthPage from '@pages/AuthPage';
 import TeamPage from '@pages/TeamPage';
 import TeamDetailPage from '@pages/TeamDetailPage';
+import ChatPage from '@pages/ChatPage';
 // components
 import LoadingFullScreen from '@components/common/LoadingFullScreen';
-
 const Router = () => {
   const dispatch = useDispatch();
 
@@ -42,6 +42,7 @@ const Router = () => {
         <Route element={<AuthRoute isAuthenticated={isAuthenticated} />}>
           <Route path='/login' element={<AuthPage />} />
           <Route path='/signup' element={<AuthPage />} />
+          <Route path='/chat/:teamId' element={<ChatPage />} />
         </Route>
 
         {/* 로그인, 회원가입 전용 라우트 */}
@@ -51,8 +52,8 @@ const Router = () => {
             <Route path='/team' element={<TeamPage />} />
             <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
           </Route>
-
           {/* 404 페이지 */}
+
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>
