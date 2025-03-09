@@ -1,0 +1,17 @@
+.profile__image {
+  &--preview {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &--hidden {
+    display: none;
+  }
+}
