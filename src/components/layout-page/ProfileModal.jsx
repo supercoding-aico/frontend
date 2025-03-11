@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Camera } from 'react-feather';
 import '@styles/components/layout-page/profile-modal.scss';
 import Modal from '@components/common/Modal';
-import { useLogout } from '@hooks/auth/useAuth';
+import { useLogout } from '@hooks/user/useAuth';
 
 const ProfileModal = ({ closeProfileModal }) => {
   const user = useSelector((state) => state.user.userInfo);

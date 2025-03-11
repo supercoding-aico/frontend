@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useCurrentUser } from '@hooks/auth/useAuth';
+import { useCurrentUser } from '@hooks/user/useAuth';
 import { setUser } from '@redux/slice/userSlice';
 // routes
 import AuthRoute from '@router/AuthRoute';

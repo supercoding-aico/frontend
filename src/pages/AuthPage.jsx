@@ -5,7 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import '@styles/pages/auth-page.scss';
 import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
-import { useSignup, useLogin } from '@hooks/auth/useAuth';
+import { useSignup, useLogin } from '@hooks/user/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
 import { regExp } from '@constants/regExp';
 import { ERROR_MESSAGES } from '@constants/errorMessages';
