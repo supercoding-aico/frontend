@@ -3,13 +3,21 @@ import { Camera } from 'react-feather';
 import '@styles/components/layout-page/profile-modal.scss';
 import Modal from '@components/common/Modal';
 import { useLogout } from '@hooks/user/useAuth';
+import { useUpdateProfileImage } from '@hooks/user/useUser';
 
 const ProfileModal = ({ closeProfileModal }) => {
   const user = useSelector((state) => state.user.userInfo);
 
   const { mutate: logoutMutate } = useLogout();
+  const { mutate: profileImageUpdateMutate } = useUpdateProfileImage();
 
-  const updateImage = () => {};
+  // TODO: 사진 업로드 이후 프로필 이미지 즉시 업데이트 되도록 수정
+  const updateImage = (e) => {
+    const formData = new FormData();
+    const image = e.target.files[0];
+    formData.append('profileImage', image);
+    profileImageUpdateMutate(formData);
+  };
   // const updateName = () => {};
   // const updatePhoneNumber = () => {};
 
