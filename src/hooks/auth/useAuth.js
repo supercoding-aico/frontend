@@ -48,11 +48,14 @@ export const useCurrentUser = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
       queryClient.removeQueries(['user']);
+      //TODO : navigate 버그 수정
+      navigate('/login');
     },
   });
 };

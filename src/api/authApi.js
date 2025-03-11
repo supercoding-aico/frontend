@@ -15,9 +15,8 @@ export const verifyLogin = async () => {
   return resp.data;
 };
 
-//TODO: API 수정
 export const logout = async () => {
-  const resp = await axios.put(`api/auth/logout`);
+  const resp = await axios.post(`api/auth/logout`);
   return resp;
 };
 

@@ -12,6 +12,7 @@ import { ERROR_MESSAGES } from '@constants/errorMessages';
 import logo from '@assets/images/logo.png';
 
 const AuthPage = () => {
+  //TODO: 406 이후 로그인했을 때 navigate 안 되는 버그 해결 필요
   const passwordRef = useRef('');
   const formValuesRef = useRef({ email: '', nickname: '' });
   const [errorMessage, setErrorMessage] = useState('');

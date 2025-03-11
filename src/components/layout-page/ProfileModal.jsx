@@ -2,11 +2,12 @@ import { useSelector } from 'react-redux';
 import { Camera } from 'react-feather';
 import '@styles/components/layout-page/profile-modal.scss';
 import Modal from '@components/common/Modal';
+import { useLogout } from '@hooks/auth/useAuth';
 
 const ProfileModal = ({ closeProfileModal }) => {
   const user = useSelector((state) => state.user.userInfo);
 
-  // console.log(user);
+  const { mutate: logoutMutate } = useLogout();
 
   const updateImage = () => {};
   // const updateName = () => {};
@@ -28,6 +29,7 @@ const ProfileModal = ({ closeProfileModal }) => {
           className='profile__image--hidden'
         />
       </figure>
+      <button onClick={logoutMutate}>로그아웃</button>
     </Modal>
   );
 };
