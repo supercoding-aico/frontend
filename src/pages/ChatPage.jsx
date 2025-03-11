@@ -1,9 +1,9 @@
-import ChatList from '@components/chat-page/ChatList';
+import ChatRoom from '@components/chat-page/ChatRoom';
 
 const ChatPage = () => {
   return (
-    <div>
-      <ChatList />
+    <div className='chat-page'>
+      <ChatRoom />
     </div>
   );
 };

@@ -42,7 +42,6 @@ const Router = () => {
         <Route element={<AuthRoute isAuthenticated={isAuthenticated} />}>
           <Route path='/login' element={<AuthPage />} />
           <Route path='/signup' element={<AuthPage />} />
-          <Route path='/chat/:teamId' element={<ChatPage />} />
         </Route>
 
         {/* 로그인, 회원가입 전용 라우트 */}
@@ -51,6 +50,7 @@ const Router = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/team' element={<TeamPage />} />
             <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
+            <Route path='/chat/:teamId' element={<ChatPage />} />
           </Route>
           {/* 404 페이지 */}
 
