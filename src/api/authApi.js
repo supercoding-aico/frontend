@@ -15,9 +15,14 @@ export const verifyLogin = async () => {
   return resp.data;
 };
 
-//TODO: API 수정
+// TODO: 토큰 재발급 로직 추가
+export const refreshToken = async () => {
+  const resp = await axios.post(`api/auth/token/refresh`);
+  return resp.data;
+};
+
 export const logout = async () => {
-  const resp = await axios.put(`api/auth/logout`);
+  const resp = await axios.post(`api/auth/logout`);
   return resp;
 };
 
