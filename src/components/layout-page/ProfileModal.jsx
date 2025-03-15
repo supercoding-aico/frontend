@@ -81,34 +81,38 @@ const ProfileModal = ({ closeProfileModal }) => {
 
   return (
     <Modal onClose={closeProfileModal}>
-      <figure className='image-container'>
-        <button onClick={handleButtonClick} className='image-container__icon'>
-          <Edit2 />
-        </button>
-        <label htmlFor='profileImage' className='image'>
-          <img src={user.imageUrl} alt='사용자 프로필 사진' className='image__preview' />
-          <input
-            type='file'
-            id='profileImage'
-            onChange={updateImage}
-            ref={fileInputRef}
-            className='image__input'
-          />
-        </label>
-      </figure>
-      <form onSubmit={handleSubmit} className='info'>
-        {infoFields.map((field) => (
-          <FormInput
-            key={field.id}
-            name={field.id}
-            label={field.label}
-            value={field.value}
-            button={field.buttonProps}
-            readOnly={!field.buttonProps}
-          />
-        ))}
-      </form>
-      <button onClick={logoutMutate}>로그아웃</button>
+      <div className='profile-modal'>
+        <figure className='image-container'>
+          <label htmlFor='profileImage' className='image'>
+            <button onClick={handleButtonClick} className='image__button'>
+              <Edit2 />
+            </button>
+            <img src={user.imageUrl} alt='사용자 프로필 사진' className='image__preview' />
+            <input
+              type='file'
+              id='profileImage'
+              onChange={updateImage}
+              ref={fileInputRef}
+              className='image__input'
+            />
+          </label>
+        </figure>
+        <div className='info-container'>
+          <form onSubmit={handleSubmit} className='info'>
+            {infoFields.map((field) => (
+              <FormInput
+                key={field.id}
+                name={field.id}
+                label={field.label}
+                value={field.value}
+                button={field.buttonProps}
+                readOnly={!field.buttonProps}
+              />
+            ))}
+          </form>
+          <button onClick={logoutMutate}>로그아웃</button>
+        </div>
+      </div>
     </Modal>
   );
 };
