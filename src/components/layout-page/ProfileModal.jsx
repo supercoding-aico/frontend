@@ -1,22 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Camera } from 'react-feather';
 import '@styles/components/layout-page/profile-modal.scss';
 import Modal from '@components/common/Modal';
 import { useLogout } from '@hooks/user/useAuth';
 import { useUpdateProfileImage } from '@hooks/user/useUser';
+import { updateUserProfile } from '@redux/slice/userSlice';
 
 const ProfileModal = ({ closeProfileModal }) => {
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user.userInfo);
 
   const { mutate: logoutMutate } = useLogout();
   const { mutate: profileImageUpdateMutate } = useUpdateProfileImage();
 
-  // TODO: 사진 업로드 이후 프로필 이미지 즉시 업데이트 되도록 수정
   const updateImage = (e) => {
     const formData = new FormData();
     const image = e.target.files[0];
     formData.append('profileImage', image);
-    profileImageUpdateMutate(formData);
+    profileImageUpdateMutate(formData, {
+      onSuccess: (data) => {
+        dispatch(updateUserProfile({ imageUrl: data.data }));
+      },
+    });
   };
   // const updateName = () => {};
   // const updatePhoneNumber = () => {};
