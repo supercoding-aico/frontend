@@ -18,23 +18,20 @@ import LoadingFullScreen from '@components/common/LoadingFullScreen';
 
 const Router = () => {
   const dispatch = useDispatch();
-  const [showLoading, setShowLoading] = useState(true);
-  const isAuthPage =
-    window.location.pathname === '/login' || window.location.pathname === '/signup';
-  let isAuthenticated;
 
-  const { data: user, isLoading } = isAuthPage
-    ? { data: null, isLoading: false }
-    : useCurrentUser();
+  const { data: user, isLoading } = useCurrentUser();
+  const [showLoading, setShowLoading] = useState(true);
+
+  let isAuthenticated = !!user;
+
+  if (isAuthenticated) {
+    dispatch(setUser(user));
+  }
 
   useEffect(() => {
-    isAuthenticated = !!user;
-    if (user) {
-      dispatch(setUser(user));
-    }
     const timer = setTimeout(() => setShowLoading(false), 2000);
     return () => clearTimeout(timer);
-  }, [user]);
+  }, []);
 
   if (isLoading || showLoading) return <LoadingFullScreen />;
 
