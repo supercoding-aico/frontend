@@ -19,9 +19,9 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.setQueryData(['user'], data.data);
-      navigate('/', { replace: true });
+      await navigate('/', { replace: true });
     },
     onError: () => {
       queryClient.removeQueries(['user']);
@@ -48,14 +48,12 @@ export const useCurrentUser = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: logout,
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.removeQueries(['user']);
-      //TODO : navigate 버그 수정
-      navigate('/login');
+      await window.location.reload();
     },
   });
 };
