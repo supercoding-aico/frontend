@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Camera } from 'react-feather';
+import { Edit2 } from 'react-feather';
+import { useRef } from 'react';
 import '@styles/components/layout-page/profile-modal.scss';
 import Modal from '@components/common/Modal';
 import { useLogout } from '@hooks/user/useAuth';
@@ -11,8 +12,14 @@ const ProfileModal = ({ closeProfileModal }) => {
 
   const user = useSelector((state) => state.user.userInfo);
 
+  const fileInputRef = useRef(null);
+
   const { mutate: logoutMutate } = useLogout();
   const { mutate: profileImageUpdateMutate } = useUpdateProfileImage();
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
 
   const updateImage = (e) => {
     const formData = new FormData();
@@ -29,19 +36,20 @@ const ProfileModal = ({ closeProfileModal }) => {
 
   return (
     <Modal onClose={closeProfileModal}>
-      <figure className='profile__image'>
-        <label htmlFor='profile-img'>
-          <img src={user.imageUrl} alt='사용자 프로필 사진' className='profile__image--preview' />
-          <div className='profile__image--hover'>
-            <Camera />
-          </div>
+      <figure className='image-container'>
+        <button onClick={handleButtonClick} className='image-container__icon'>
+          <Edit2 />
+        </button>
+        <label htmlFor='profileImage' className='image'>
+          <img src={user.imageUrl} alt='사용자 프로필 사진' className='image__preview' />
+          <input
+            type='file'
+            id='profileImage'
+            onChange={updateImage}
+            ref={fileInputRef}
+            className='image__input'
+          />
         </label>
-        <input
-          type='file'
-          id='profile-img'
-          onChange={updateImage}
-          className='profile__image--hidden'
-        />
       </figure>
       <button onClick={logoutMutate}>로그아웃</button>
     </Modal>
