@@ -41,3 +41,12 @@
     display: none;
   }
 }
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  &__field {
+    padding: 0.2rem 0;
+  }
+}

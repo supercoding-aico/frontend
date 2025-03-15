@@ -8,3 +8,8 @@ export const updateProfileImage = async (payload) => {
   });
   return resp.data;
 };
+
+export const updateProfileInfo = async (payload) => {
+  const resp = await axios.put(`api/user/info`, payload);
+  return resp.data;
+};

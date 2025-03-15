@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
-import { useEffect, useRef, useState, useMemo } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import '@styles/pages/auth-page.scss';
 import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
