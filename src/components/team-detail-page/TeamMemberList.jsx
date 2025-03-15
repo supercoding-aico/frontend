@@ -21,7 +21,7 @@ const TeamMemberList = ({ teamId, loggedInUserId }) => {
 
   const loggedInUserRole =
     memberData?.data?.find((member) => member.userId === loggedInUserId)?.teamRole || 'MEMBER';
-
+  console.log(loggedInUserId);
   const handleRemoveMember = (userId) => {
     removeMemberMutation.mutate({ teamId, userId });
     setDropdownOpen(null);

@@ -30,7 +30,7 @@ const TeamDetail = () => {
 
   return (
     <div className='team-detail'>
-      <h1 className='team-detail__title'>{teamData.name}</h1>
+      <h1 className='team-detail__title'>{teamData?.name || '로딩 중...'}</h1>
 
       <div className='team-detail__accordion'>
         {/* 팀 멤버 리스트 */}
