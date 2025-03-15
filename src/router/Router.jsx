@@ -18,41 +18,42 @@ import LoadingFullScreen from '@components/common/LoadingFullScreen';
 
 const Router = () => {
   const dispatch = useDispatch();
-
-  const { data: user, isLoading } = useCurrentUser();
   const [showLoading, setShowLoading] = useState(true);
+  const isAuthPage =
+    window.location.pathname === '/login' || window.location.pathname === '/signup';
+  let isAuthenticated;
 
-  let isAuthenticated = !!user;
-
-  if (isAuthenticated) {
-    dispatch(setUser(user));
-  }
+  const { data: user, isLoading } = isAuthPage
+    ? { data: null, isLoading: false }
+    : useCurrentUser();
 
   useEffect(() => {
+    isAuthenticated = !!user;
+    if (user) {
+      dispatch(setUser(user));
+    }
     const timer = setTimeout(() => setShowLoading(false), 2000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [user]);
 
   if (isLoading || showLoading) return <LoadingFullScreen />;
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
-        {/* 로그인, 회원가입 전용 라우트 */}
+        {/* 비회원 라우트 */}
         <Route element={<AuthRoute isAuthenticated={isAuthenticated} />}>
           <Route path='/login' element={<AuthPage />} />
           <Route path='/signup' element={<AuthPage />} />
         </Route>
 
-        {/* 로그인, 회원가입 전용 라우트 */}
+        {/* 회원 라우트 */}
         <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
           <Route element={<LayoutPage />}>
             <Route path='/' element={<HomePage />} />
             <Route path='/team' element={<TeamPage />} />
             <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
           </Route>
-
-          {/* 404 페이지 */}
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>
