@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useCurrentUser } from '@hooks/auth/useAuth';
+import { useCurrentUser } from '@hooks/user/useAuth';
 import { setUser } from '@redux/slice/userSlice';
 // routes
 import AuthRoute from '@router/AuthRoute';
@@ -38,13 +38,13 @@ const Router = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
-        {/* 로그인, 회원가입 전용 라우트 */}
+        {/* 비회원 라우트 */}
         <Route element={<AuthRoute isAuthenticated={isAuthenticated} />}>
           <Route path='/login' element={<AuthPage />} />
           <Route path='/signup' element={<AuthPage />} />
         </Route>
 
-        {/* 로그인, 회원가입 전용 라우트 */}
+        {/* 회원 라우트 */}
         <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
           <Route element={<LayoutPage />}>
             <Route path='/' element={<HomePage />} />
@@ -52,8 +52,6 @@ const Router = () => {
             <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
             <Route path='/chat/:teamId' element={<ChatPage />} />
           </Route>
-          {/* 404 페이지 */}
-
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>

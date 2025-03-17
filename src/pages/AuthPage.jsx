@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
-import { useEffect, useRef, useState, useMemo } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import '@styles/pages/auth-page.scss';
 import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
-import { useSignup, useLogin } from '@hooks/auth/useAuth';
+import { useSignup, useLogin } from '@hooks/user/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
 import { regExp } from '@constants/regExp';
 import { ERROR_MESSAGES } from '@constants/errorMessages';
 import logo from '@assets/images/logo.png';
 
 const AuthPage = () => {
+  //TODO: 406 이후 로그인했을 때 navigate 안 되는 버그 해결 필요
   const passwordRef = useRef('');
   const formValuesRef = useRef({ email: '', nickname: '' });
   const [errorMessage, setErrorMessage] = useState('');

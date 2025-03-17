@@ -6,14 +6,16 @@ const FormInput = ({
   name,
   label,
   type,
+  value,
   placeholder,
   onChange,
   button = undefined,
   required = true,
   validator,
   helpText,
+  readOnly = false,
 }) => {
-  const [value, setValue] = useState('');
+  const [inputValue, setInputValue] = useState(value);
   const [isValid, setIsValid] = useState(true);
 
   const handleInputValue = (e) => {
@@ -23,7 +25,7 @@ const FormInput = ({
       value = formatPhoneNumber(value);
     }
 
-    setValue(value);
+    setInputValue(value);
     if (onChange) {
       onChange(value);
     }
@@ -44,11 +46,12 @@ const FormInput = ({
           id={`form-${name}`}
           name={name}
           type={type}
-          value={value}
+          value={inputValue}
           placeholder={placeholder}
           required={required}
           onChange={handleInputValue}
           autoComplete='off'
+          readOnly={readOnly}
         />
         {button}
       </div>
