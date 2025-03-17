@@ -1,10 +1,12 @@
 import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 import { Bell, Menu } from 'react-feather';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import '@styles/components/layout-page/sidebar.scss';
 import SidebarMenuGroup from '@components/layout-page/SidebarMenuGroup';
 import SidebarDropdown from '@components/layout-page/SidebarDropdown';
 import ProfileModal from '@components/layout-page/ProfileModal';
+import { getTeamList } from '@api/teamApi';
 import {
   SIDEBAR_MENU_HOME as homeMenu,
   SIDEBAR_MENU_TEAM as teamMenu,
@@ -17,17 +19,13 @@ const Sidebar = () => {
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
-  const mockTeams = [
-    { id: '1', name: '팀111111111111111111111111111' },
-    { id: '2', name: '팀2222' },
-    { id: '3', name: '팀3333' },
-    { id: '4', name: '팀4444' },
-    { id: '5', name: '팀5555' },
-    { id: '6', name: '팀6666' },
-    { id: '7', name: '팀7777' },
-    { id: '8', name: '팀8888' },
-    { id: '9', name: '팀9999' },
-  ];
+  // TODO: hook으로 분리
+  const { data } = useQuery({
+    queryKey: ['teamList'],
+    queryFn: getTeamList,
+  });
+
+  const teamList = useMemo(() => data?.data?.content, [data]) ?? [];
 
   const handleMenuClick = (menuId) => {
     if (menuId === 'profile') {
@@ -59,10 +57,9 @@ const Sidebar = () => {
             <button className='buttons__icon buttons--notification'>
               <Bell />
             </button>
-            {/* //TODO: 기능 구현 완료 후 추가 */}
-            {/* <button className='buttons__icon buttons--menu'>
+            <button className='buttons__icon buttons--menu'>
               <Menu />
-            </button> */}
+            </button>
           </div>
         </div>
 
@@ -71,7 +68,7 @@ const Sidebar = () => {
 
         {/* Menu Group 2 */}
         <h2 className='sidebar__subtitle'>팀스페이스</h2>
-        <SidebarDropdown teams={mockTeams} />
+        <SidebarDropdown teams={teamList} />
         <SidebarMenuGroup menus={teamMenu} />
 
         {/* Menu Group 3 */}
