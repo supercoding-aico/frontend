@@ -7,7 +7,7 @@ import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
 import { useSignup, useLogin } from '@hooks/user/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
-import { regExp } from '@constants/regExp';
+import { REG_EXP as regExp } from '@constants/regExp';
 import { ERROR_MESSAGES } from '@constants/errorMessages';
 import logo from '@assets/images/logo.png';
 
