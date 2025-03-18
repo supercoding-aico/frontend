@@ -22,6 +22,7 @@ const SidebarDropdown = ({ teams = [] }) => {
   const selectTeam = (team) => {
     setSelectedTeam(team);
     setIsOpen(false);
+    dispatch(setLatestTeam(team));
     navigate(`team/${team.teamId}/calendar`);
   };
 
