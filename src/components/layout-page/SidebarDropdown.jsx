@@ -6,7 +6,7 @@ import '@styles/components/layout-page/sidebar-dropdown.scss';
 import { useEventListener } from '@hooks/useEventListener';
 import { setLatestTeam } from '@redux/slice/teamSlice';
 
-const SidebarDropdown = ({ teams }) => {
+const SidebarDropdown = ({ teams = [] }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

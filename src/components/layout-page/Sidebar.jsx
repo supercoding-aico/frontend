@@ -6,6 +6,7 @@ import '@styles/components/layout-page/sidebar.scss';
 import SidebarMenuGroup from '@components/layout-page/SidebarMenuGroup';
 import SidebarDropdown from '@components/layout-page/SidebarDropdown';
 import ProfileModal from '@components/layout-page/ProfileModal';
+import EmptyState from '@components/common/EmptyState';
 import { getTeamList } from '@api/teamApi';
 import {
   SIDEBAR_MENU_HOME as homeMenu,
@@ -25,7 +26,7 @@ const Sidebar = () => {
     queryFn: getTeamList,
   });
 
-  const teamList = useMemo(() => data?.data?.content, [data]) ?? [];
+  const teamList = useMemo(() => data?.data?.content, [data]);
 
   const handleMenuClick = (menuId) => {
     if (menuId === 'profile') {
@@ -63,15 +64,21 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* Menu Group 1 */}
+        {/* Menu Group 1 - HOME */}
         <SidebarMenuGroup menus={homeMenu} />
 
-        {/* Menu Group 2 */}
+        {/* Menu Group 2 - TEAM */}
         <h2 className='sidebar__subtitle'>팀스페이스</h2>
-        <SidebarDropdown teams={teamList} />
-        <SidebarMenuGroup menus={teamMenu} />
+        {teamList && teamList.length > 0 ? (
+          <>
+            <SidebarDropdown teams={teamList} />
+            <SidebarMenuGroup menus={teamMenu} />
+          </>
+        ) : (
+          <EmptyState message='가입한 팀이 없습니다' />
+        )}
 
-        {/* Menu Group 3 */}
+        {/* Menu Group 3 - USER */}
         <h2 className='sidebar__subtitle'>마이스페이스</h2>
         <SidebarMenuGroup menus={userMenu} onMenuClick={handleMenuClick} />
       </section>
