@@ -1,0 +1,28 @@
+.project-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    margin-bottom: 1rem;
+  }
+
+  &__board-container {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+.search {
+  &__input {
+    width: 25%;
+    height: 2rem;
+    padding: 0 1rem;
+    background-color: $color-background;
+    border: 1px solid $color-secondary;
+    border-radius: $border-radius-sm;
+    box-shadow: $shadow;
+  }
+}
