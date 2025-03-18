@@ -17,6 +17,7 @@ import placeholder from '@assets/images/profile-placeholder.png';
 
 const Sidebar = () => {
   const user = useSelector((state) => state.user.userInfo);
+  const latestTeamId = useSelector((state) => state.team.latestTeam.teamId);
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
@@ -27,6 +28,16 @@ const Sidebar = () => {
   });
 
   const teamList = useMemo(() => data?.data?.content, [data]);
+
+  /* path에 팀 id 추가 */
+  const updatedTeamMenu = useMemo(() => {
+    if (!latestTeamId) return teamMenu;
+
+    return teamMenu.map((menu) => ({
+      ...menu,
+      path: `/team/${latestTeamId}${menu.path}`,
+    }));
+  }, [latestTeamId]);
 
   const handleMenuClick = (menuId) => {
     if (menuId === 'profile') {
@@ -72,7 +83,7 @@ const Sidebar = () => {
         {teamList && teamList.length > 0 ? (
           <>
             <SidebarDropdown teams={teamList} />
-            <SidebarMenuGroup menus={teamMenu} />
+            <SidebarMenuGroup menus={updatedTeamMenu} />
           </>
         ) : (
           <EmptyState message='가입한 팀이 없습니다' />
