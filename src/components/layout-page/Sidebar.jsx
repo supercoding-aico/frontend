@@ -51,7 +51,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <section className='sidebar'>
+      <nav className='sidebar'>
         {/* Menu Header */}
         <div className='header'>
           <div className='profile'>
@@ -92,7 +92,7 @@ const Sidebar = () => {
         {/* Menu Group 3 - USER */}
         <h2 className='sidebar__subtitle'>마이스페이스</h2>
         <SidebarMenuGroup menus={userMenu} onMenuClick={handleMenuClick} />
-      </section>
+      </nav>
 
       {isProfileModalOpen && <ProfileModal closeProfileModal={closeProfileModal} />}
     </>
