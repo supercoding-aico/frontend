@@ -6,22 +6,19 @@ import Sidebar from '@components/layout-page/Sidebar';
 import { connectSocket, disconnectSocket, removeListener } from '@services/socketService';
 
 const LayoutPage = () => {
-  const user = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userInfo.userId);
 
   useEffect(() => {
-    if (!user || !user.userId) {
-      return;
-    }
+    if (!userId) return;
 
-    const url = process.env.REACT_APP_SOCKET_URL;
-    const userId = user.userId;
-    connectSocket(url, userId);
+    const url = `${process.env.REACT_APP_SOCKET_URL}/topic/notification/${userId}`;
+    connectSocket(url);
 
     return () => {
       disconnectSocket();
       removeListener();
     };
-  }, []);
+  }, [userId]);
 
   // TODO: 모바일 반응형 추가
   return (

@@ -2,7 +2,7 @@ let socket = null;
 let listeners = [];
 let isConnected = false;
 
-export const connectSocket = (url, userId) => {
+export const connectSocket = (url) => {
   socket = new WebSocket(url);
 
   socket.onopen = () => {
