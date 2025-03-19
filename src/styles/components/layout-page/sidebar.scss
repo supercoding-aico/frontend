@@ -6,6 +6,14 @@
     font-size: 0.875rem;
     margin-bottom: 0.875rem;
   }
+
+  &__menu {
+    &--empty {
+      color: $color-secondary;
+      text-align: center;
+      padding-bottom: 1rem;
+    }
+  }
 }
 
 .header {

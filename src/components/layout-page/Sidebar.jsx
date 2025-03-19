@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 import { Bell, Menu } from 'react-feather';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import '@styles/components/layout-page/sidebar.scss';
 import SidebarMenuGroup from '@components/layout-page/SidebarMenuGroup';
 import SidebarDropdown from '@components/layout-page/SidebarDropdown';
 import ProfileModal from '@components/layout-page/ProfileModal';
+import EmptyState from '@components/common/EmptyState';
+import { getTeamList } from '@api/teamApi';
 import {
   SIDEBAR_MENU_HOME as homeMenu,
   SIDEBAR_MENU_TEAM as teamMenu,
@@ -14,20 +17,27 @@ import placeholder from '@assets/images/profile-placeholder.png';
 
 const Sidebar = () => {
   const user = useSelector((state) => state.user.userInfo);
+  const latestTeamId = useSelector((state) => state.team.latestTeam.teamId);
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
-  const mockTeams = [
-    { id: '1', name: '팀111111111111111111111111111' },
-    { id: '2', name: '팀2222' },
-    { id: '3', name: '팀3333' },
-    { id: '4', name: '팀4444' },
-    { id: '5', name: '팀5555' },
-    { id: '6', name: '팀6666' },
-    { id: '7', name: '팀7777' },
-    { id: '8', name: '팀8888' },
-    { id: '9', name: '팀9999' },
-  ];
+  // TODO: hook으로 분리
+  const { data } = useQuery({
+    queryKey: ['teamList'],
+    queryFn: getTeamList,
+  });
+
+  const teamList = useMemo(() => data?.data?.content, [data]);
+
+  /* path에 팀 id 추가 */
+  const updatedTeamMenu = useMemo(() => {
+    if (!latestTeamId) return teamMenu;
+
+    return teamMenu.map((menu) => ({
+      ...menu,
+      path: `/team/${latestTeamId}${menu.path}`,
+    }));
+  }, [latestTeamId]);
 
   const handleMenuClick = (menuId) => {
     if (menuId === 'profile') {
@@ -41,7 +51,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <section className='sidebar'>
+      <nav className='sidebar'>
         {/* Menu Header */}
         <div className='header'>
           <div className='profile'>
@@ -59,25 +69,30 @@ const Sidebar = () => {
             <button className='buttons__icon buttons--notification'>
               <Bell />
             </button>
-            {/* //TODO: 기능 구현 완료 후 추가 */}
-            {/* <button className='buttons__icon buttons--menu'>
+            <button className='buttons__icon buttons--menu'>
               <Menu />
-            </button> */}
+            </button>
           </div>
         </div>
 
-        {/* Menu Group 1 */}
+        {/* Menu Group 1 - HOME */}
         <SidebarMenuGroup menus={homeMenu} />
 
-        {/* Menu Group 2 */}
+        {/* Menu Group 2 - TEAM */}
         <h2 className='sidebar__subtitle'>팀스페이스</h2>
-        <SidebarDropdown teams={mockTeams} />
-        <SidebarMenuGroup menus={teamMenu} />
+        {teamList && teamList.length > 0 ? (
+          <>
+            <SidebarDropdown teams={teamList} />
+            <SidebarMenuGroup menus={updatedTeamMenu} />
+          </>
+        ) : (
+          <EmptyState message='가입한 팀이 없습니다' />
+        )}
 
-        {/* Menu Group 3 */}
+        {/* Menu Group 3 - USER */}
         <h2 className='sidebar__subtitle'>마이스페이스</h2>
         <SidebarMenuGroup menus={userMenu} onMenuClick={handleMenuClick} />
-      </section>
+      </nav>
 
       {isProfileModalOpen && <ProfileModal closeProfileModal={closeProfileModal} />}
     </>

@@ -13,6 +13,10 @@ import NotFoundPage from '@pages/NotFoundPage';
 import AuthPage from '@pages/AuthPage';
 import TeamPage from '@pages/TeamPage';
 import TeamDetailPage from '@pages/TeamDetailPage';
+import CalendarPage from '@pages/CalenderPage';
+import ProjectPage from '@pages/ProjectPage';
+import ChattingPage from '@pages/ChattingPage';
+import SettingPage from '@pages/SettingPage';
 // components
 import LoadingFullScreen from '@components/common/LoadingFullScreen';
 
@@ -50,6 +54,10 @@ const Router = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/team' element={<TeamPage />} />
             <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
+            <Route path='/team/:teamId/calendar' element={<CalendarPage />} />
+            <Route path='/team/:teamId/project' element={<ProjectPage />} />
+            <Route path='/team/:teamId/chatting' element={<ChattingPage />} />
+            <Route path='/team/:teamId/setting' element={<SettingPage />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Route>

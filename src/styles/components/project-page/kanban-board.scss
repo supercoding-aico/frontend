@@ -1,0 +1,7 @@
+.board-wrapper {
+  width: 100%;
+}
+
+.board {
+  @include mixins.section(_, 100%);
+}

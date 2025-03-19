@@ -17,9 +17,9 @@ const ProfileModal = ({ closeProfileModal }) => {
 
   const fileInputRef = useRef(null);
 
-  const { mutate: logoutMutate } = useLogout();
-  const { mutate: profileImageUpdateMutate } = useUpdateProfileImage();
-  const { mutate: profileInfoUpdateMutate } = useUpdateProfileInfo();
+  const { mutate: logout } = useLogout();
+  const { mutate: profileImageUpdate } = useUpdateProfileImage();
+  const { mutate: profileInfoUpdate } = useUpdateProfileInfo();
 
   const infoFields = [
     {
@@ -48,7 +48,7 @@ const ProfileModal = ({ closeProfileModal }) => {
     const formData = new FormData();
     const image = e.target.files[0];
     formData.append('profileImage', image);
-    profileImageUpdateMutate(formData, {
+    profileImageUpdate(formData, {
       onSuccess: (data) => {
         dispatch(updateUserProfile({ imageUrl: data.data }));
         closeProfileModal();
@@ -71,7 +71,7 @@ const ProfileModal = ({ closeProfileModal }) => {
       formValues[key] = value;
     });
 
-    profileInfoUpdateMutate(formValues, {
+    profileInfoUpdate(formValues, {
       onSuccess: () => {
         dispatch(updateUserProfile({ nickname: formValues.nickname }));
         closeProfileModal();
@@ -110,7 +110,7 @@ const ProfileModal = ({ closeProfileModal }) => {
               />
             ))}
           </form>
-          <button onClick={logoutMutate}>로그아웃</button>
+          <button onClick={logout}>로그아웃</button>
         </div>
       </div>
     </Modal>
