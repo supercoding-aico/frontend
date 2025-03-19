@@ -25,7 +25,7 @@ export const SIDEBAR_MENU_TEAM = [
   {
     id: 'chatting',
     name: '채팅',
-    path: '/chat/43',
+    path: '/chat',
     icon: <MessageCircle />,
   },
   {

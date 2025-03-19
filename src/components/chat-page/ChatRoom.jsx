@@ -1,125 +1,54 @@
-import { useState, useEffect } from 'react';
-import axios from '@axios/axios.js';
-import { Client } from '@stomp/stompjs';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Send } from 'react-feather';
+import '@styles/components/chat-page/chat-room.scss';
+import { useChat } from '@hooks/chat/useChat';
 
 const ChatRoom = () => {
-  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const [stompClient, setStompClient] = useState(null);
-  const teamId = 43;
-  const userId = 34;
+  const { teamId } = useParams();
+  const userId = useSelector((state) => state.user.userInfo.userId);
+  const { messages, isLoading, error, sendMessage, scrollToBottom, chatContainerRef } = useChat(
+    teamId,
+    userId
+  );
 
-  // ✅ 1️⃣ 기존 채팅 메시지 불러오기
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        console.log('🟡 Fetching chat history...');
-        const res = await axios.get(`/api/chat/${teamId}?page=0`);
-        console.log('📩 API Response:', res.data);
-
-        if (!res.data || !res.data.data) {
-          console.warn('⚠️ API 응답이 비어 있음:', res.data);
-          return;
-        }
-
-        if (Array.isArray(res.data.data.content)) {
-          console.log('✅ Loaded messages:', res.data.data.content);
-          setMessages(res.data.data.content);
-        } else {
-          console.warn('⚠️ 예상과 다른 응답 구조:', res.data);
-        }
-      } catch (err) {
-        console.error('❌ Failed to fetch messages', err);
-      }
-    };
-
-    fetchMessages();
-  }, [teamId]);
-
-  // ✅ 2️⃣ WebSocket (STOMP) 연결
-  useEffect(() => {
-    const client = new Client({
-      brokerURL: 'wss://www.ai-co.store/aiCoWebsocket',
-      reconnectDelay: 5000, // 자동 재연결 설정
-    });
-
-    client.onConnect = () => {
-      console.log('✅ STOMP WebSocket Connected');
-
-      // ✅ 채팅방 구독
-      client.subscribe(`/topic/room/${teamId}`, (message) => {
-        console.log('📩 Received WebSocket message:', message.body);
-        try {
-          const newMessage = JSON.parse(message.body);
-          setMessages((prevMessages) => {
-            if (!prevMessages.some((msg) => msg.id === newMessage.id)) {
-              return [...prevMessages, newMessage];
-            }
-            return prevMessages;
-          });
-        } catch (error) {
-          console.error('❌ Error parsing WebSocket message:', error);
-        }
-      });
-
-      setStompClient(client);
-    };
-
-    client.onWebSocketError = (error) => {
-      console.error('❌ WebSocket Error:', error);
-    };
-
-    client.activate();
-
-    return () => {
-      if (client) {
-        client.deactivate();
-      }
-    };
-  }, [teamId]);
-
-  // ✅ 3️⃣ 메시지 전송 함수
-  const sendMessage = () => {
-    if (message.trim() && stompClient) {
-      const newMessage = { id: Date.now(), teamId, userId, content: message };
-
-      stompClient.publish({
-        destination: '/app/room', // 백엔드에서 이 경로로 메시지를 받아야 함
-        body: JSON.stringify(newMessage),
-      });
-
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setMessage('');
-    }
+  const handleSendMessage = () => {
+    sendMessage(message);
+    setMessage('');
   };
 
+  if (isLoading) return <p>로딩 중...</p>;
+  if (error) return <p>채팅을 불러오는 중 오류 발생</p>;
+
   return (
-    <div>
-      <h2>Chat Room</h2>
-      <div id='chat-container' style={{ maxHeight: '300px', overflowY: 'auto' }}>
+    <div className='chatRoom'>
+      <div className='chatContainer' ref={chatContainerRef}>
         {messages.length > 0 ? (
           messages.map((msg) => (
-            <p
-              key={msg.id || msg.createdAt} // ✅ React 리스트 키 오류 해결
-              style={{
-                color: msg.userId === userId ? 'blue' : 'black',
-                textAlign: msg.userId === userId ? 'right' : 'left',
-              }}
-            >
-              {msg.userId}: {msg.content}
-            </p>
+            <div key={msg.id || msg.createdAt} className='message'>
+              <span className='nickname'>{msg.userInfo?.nickname || '익명'}: </span>
+              <span className='text'>{msg.content}</span>
+            </div>
           ))
         ) : (
-          <p>📭 메시지가 없습니다.</p>
+          <p className='noMessage'>📭 메시지가 없습니다.</p>
         )}
       </div>
-      <input
-        type='text'
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={(e) => e.key === 'Enter' && sendMessage()} // Enter 키 입력 시 전송
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className='inputContainer'>
+        <input
+          type='text'
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+          className='input'
+          placeholder='메시지를 입력하세요...'
+        />
+        <button onClick={handleSendMessage} className='sendBtn'>
+          <Send className='sendIcon' />
+        </button>
+      </div>
     </div>
   );
 };

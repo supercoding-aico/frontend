@@ -56,9 +56,8 @@ const Router = () => {
             <Route path='/team/detail/:teamId' element={<TeamDetailPage />} />
             <Route path='/team/:teamId/calendar' element={<CalendarPage />} />
             <Route path='/team/:teamId/project' element={<ProjectPage />} />
-            <Route path='/team/:teamId/chatting' element={<ChattingPage />} />
             <Route path='/team/:teamId/setting' element={<SettingPage />} />
-            <Route path='/chat/:teamId' element={<ChatPage />} />
+            <Route path='/team/:teamId/chat' element={<ChatPage />} />
           </Route>
           <Route path='*' element={<NotFoundPage />} />
         </Route>
