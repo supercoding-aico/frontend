@@ -3,15 +3,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import useTeamId from '@hooks/useTeamId';
 import { useTeamSchedule } from '@hooks/schedule/useSchedule';
 
 const CalendarPage = () => {
   const location = useLocation();
+  const teamId = useTeamId();
 
   const [events, setEvents] = useState([]);
-
-  const match = location.pathname.match(/\/team\/(\d+)\/calendar/);
-  const teamId = match ? match[1] : null;
 
   const { data } = useTeamSchedule(teamId);
 
