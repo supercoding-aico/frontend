@@ -15,6 +15,7 @@ const FormInput = ({
   helpText,
   readOnly = false,
   options = [],
+  ...rest
 }) => {
   const [inputValue, setInputValue] = useState(value);
   const [isValid, setIsValid] = useState(true);
@@ -44,7 +45,7 @@ const FormInput = ({
       <div className='form-input__input-container'>
         {type === 'radio' ? (
           options.map((option) => (
-            <label key={option.value} className='form-input__radio'>
+            <label key={option.id} className='form-input__radio'>
               <input
                 type='radio'
                 name={name}
@@ -68,6 +69,7 @@ const FormInput = ({
             onChange={handleInputValue}
             autoComplete='off'
             readOnly={readOnly}
+            {...rest}
           />
         )}
         {button}

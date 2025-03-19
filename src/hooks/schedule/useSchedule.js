@@ -25,6 +25,6 @@ export const useUserSchedule = (teamId) => {
 
 export const useCreateSchedule = () => {
   return useMutation({
-    mutationFn: createSchedule,
+    mutationFn: ({ teamId, schedule }) => createSchedule(teamId, schedule),
   });
 };

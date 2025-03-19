@@ -1,24 +1,65 @@
+import { useQuery } from '@tanstack/react-query';
+import { getTeamMember } from '@api/teamApi';
+import { useRef, useState } from 'react';
 import '@styles/components/project-page/project-modal.scss';
 import Modal from '@components/common/Modal';
 import FormInput from '@components/common/FormInput';
+import useTeamId from '@hooks/useTeamId';
 import { useCreateSchedule } from '@hooks/schedule/useSchedule';
-import { PROJECT_STATUS } from '@constants/projectStatus';
+import { PROJECT_FORM_FIELDS } from '@constants/projectFormFields';
 
+//TODO: 코드 깔끔하게 정리 필요
 const ProjectModal = ({ closeProjectModal }) => {
+  const teamId = useTeamId();
+  const formRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
   const { mutate: createSchedule } = useCreateSchedule();
 
-  const projectFormFields = [
-    { id: 'content', label: '내용', type: 'text' },
-    { id: 'startDate', label: '시작일', type: 'date' },
-    { id: 'endDate', label: '종료일', type: 'date' },
-    { id: 'status', label: '상태', type: 'radio', options: PROJECT_STATUS },
-    { id: 'users', label: '담당자', type: 'text' },
-  ];
+  // TODO: hook으로 분리
+  const { data } = useQuery({
+    queryKey: ['teamMembers', teamId],
+    queryFn: () => getTeamMember(teamId),
+    enabled: !!teamId,
+  });
+  const memberData = data?.data;
+
+  const selectUser = (memberId) => {
+    setSelectedUsers((prevSelected) => {
+      if (prevSelected.some((user) => user.userId === memberId)) {
+        return prevSelected.filter((user) => user.userId !== memberId);
+      }
+      return [...prevSelected, { userId: memberId }];
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const schedule = {
+      content: formData.get('content'),
+      startDate: formData.get('startDate'),
+      endDate: formData.get('endDate'),
+      status: formData.get('status'),
+      users: selectedUsers,
+    };
+
+    createSchedule(
+      { teamId, schedule },
+      {
+        onSuccess: () => {
+          closeProjectModal();
+        },
+      }
+    );
+    // closeProjectModal();
+  };
 
   return (
-    <Modal onClose={closeProjectModal}>
-      <form className='project-modal__form-container'>
-        {projectFormFields.map((field, i) => {
+    <Modal onClose={closeProjectModal} onClick={() => formRef.current?.requestSubmit()}>
+      <form onSubmit={handleSubmit} ref={formRef} className='project-modal__form-container'>
+        {PROJECT_FORM_FIELDS.map((field, i) => {
           const className =
             i === 1 || i === 2 ? 'project-modal__form-item--half' : 'project-modal__form-item';
           return (
@@ -32,6 +73,18 @@ const ProjectModal = ({ closeProjectModal }) => {
             </div>
           );
         })}
+        <button type='button' onClick={() => setIsDropdownOpen(true)}>
+          담당자 추가
+        </button>
+        {isDropdownOpen && (
+          <div>
+            {memberData?.map((member) => (
+              <button type='button' key={member.userId} onClick={() => selectUser(member.userId)}>
+                {member.nickname}
+              </button>
+            ))}
+          </div>
+        )}
       </form>
     </Modal>
   );
