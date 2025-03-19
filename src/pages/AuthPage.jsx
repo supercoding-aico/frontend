@@ -7,7 +7,7 @@ import AuthForm from '@components/auth-page/AuthForm';
 import Button from '@components/common/Button';
 import { useSignup, useLogin } from '@hooks/user/useAuth';
 import { isEmailAvailable, isNicknameAvailable } from '@api/authApi';
-import { regExp } from '@constants/regExp';
+import { REG_EXP as regExp } from '@constants/regExp';
 import { ERROR_MESSAGES } from '@constants/errorMessages';
 import logo from '@assets/images/logo.png';
 
@@ -19,8 +19,8 @@ const AuthPage = () => {
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
-  const { mutate: signupMutate } = useSignup();
-  const { mutate: loginMutate } = useLogin();
+  const { mutate: signup } = useSignup();
+  const { mutate: login } = useLogin();
 
   const { authMsg, validationMsg } = ERROR_MESSAGES;
 
@@ -165,7 +165,7 @@ const AuthPage = () => {
 
     // TODO: 예외처리 추가
     if (!hasError && isLogin) {
-      loginMutate(formValues, {
+      login(formValues, {
         onError: (err) => {
           const code = err.response.status;
           switch (code) {
@@ -176,7 +176,7 @@ const AuthPage = () => {
         },
       });
     } else if (!hasError && !isLogin) {
-      signupMutate(formValues);
+      signup(formValues);
     }
   };
 

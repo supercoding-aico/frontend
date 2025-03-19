@@ -1,4 +1,4 @@
-export const regExp = {
+export const REG_EXP = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   password: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
   nickname: /^[a-zA-Z0-9가-힣]{2,10}$/,
