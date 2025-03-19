@@ -3,6 +3,7 @@ import '@styles/pages/layout-page.scss';
 import Sidebar from '@components/layout-page/Sidebar';
 
 const LayoutPage = () => {
+  // TODO: 모바일 반응형 추가
   return (
     <div className='layout-page'>
       <aside className='layout-page__aside'>
