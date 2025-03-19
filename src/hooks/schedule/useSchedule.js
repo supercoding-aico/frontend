@@ -14,3 +14,17 @@ export const useTeamSchedule = (teamId) => {
     enabled: !!teamId,
   });
 };
+
+export const useUserSchedule = (teamId) => {
+  return useQuery({
+    queryKey: ['userSchedule', teamId],
+    queryFn: () => getUserSchedule(teamId),
+    enabled: !!teamId,
+  });
+};
+
+export const useCreateSchedule = () => {
+  return useMutation({
+    mutationFn: createSchedule,
+  });
+};

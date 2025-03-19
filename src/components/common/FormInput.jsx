@@ -14,6 +14,7 @@ const FormInput = ({
   validator,
   helpText,
   readOnly = false,
+  options = [],
 }) => {
   const [inputValue, setInputValue] = useState(value);
   const [isValid, setIsValid] = useState(true);
@@ -41,18 +42,34 @@ const FormInput = ({
         {label}
       </label>
       <div className='form-input__input-container'>
-        <input
-          className='form-input__input'
-          id={`form-${name}`}
-          name={name}
-          type={type}
-          value={inputValue}
-          placeholder={placeholder}
-          required={required}
-          onChange={handleInputValue}
-          autoComplete='off'
-          readOnly={readOnly}
-        />
+        {type === 'radio' ? (
+          options.map((option) => (
+            <label key={option.value} className='form-input__radio'>
+              <input
+                type='radio'
+                name={name}
+                value={option.value}
+                checked={inputValue === option.value}
+                onChange={handleInputValue}
+                disabled={readOnly}
+              />
+              {option.name}
+            </label>
+          ))
+        ) : (
+          <input
+            className='form-input__input'
+            id={`form-${name}`}
+            name={name}
+            type={type}
+            value={inputValue}
+            placeholder={placeholder}
+            required={required}
+            onChange={handleInputValue}
+            autoComplete='off'
+            readOnly={readOnly}
+          />
+        )}
         {button}
       </div>
       {!isValid && helpText && <p className='form-input__helptext'>{helpText}</p>}

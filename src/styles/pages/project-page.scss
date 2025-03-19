@@ -3,19 +3,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-
-  &__header {
-    margin-bottom: 1rem;
-  }
-
-  &__board-container {
-    flex: 1;
-    display: flex;
-    gap: 1rem;
-  }
 }
 
-.search {
+.header {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   &__input {
     width: 25%;
     height: 2rem;
@@ -25,4 +20,24 @@
     border-radius: $border-radius-sm;
     box-shadow: $shadow;
   }
+
+  &__button {
+    color: #fff;
+    background-color: $color-accent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+
+    &:hover {
+      opacity: $mouseover-opacity;
+    }
+  }
+}
+
+.board-container {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
 }
