@@ -1,13 +1,25 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useTeamSchedule } from '@hooks/schedule/useSchedule';
 
 const CalendarPage = () => {
-  const [events, setEvents] = useState([
-    { id: '1', title: '회의', date: '2025-03-20' },
-    { id: '2', title: '프로젝트 마감', date: '2025-03-25' },
-  ]);
+  const location = useLocation();
+
+  const [events, setEvents] = useState([]);
+
+  const match = location.pathname.match(/\/team\/(\d+)\/calendar/);
+  const teamId = match ? match[1] : null;
+
+  const { data } = useTeamSchedule(teamId);
+
+  useEffect(() => {
+    if (data) {
+      setEvents(data);
+    }
+  }, [data]);
 
   return (
     <FullCalendar
