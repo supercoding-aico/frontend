@@ -1,18 +1,11 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Send } from 'react-feather';
 import '@styles/components/chat-page/chat-room.scss';
 import { useChat } from '@hooks/chat/useChat';
 
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
-  const { teamId } = useParams();
-  const userId = useSelector((state) => state.user.userInfo.userId);
-  const { messages, isLoading, error, sendMessage, scrollToBottom, chatContainerRef } = useChat(
-    teamId,
-    userId
-  );
+  const { messages, isLoading, error, sendMessage, scrollToBottom, chatContainerRef } = useChat();
 
   const handleSendMessage = () => {
     sendMessage(message);
@@ -26,8 +19,11 @@ const ChatRoom = () => {
     <div className='chatRoom'>
       <div className='chatContainer' ref={chatContainerRef}>
         {messages.length > 0 ? (
-          messages.map((msg) => (
-            <div key={msg.id || msg.createdAt} className='message'>
+          messages.map((msg, index) => (
+            <div
+              key={msg.id || `${msg.createdAt}-${msg.userInfo?.userId}-${index}`}
+              className='message'
+            >
               <span className='nickname'>{msg.userInfo?.nickname || '익명'}: </span>
               <span className='text'>{msg.content}</span>
             </div>
