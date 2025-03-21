@@ -20,12 +20,20 @@ const MeetingList = ({ teamId }) => {
 
   if (loading) return <p>회의록 불러오는 중...</p>;
 
+  console.log(meetingList, '회의'); // ✅ 데이터 구조 확인
+
   return (
     <div className='meetingList'>
       <h4>📋 회의록 리스트</h4>
-      {meetingList.length > 0 ? (
-        meetingList.map((meeting) => (
-          <div key={meeting.meetingId} className='meetingItem' onClick={() => openModal(meeting)}>
+
+      {/* ✅ `meetingList.data`를 확인하여 리스트 출력 */}
+      {meetingList?.data?.length > 0 ? (
+        meetingList.data.map((meeting) => (
+          <div
+            key={meeting.meetingId} // ✅ meetingId를 유니크 키로 사용
+            className='meetingItem'
+            onClick={() => openModal(meeting)}
+          >
             <span className='date'>{new Date(meeting.date).toLocaleString()}</span>
           </div>
         ))
@@ -54,7 +62,7 @@ const MeetingList = ({ teamId }) => {
               <strong>👥 참가자:</strong>
             </p>
             <ul>
-              {selectedMeeting.participants.map((p, index) => (
+              {selectedMeeting.participants?.map((p, index) => (
                 <li key={index}>{p.nickname || '익명'}</li>
               ))}
             </ul>

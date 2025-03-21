@@ -5,7 +5,6 @@ import { Send } from 'react-feather';
 import '@styles/components/chat-page/chat-room.scss';
 import { useChat } from '@hooks/chat/useChat';
 import { useSummarize } from '@hooks/meeting/useSummarize';
-import { useMeetingList } from '@hooks/meeting/useMeetingList';
 import MeetingList from '@components/meeting-page/MeetingList';
 
 const ChatRoom = () => {
@@ -17,8 +16,7 @@ const ChatRoom = () => {
     userId
   );
 
-  const { summarizeChat, summary, loading, lastResponse } = useSummarize();
-  const { meetingList, fetchMeetings, addMeeting } = useMeetingList(teamId);
+  const { summarizeChat, summary, loading } = useSummarize();
 
   const handleSendMessage = () => {
     sendMessage(message);
@@ -28,7 +26,6 @@ const ChatRoom = () => {
   const handleSummarize = async () => {
     const chatMessages = messages.map((msg) => msg.content);
     await summarizeChat(chatMessages);
-    fetchMeetings();
   };
 
   if (isLoading) return <p>로딩 중...</p>;
@@ -64,7 +61,7 @@ const ChatRoom = () => {
         </div>
       </div>
 
-      {/* ✅ 오른쪽: 회의록 요약 및 리스트 */}
+      {/* ✅ 오른쪽: 회의록 리스트 */}
       <div className='meetingContainer'>
         <div className='meetingHeader'>
           <button onClick={handleSummarize} className='summarizeBtn' disabled={loading}>
@@ -80,7 +77,8 @@ const ChatRoom = () => {
           </div>
         )}
 
-        {/* ✅ 회의록 리스트 */}
+        {/* ✅ 기존 회의록 리스트 */}
+
         <MeetingList teamId={teamId} />
       </div>
     </div>
