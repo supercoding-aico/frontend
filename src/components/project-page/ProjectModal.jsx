@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import '@styles/components/project-page/project-modal.scss';
 import Modal from '@components/common/Modal';
 import FormInput from '@components/common/FormInput';
-import useTeamId from '@hooks/useTeamId';
+import { useTeamId } from '@hooks/useTeamId';
 import { useCreateSchedule } from '@hooks/schedule/useSchedule';
 import { PROJECT_FORM_FIELDS } from '@constants/projectFormFields';
 
@@ -15,7 +15,7 @@ const ProjectModal = ({ closeProjectModal }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
-  const { mutate: createSchedule } = useCreateSchedule();
+  const { mutate: createSchedule } = useCreateSchedule(teamId);
 
   // TODO: hook으로 분리
   const { data } = useQuery({
@@ -45,14 +45,11 @@ const ProjectModal = ({ closeProjectModal }) => {
       users: selectedUsers,
     };
 
-    createSchedule(
-      { teamId, schedule },
-      {
-        onSuccess: () => {
-          closeProjectModal();
-        },
-      }
-    );
+    createSchedule(schedule, {
+      onSuccess: () => {
+        closeProjectModal();
+      },
+    });
     // closeProjectModal();
   };
 

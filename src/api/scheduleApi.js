@@ -1,8 +1,8 @@
 import axios from '@axios/axios';
 
-export const getTeamSchedule = async (teamId) => {
-  const resp = await axios.get(`api/schedule/${teamId}`);
-  return resp;
+export const getTeamSchedule = async (teamId, queryString) => {
+  const resp = await axios.get(`api/schedule/${teamId}?${queryString}`);
+  return resp.data;
 };
 
 export const getUserSchedule = async (teamId) => {
