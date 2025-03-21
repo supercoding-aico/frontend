@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import '@styles/components/layout-page/sidebar-menu-group.scss';
-import { useChat } from '@hooks/chat/useChat';
+import { useUserStatus } from '@hooks/chat/useUserStatus';
 
-const SidebarMenuGroup = ({ menus, onMenuClick = undefined, TeamId, userId }) => {
-  const { isActive } = useChat(TeamId, userId);
+const SidebarMenuGroup = ({ menus, onMenuClick = undefined, teamId, userId }) => {
+  const { activeUsers } = useUserStatus(teamId);
+  const isActive = activeUsers.has(userId);
+
   return (
     <ul className='list'>
       {menus.map((menu) => {

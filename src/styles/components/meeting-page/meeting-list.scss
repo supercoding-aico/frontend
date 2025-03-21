@@ -1,0 +1,71 @@
+.meetingList {
+  border-top: 2px solid #333;
+  padding-top: 10px;
+}
+
+.meetingItem {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    background: #f1f1f1;
+  }
+
+  .date {
+    font-weight: bold;
+    color: #007bff;
+  }
+}
+
+.noMeeting {
+  color: gray;
+  text-align: center;
+}
+
+/* ✅ 모달 스타일 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meetingModal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+
+  .meetingSummary {
+    background: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  .closeBtn {
+    margin-top: 15px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+}

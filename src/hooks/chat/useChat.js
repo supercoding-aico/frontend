@@ -6,9 +6,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export const useChat = () => {
-  const { teamId: paramTeamId } = useParams();
+  const { teamId } = useParams();
   const userId = useSelector((state) => state.user.userInfo?.userId);
-  const teamId = paramTeamId ? Number(paramTeamId) : undefined;
 
   const [stompClient, setStompClient] = useState(null);
   const queryClient = useQueryClient();
@@ -28,10 +27,6 @@ export const useChat = () => {
       isActive: false,
     };
   }
-
-  useEffect(() => {
-    console.log('🔄 userActivity 상태 변경:', userActivity);
-  }, [userActivity]);
 
   const {
     data: messages = [],
@@ -70,12 +65,6 @@ export const useChat = () => {
     client.onConnect = () => {
       console.log('✅ WebSocket Connected');
 
-      // ✅ 서버에 현재 유저의 활성 상태 알리기
-      client.publish({
-        destination: '/app/room/active',
-        body: JSON.stringify({ teamId, userId }),
-      });
-
       // ✅ 채팅 메시지 구독
       client.subscribe(`/topic/room/${teamId}`, (message) => {
         try {
@@ -85,27 +74,6 @@ export const useChat = () => {
           );
         } catch (error) {
           console.error('❌ Error parsing WebSocket message:', error);
-        }
-      });
-
-      // ✅ 유저 활성 상태 확인 (채팅방 입장)
-      client.subscribe(`/app/room/active`, (message) => {
-        console.log('📩 Received Active Message:', message.body);
-
-        try {
-          const activeUser = JSON.parse(message.body);
-          console.log('🟢 Parsed Active User:', activeUser);
-
-          setUserActivity((prev) => {
-            const updatedActivity = {
-              ...prev,
-              [activeUser.userId]: { status: 'active', time: new Date() },
-            };
-            console.log('🟢 Updated User Activity:', updatedActivity);
-            return updatedActivity;
-          });
-        } catch (error) {
-          console.error('❌ Error parsing active user message:', error);
         }
       });
 
@@ -163,10 +131,6 @@ export const useChat = () => {
     }, 100);
   };
 
-  // ✅ 현재 유저가 활성 상태인지 확인
-  const isActive = userActivity[userId]?.status === 'active';
-
-  console.log('🟢 isActive:', isActive, 'userActivity:', userActivity);
   return {
     messages,
     isLoading,
@@ -174,6 +138,5 @@ export const useChat = () => {
     sendMessage,
     scrollToBottom,
     chatContainerRef,
-    isActive, // ✅ 활성 상태 반환
   };
 };
