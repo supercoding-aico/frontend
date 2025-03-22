@@ -49,7 +49,7 @@ const CalendarPage = () => {
     }
   }, [data]);
 
-  console.log('events', events);
+  // console.log('events', events);
 
   return (
     <FullCalendar

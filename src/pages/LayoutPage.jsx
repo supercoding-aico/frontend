@@ -1,24 +1,31 @@
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import '@styles/pages/layout-page.scss';
 import Sidebar from '@components/layout-page/Sidebar';
-import { connectSocket, disconnectSocket, removeListener } from '@services/socketService';
+import {
+  __subscribeToTopicAction,
+  __unsubscribeFromTopicAction,
+} from '@redux/slice/websocketSlice';
 
 const LayoutPage = () => {
+  const dispatch = useDispatch();
+
   const userId = useSelector((state) => state.user.userInfo.userId);
+  const messages = useSelector((state) => state.websocket.messages);
+  const subscribedTopics = useSelector((state) => state.websocket.subscribedTopics);
+
+  const topic = `/topic/notification/${userId}`;
 
   useEffect(() => {
-    if (!userId) return;
-
-    const url = `${process.env.REACT_APP_SOCKET_URL}/topic/notification/${userId}`;
-    connectSocket(url);
-
+    dispatch(__subscribeToTopicAction(topic));
     return () => {
-      disconnectSocket();
-      removeListener();
+      dispatch(__unsubscribeFromTopicAction(topic));
     };
-  }, [userId]);
+  }, [topic]);
+
+  console.log('messages', messages);
+  console.log('subscribedTopics', subscribedTopics);
 
   // TODO: 모바일 반응형 추가
   return (
