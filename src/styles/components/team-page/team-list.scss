@@ -20,40 +20,5 @@
         color: $color-accent;
       }
     }
-
-    &__menu {
-      cursor: pointer;
-      font-size: 30px;
-      color: $color-tertiary;
-      padding: 5px;
-    }
-
-    &__dropdown {
-      position: absolute;
-      right: 10px;
-      top: 30px;
-      border: 1px solid $color-key-1;
-      border-radius: 4px;
-      background-color: $color-section;
-      box-shadow: 2px 2px 5px $color-primary(0, 0, 0, 0.2);
-      padding: 5px;
-      width: 120px;
-      z-index: 10;
-
-      button {
-        display: block;
-        width: 100%;
-        padding: 8px;
-        background: none;
-        border: none;
-        text-align: left;
-        font-size: 14px;
-        cursor: pointer;
-
-        &:hover {
-          background: $color-key-1;
-        }
-      }
-    }
   }
 }

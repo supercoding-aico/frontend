@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import '@styles/components/layout-page/sidebar-menu-group.scss';
-import { useUserStatus } from '@hooks/chat/useUserStatus';
 
-const SidebarMenuGroup = ({ menus, onMenuClick = undefined, teamId, userId }) => {
-  const { activeUsers } = useUserStatus(teamId);
-  const isActive = activeUsers.has(userId);
-
+const SidebarMenuGroup = ({ menus, onMenuClick = undefined }) => {
   return (
     <ul className='list'>
       {menus.map((menu) => {
@@ -16,9 +12,6 @@ const SidebarMenuGroup = ({ menus, onMenuClick = undefined, teamId, userId }) =>
               <button className='menu' onClick={() => onMenuClick(menu.id)}>
                 <span className='menu__item menu__item--icon'>{menu.icon}</span>
                 <span className='menu__item menu__item--name'>{menu.name}</span>
-                {isChatMenu && (
-                  <span className={isActive ? 'status-dot active' : 'status-dot'}></span>
-                )}
               </button>
             </li>
           );
@@ -28,9 +21,6 @@ const SidebarMenuGroup = ({ menus, onMenuClick = undefined, teamId, userId }) =>
             <Link to={menu.path} className='menu'>
               <span className='menu__item menu__item--icon'>{menu.icon}</span>
               <span className='menu__item menu__item--name'>{menu.name}</span>
-              {isChatMenu && (
-                <span className={isActive ? 'status-dot active' : 'status-dot'}></span>
-              )}
             </Link>
           </li>
         );

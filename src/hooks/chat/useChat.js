@@ -8,25 +8,12 @@ import { useSelector } from 'react-redux';
 export const useChat = () => {
   const { teamId } = useParams();
   const userId = useSelector((state) => state.user.userInfo?.userId);
+  const nickname = useSelector((state) => state.user.userInfo?.nickname);
 
   const [stompClient, setStompClient] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
   const queryClient = useQueryClient();
   const chatContainerRef = useRef(null);
-  const [userActivity, setUserActivity] = useState({});
-
-  // ✅ 팀 ID 또는 유저 ID가 없으면 실행하지 않음
-  if (!teamId || !userId) {
-    console.warn('⚠️ useChat: teamId 또는 userId가 없습니다.', { teamId, userId });
-    return {
-      messages: [],
-      isLoading: false,
-      error: 'Invalid teamId or userId',
-      sendMessage: () => {},
-      scrollToBottom: () => {},
-      chatContainerRef,
-      isActive: false,
-    };
-  }
 
   const {
     data: messages = [],
@@ -42,20 +29,12 @@ export const useChat = () => {
     enabled: !!teamId,
   });
 
+  console.log(messages);
+
   useEffect(() => {
     if (!teamId || !userId) return;
 
-    // ✅ WebSocket이 이미 연결되어 있다면 다시 연결하지 않음
-    if (stompClient) {
-      console.warn('⚠️ WebSocket already connected, skipping new connection.');
-      return;
-    }
-
-    const wsUrl = process.env.REACT_APP_WS_URL;
-    if (!wsUrl) {
-      console.error('❌ WebSocket URL이 설정되지 않았습니다. REACT_APP_WS_URL 확인 필요');
-      return;
-    }
+    const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/ws';
 
     const client = new Client({
       brokerURL: wsUrl,
@@ -63,36 +42,21 @@ export const useChat = () => {
     });
 
     client.onConnect = () => {
-      console.log('✅ WebSocket Connected');
+      console.log('WebSocket Connected');
+      setStompClient(client);
+      setIsConnected(true);
 
-      // ✅ 채팅 메시지 구독
       client.subscribe(`/topic/room/${teamId}`, (message) => {
         try {
           const newMessage = JSON.parse(message.body);
-          queryClient.setQueryData(['chatMessages', teamId], (prev) =>
-            prev ? [...prev, newMessage] : [newMessage]
-          );
+          queryClient.setQueryData(['chatMessages', teamId], (prev) => {
+            const exists = prev?.some((msg) => msg.id === newMessage.id);
+            return exists ? prev : [...(prev || []), newMessage];
+          });
         } catch (error) {
-          console.error('❌ Error parsing WebSocket message:', error);
+          console.error('❌ 메시지 파싱 오류:', error);
         }
       });
-
-      // ✅ 유저 비활성 상태 확인 (채팅방 퇴장)
-      client.subscribe(`/app/room/inactive`, (message) => {
-        try {
-          const inactiveUser = JSON.parse(message.body);
-          console.log('⚪ User Inactive WebSocket Data:', inactiveUser);
-
-          setUserActivity((prev) => ({
-            ...prev,
-            [inactiveUser.userId]: { status: 'inactive', time: new Date() },
-          }));
-        } catch (error) {
-          console.error('❌ Error parsing inactive user message:', error);
-        }
-      });
-
-      setStompClient(client);
     };
 
     client.onWebSocketError = (error) => {
@@ -104,22 +68,33 @@ export const useChat = () => {
     return () => {
       console.log('🔌 WebSocket Disconnected');
       client.deactivate();
+      setIsConnected(false);
     };
   }, [teamId, userId, queryClient]);
 
   const sendMessage = (message) => {
-    if (!message.trim() || !stompClient) return;
+    if (!message.trim() || !isConnected || !stompClient) {
+      console.warn('❗ 메시지를 보낼 수 없습니다. 연결 상태 확인 필요');
+      return;
+    }
 
-    const newMessage = { id: Date.now(), teamId, userId, content: message };
+    const newMessage = {
+      id: Date.now(),
+      teamId,
+      userId,
+      content: message,
+      userInfo: { nickname },
+    };
 
     stompClient.publish({
       destination: '/app/room',
       body: JSON.stringify(newMessage),
     });
 
-    queryClient.setQueryData(['chatMessages', teamId], (prev) =>
-      prev ? [...prev, newMessage] : [newMessage]
-    );
+    queryClient.setQueryData(['chatMessages', teamId], (prev) => {
+      const exists = prev?.some((msg) => msg.id === newMessage.id);
+      return exists ? prev : [...(prev || []), newMessage];
+    });
   };
 
   const scrollToBottom = () => {
@@ -138,5 +113,6 @@ export const useChat = () => {
     sendMessage,
     scrollToBottom,
     chatContainerRef,
+    isConnected,
   };
 };

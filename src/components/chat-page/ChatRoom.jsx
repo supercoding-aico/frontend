@@ -11,10 +11,7 @@ const ChatRoom = () => {
   const [message, setMessage] = useState('');
   const { teamId } = useParams();
   const userId = useSelector((state) => state.user.userInfo.userId);
-  const { messages, isLoading, error, sendMessage, scrollToBottom, chatContainerRef } = useChat(
-    teamId,
-    userId
-  );
+  const { messages, isLoading, error, sendMessage, chatContainerRef } = useChat(teamId, userId);
 
   const { summarizeChat, summary, loading } = useSummarize();
 
@@ -24,8 +21,7 @@ const ChatRoom = () => {
   };
 
   const handleSummarize = () => {
-    const chatMessages = messages.map((msg) => msg.content);
-    summarizeChat(chatMessages);
+    summarizeChat(messages);
   };
 
   if (isLoading) return <p>로딩 중...</p>;

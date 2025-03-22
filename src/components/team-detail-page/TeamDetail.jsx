@@ -14,7 +14,6 @@ const TeamDetail = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const loggedInUserId = useSelector((state) => state.user.userInfo.userId);
 
-  // 리액트 쿼리로 팀 데이터 가져오기
   const { data: teamData } = useQuery({
     queryKey: ['teamDetail', teamId],
     queryFn: async () => {
@@ -33,7 +32,6 @@ const TeamDetail = () => {
       <h1 className='team-detail__title'>{teamData?.name || '로딩 중...'}</h1>
 
       <div className='team-detail__accordion'>
-        {/* 팀 멤버 리스트 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'
@@ -49,7 +47,6 @@ const TeamDetail = () => {
           )}
         </div>
 
-        {/* 팀 초대 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'
@@ -63,7 +60,6 @@ const TeamDetail = () => {
           {openAccordion === 'invite' && <TeamInvite teamId={teamId} />}
         </div>
 
-        {/*팀 탈퇴 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'

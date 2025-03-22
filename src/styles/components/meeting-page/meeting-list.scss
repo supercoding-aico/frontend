@@ -1,4 +1,6 @@
 .meetingList {
+  display: flex;
+  flex-direction: column;
   padding: 10px;
   background: $color-background;
   border-radius: 10px;
@@ -15,6 +17,9 @@
   }
 
   .meetingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px 12px;
     border-bottom: 1px solid $color-secondary;
     font-size: 13px;

@@ -9,6 +9,7 @@ import { AlignJustify } from 'react-feather';
 import useTeamMutations from '@hooks/team/useTeam';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import DropdownMenu from '@components/common/DropdownMenu';
 
 const TeamList = () => {
   const navigate = useNavigate();
@@ -74,21 +75,21 @@ const TeamList = () => {
             {team.name}
           </span>
 
-          <AlignJustify
-            className='team-list-item__menu'
-            onClick={() => toggleDropdown(team.teamId)}
+          <DropdownMenu
+            menuId={team.teamId}
+            isOpen={dropdownOpen === team.teamId}
+            onToggle={(id) => toggleDropdown(id)}
+            options={[
+              { label: '팀 이름 수정', onClick: () => handleEditTeam(team) },
+              {
+                label: '팀 삭제',
+                onClick: () => handleDeleteTeam(team.teamId),
+              },
+            ]}
           />
-
-          {dropdownOpen === team.teamId && (
-            <div className='team-list-item__dropdown'>
-              <button onClick={() => handleEditTeam(team)}>팀 이름 수정</button>
-              <button onClick={() => handleDeleteTeam(team.teamId)}>팀 삭제</button>
-            </div>
-          )}
         </div>
       ))}
 
-      {/* 팀 수정 모달 */}
       {editModalOpen && (
         <Modal onClose={() => setEditModalOpen(false)} onClick={handleEditedNameSend}>
           <FormInput

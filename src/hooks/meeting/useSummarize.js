@@ -1,19 +1,17 @@
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postMeetingSummary } from '@api/meetingApi';
+import { toast } from 'react-toastify';
 
 export const useSummarize = () => {
   const { teamId } = useParams();
-  const userId = useSelector((state) => state.user.userInfo.userId);
-  const nickname = useSelector((state) => state.user.userInfo.nickname);
   const queryClient = useQueryClient();
 
   const formatSummaryForAPI = (messages) => {
     return messages.map((msg) => ({
-      userId,
-      nickname: nickname || 'AI',
-      content: msg,
+      userId: msg.userInfo?.userId || 0,
+      nickname: msg.userInfo?.nickname || '익명',
+      content: msg.content,
     }));
   };
   const {
@@ -29,12 +27,12 @@ export const useSummarize = () => {
       throw new Error('회의록 요약 실패');
     },
     onSuccess: (data) => {
-      alert('회의록 요약이 완료되었습니다!');
+      toast.sucesss('회의록 요약이 완료되었습니다!');
       queryClient.invalidateQueries({ queryKey: ['meetingList', teamId] });
     },
     onError: (error) => {
       console.error('회의록 요약 오류:', error);
-      alert('회의록 요약 실패!');
+      toast.error('회의록 요약 실패!');
     },
   });
 

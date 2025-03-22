@@ -71,7 +71,7 @@ const useTeamMutations = () => {
       },
     });
 
-  // 팀 멤버 탈퇴시키기(매니저만 가능능)
+  // 팀 멤버 탈퇴시키기(매니저만 가능)
   const removeMemberMutation = useMutation({
     mutationFn: ({ teamId, userId }) => removeMember(teamId, { userId }),
     onSuccess: (_, { teamId, userId }) => {
@@ -85,7 +85,6 @@ const useTeamMutations = () => {
     },
   });
 
-  // 팀 탈퇴(본인 탈퇴)
   const leaveMutation = (teamId, loggedInUserId) =>
     useMutation({
       mutationFn: () => removeMember(teamId, loggedInUserId),

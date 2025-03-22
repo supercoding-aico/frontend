@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { useMeetingList } from '@hooks/meeting/useMeetingList';
 import '@styles/components/meeting-page/meeting-list.scss';
+import DropdownMenu from '@components/common/DropdownMenu';
 
 const MeetingList = ({ teamId }) => {
   const { data: meetingList = [], isLoading } = useMeetingList(teamId);
   const [selectedMeeting, setSelectedMeeting] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
 
   const openModal = (meeting) => {
     setSelectedMeeting(meeting);
@@ -22,6 +24,9 @@ const MeetingList = ({ teamId }) => {
     ...new Set(participants.map((p) => p.nickname || '익명')),
   ];
 
+  const handleEditMeeting = () => {};
+  const handleDeleteMeeting = () => {};
+
   if (isLoading) return <p>회의록 불러오는 중...</p>;
 
   return (
@@ -30,7 +35,16 @@ const MeetingList = ({ teamId }) => {
       {meetingList.length > 0 ? (
         meetingList.map((meeting) => (
           <div key={meeting.meetingId} className='meetingItem' onClick={() => openModal(meeting)}>
-            <span className='date'>{new Date(meeting.date).toLocaleString()}</span>
+            <div className='date'>{new Date(meeting.date).toLocaleString()}</div>
+            <DropdownMenu
+              menuId={meeting.meetingId}
+              isOpen={openDropdownId === meeting.meetingId}
+              onToggle={(id) => setOpenDropdownId((prev) => (prev === id ? null : id))}
+              options={[
+                { label: '회의록 수정', onClick: () => handleEditMeeting() },
+                { label: '회의록 삭제', onClick: () => handleDeleteMeeting() },
+              ]}
+            />
           </div>
         ))
       ) : (
