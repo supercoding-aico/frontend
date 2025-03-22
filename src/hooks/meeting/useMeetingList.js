@@ -1,26 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import axios from '@axios/axios';
 
 export const useMeetingList = (teamId) => {
-  const [meetingList, setMeetingList] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchMeetings = async () => {
-    setLoading(true);
-    try {
+  return useQuery({
+    queryKey: ['meetingList', teamId],
+    queryFn: async () => {
       const response = await axios.get(`/api/meeting/${teamId}?page=0`);
-      console.log(response.data, '미팅리스트');
-      setMeetingList(response.data || []);
-    } catch (error) {
-      console.error('회의록 리스트 불러오기 실패:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMeetings();
-  }, [teamId]);
-
-  return { meetingList, loading, fetchMeetings };
+      return response.data.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !!teamId,
+  });
 };

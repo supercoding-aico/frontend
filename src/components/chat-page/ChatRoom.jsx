@@ -23,9 +23,9 @@ const ChatRoom = () => {
     setMessage('');
   };
 
-  const handleSummarize = async () => {
+  const handleSummarize = () => {
     const chatMessages = messages.map((msg) => msg.content);
-    await summarizeChat(chatMessages);
+    summarizeChat(chatMessages);
   };
 
   if (isLoading) return <p>로딩 중...</p>;
@@ -33,7 +33,6 @@ const ChatRoom = () => {
 
   return (
     <div className='chatPage'>
-      {/* ✅ 왼쪽: 채팅창 */}
       <div className='chatContainer' ref={chatContainerRef}>
         <div className='chatHeader'>💬 실시간 채팅</div>
         {messages.length > 0 ? (
@@ -61,7 +60,6 @@ const ChatRoom = () => {
         </div>
       </div>
 
-      {/* ✅ 오른쪽: 회의록 리스트 */}
       <div className='meetingContainer'>
         <div className='meetingHeader'>
           <button onClick={handleSummarize} className='summarizeBtn' disabled={loading}>
@@ -69,15 +67,12 @@ const ChatRoom = () => {
           </button>
         </div>
 
-        {/* ✅ AI 요약 결과 출력 */}
         {summary && (
           <div className='summaryBox'>
             <h3>📌 AI 요약 결과</h3>
             <p>{summary}</p>
           </div>
         )}
-
-        {/* ✅ 기존 회의록 리스트 */}
 
         <MeetingList teamId={teamId} />
       </div>

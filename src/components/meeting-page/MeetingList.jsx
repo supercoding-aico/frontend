@@ -4,7 +4,7 @@ import { useMeetingList } from '@hooks/meeting/useMeetingList';
 import '@styles/components/meeting-page/meeting-list.scss';
 
 const MeetingList = ({ teamId }) => {
-  const { meetingList, loading } = useMeetingList(teamId);
+  const { data: meetingList = [], isLoading } = useMeetingList(teamId);
   const [selectedMeeting, setSelectedMeeting] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -18,22 +18,18 @@ const MeetingList = ({ teamId }) => {
     setModalIsOpen(false);
   };
 
-  if (loading) return <p>회의록 불러오는 중...</p>;
+  const uniqueParticipants = (participants = []) => [
+    ...new Set(participants.map((p) => p.nickname || '익명')),
+  ];
 
-  console.log(meetingList, '회의'); // ✅ 데이터 구조 확인
+  if (isLoading) return <p>회의록 불러오는 중...</p>;
 
   return (
     <div className='meetingList'>
       <h4>📋 회의록 리스트</h4>
-
-      {/* ✅ `meetingList.data`를 확인하여 리스트 출력 */}
-      {meetingList?.data?.length > 0 ? (
-        meetingList.data.map((meeting) => (
-          <div
-            key={meeting.meetingId} // ✅ meetingId를 유니크 키로 사용
-            className='meetingItem'
-            onClick={() => openModal(meeting)}
-          >
+      {meetingList.length > 0 ? (
+        meetingList.map((meeting) => (
+          <div key={meeting.meetingId} className='meetingItem' onClick={() => openModal(meeting)}>
             <span className='date'>{new Date(meeting.date).toLocaleString()}</span>
           </div>
         ))
@@ -41,7 +37,6 @@ const MeetingList = ({ teamId }) => {
         <p className='noMeeting'>저장된 회의록이 없습니다.</p>
       )}
 
-      {/* ✅ 모달 창 (회의록 상세보기) */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -50,7 +45,6 @@ const MeetingList = ({ teamId }) => {
       >
         {selectedMeeting && (
           <div className='modalContent'>
-            <h3>📌 회의록 상세보기</h3>
             <p>
               <strong>📅 날짜:</strong> {new Date(selectedMeeting.date).toLocaleString()}
             </p>
@@ -62,8 +56,8 @@ const MeetingList = ({ teamId }) => {
               <strong>👥 참가자:</strong>
             </p>
             <ul>
-              {selectedMeeting.participants?.map((p, index) => (
-                <li key={index}>{p.nickname || '익명'}</li>
+              {uniqueParticipants(selectedMeeting.participants).map((name, idx) => (
+                <li key={idx}>{name}</li>
               ))}
             </ul>
             <button className='closeBtn' onClick={closeModal}>
