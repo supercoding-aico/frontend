@@ -3,10 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import '@styles/pages/layout-page.scss';
 import Sidebar from '@components/layout-page/Sidebar';
-import {
-  __subscribeToTopicAction,
-  __unsubscribeFromTopicAction,
-} from '@redux/slice/websocketSlice';
 
 const LayoutPage = () => {
   const dispatch = useDispatch();
@@ -15,14 +11,7 @@ const LayoutPage = () => {
   const messages = useSelector((state) => state.websocket.messages);
   const subscribedTopics = useSelector((state) => state.websocket.subscribedTopics);
 
-  const topic = `/topic/notification/${userId}`;
-
-  useEffect(() => {
-    dispatch(__subscribeToTopicAction(topic));
-    return () => {
-      dispatch(__unsubscribeFromTopicAction(topic));
-    };
-  }, [topic]);
+  const topic = `topic/notification/${userId}`;
 
   console.log('messages', messages);
   console.log('subscribedTopics', subscribedTopics);

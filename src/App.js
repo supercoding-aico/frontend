@@ -9,7 +9,7 @@ function App() {
   const wsUrl = process.env.REACT_APP_WS_URL;
 
   useEffect(() => {
-    dispatch(__connectWebSocket(wsUrl));
+    dispatch(__connectWebSocket('topic/notification/66'));
   }, [wsUrl]);
 
   return (

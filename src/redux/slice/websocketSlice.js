@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-const socket = new WebSocket(process.env.REACT_APP_WS_URL);
+import { Client } from '@stomp/stompjs';
 
 const initialState = {
   messages: [],
@@ -25,52 +24,38 @@ const websocketSlice = createSlice({
   },
 });
 
-export const __connectWebSocket = () => (dispatch) => {
+export const __connectWebSocket = (topic) => (dispatch) => {
   try {
-    socket.onopen = () => {
-      console.log('WebSocket connected');
-      dispatch(connectWebSocket());
-    };
+    const client = new Client({
+      brokerURL: process.env.REACT_APP_WS_URL,
+      reconnectDelay: 5000,
+      onConnect: () => {
+        console.log('WebSocket connected');
+        dispatch(subscribeToTopic(topic));
+      },
+      onDisconnect: () => {
+        console.log('WebSocket disconnected');
+        setTimeout(() => client.activate(), 5000);
+      },
+      onWebSocketError: (err) => {
+        console.error('WebSocket error:', err);
+      },
+    });
 
-    socket.onmessage = (event) => {
-      const messageData = JSON.parse(event.data);
+    client.activate();
+
+    client.onStompMessage = (message) => {
+      const messageData = JSON.parse(message.body);
       dispatch(addMessage(messageData));
-
-      if (messageData.topic && !messageData.subscribed) {
-        dispatch(subscribeToTopic(messageData.topic));
-      }
     };
 
-    socket.onclose = () => {
-      console.log('WebSocket disconnected');
-      setTimeout(() => dispatch(__connectWebSocket()), 5000);
+    return () => {
+      client.deactivate();
     };
-
-    socket.onerror = (err) => {
-      console.error('WebSocket error:', err);
-    };
-
-    return socket;
   } catch (error) {
     console.error('WebSocket connection failed', error);
   }
 };
 
-export const __subscribeToTopicAction = (topic) => (dispatch) => {
-  socket.send(JSON.stringify({ action: 'subscribe', topic }));
-  dispatch(subscribeToTopic(topic));
-};
-
-export const __unsubscribeFromTopicAction = (topic) => (dispatch) => {
-  socket.send(JSON.stringify({ action: 'unsubscribe', topic }));
-  dispatch(unsubscribeFromTopic(topic));
-};
-
-export const {
-  connectWebSocket,
-  disconnectWebSocket,
-  addMessage,
-  subscribeToTopic,
-  unsubscribeFromTopic,
-} = websocketSlice.actions;
+export const { addMessage, subscribeToTopic, unsubscribeFromTopic } = websocketSlice.actions;
 export default websocketSlice.reducer;
