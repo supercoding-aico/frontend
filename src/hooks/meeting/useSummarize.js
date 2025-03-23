@@ -27,7 +27,7 @@ export const useSummarize = () => {
       throw new Error('회의록 요약 실패');
     },
     onSuccess: (data) => {
-      toast.sucesss('회의록 요약이 완료되었습니다!');
+      toast.success('회의록 요약이 완료되었습니다!');
       queryClient.invalidateQueries({ queryKey: ['meetingList', teamId] });
     },
     onError: (error) => {

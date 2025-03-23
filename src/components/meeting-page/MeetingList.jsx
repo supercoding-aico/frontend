@@ -3,12 +3,14 @@ import Modal from 'react-modal';
 import { useMeetingList } from '@hooks/meeting/useMeetingList';
 import '@styles/components/meeting-page/meeting-list.scss';
 import DropdownMenu from '@components/common/DropdownMenu';
+import { useDeleteMeeting } from '@hooks/meeting/useDeleteMeeting';
 
 const MeetingList = ({ teamId }) => {
   const { data: meetingList = [], isLoading } = useMeetingList(teamId);
   const [selectedMeeting, setSelectedMeeting] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
+  const { mutate: deleteMeetingMutate } = useDeleteMeeting(teamId);
 
   const openModal = (meeting) => {
     setSelectedMeeting(meeting);
@@ -24,8 +26,12 @@ const MeetingList = ({ teamId }) => {
     ...new Set(participants.map((p) => p.nickname || '익명')),
   ];
 
-  const handleEditMeeting = () => {};
-  const handleDeleteMeeting = () => {};
+  const handleEditMeeting = () => {
+    console.log(1);
+  };
+  const handleDeleteMeeting = (meetingId) => {
+    deleteMeetingMutate(meetingId);
+  };
 
   if (isLoading) return <p>회의록 불러오는 중...</p>;
 
@@ -36,15 +42,17 @@ const MeetingList = ({ teamId }) => {
         meetingList.map((meeting) => (
           <div key={meeting.meetingId} className='meetingItem' onClick={() => openModal(meeting)}>
             <div className='date'>{new Date(meeting.date).toLocaleString()}</div>
-            <DropdownMenu
-              menuId={meeting.meetingId}
-              isOpen={openDropdownId === meeting.meetingId}
-              onToggle={(id) => setOpenDropdownId((prev) => (prev === id ? null : id))}
-              options={[
-                { label: '회의록 수정', onClick: () => handleEditMeeting() },
-                { label: '회의록 삭제', onClick: () => handleDeleteMeeting() },
-              ]}
-            />
+            <div onClick={(e) => e.stopPropagation()}>
+              <DropdownMenu
+                menuId={meeting.meetingId}
+                isOpen={openDropdownId === meeting.meetingId}
+                onToggle={(id) => setOpenDropdownId((prev) => (prev === id ? null : id))}
+                options={[
+                  { label: '회의록 수정', onClick: () => handleEditMeeting() },
+                  { label: '회의록 삭제', onClick: () => handleDeleteMeeting(meeting.meetingId) },
+                ]}
+              />
+            </div>
           </div>
         ))
       ) : (

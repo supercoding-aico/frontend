@@ -10,14 +10,12 @@ export const postMeetingSummary = async ({ teamId, messages }) => {
   return response.data;
 };
 
-export const updateMeeting = ({ meetingId, meeting, participant }) => {
-  return axios.put(`/api/meeting/${meetingId}`, {
-    meeting,
-    participant,
-  });
+export const updateMeeting = async ({ meetingId, payload }) => {
+  const response = await axios.put(`/api/meeting/${meetingId}`, payload);
+  return response.data;
 };
 
-export const deleteMeeting = async ({ meetingId }) => {
+export const deleteMeeting = async (meetingId) => {
   const response = await axios.delete(`/api/meeting/${meetingId}`);
   return response.data;
 };

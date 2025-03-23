@@ -12,19 +12,13 @@ const DropdownMenu = ({ menuId, isOpen, onToggle, options = [] }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [onToggle]);
 
   const handleToggle = (e) => {
     e.stopPropagation();
     onToggle(menuId);
-  };
-
-  const handleOptionClick = (e, onClick) => {
-    e.stopPropagation();
-    onClick();
-    onToggle(null);
   };
 
   return (
@@ -33,7 +27,13 @@ const DropdownMenu = ({ menuId, isOpen, onToggle, options = [] }) => {
       {isOpen && (
         <div className='dropdown'>
           {options.map(({ label, onClick }, idx) => (
-            <button key={idx} onClick={(e) => handleOptionClick(e, onClick)}>
+            <button
+              key={idx}
+              onClick={() => {
+                onClick();
+                onToggle(null);
+              }}
+            >
               {label}
             </button>
           ))}
