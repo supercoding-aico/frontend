@@ -12,3 +12,17 @@ export const useGetNoitification = () => {
     retry: false,
   });
 };
+
+export const useReadNotification = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (queryString) => {
+      const res = await readNotification(queryString);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notification']);
+    },
+  });
+};

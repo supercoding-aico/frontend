@@ -1,10 +1,13 @@
 import { Square, CheckSquare } from 'react-feather';
 import { useEffect, useState } from 'react';
 import '@styles/components/layout-page/notification.scss';
+import { useReadNotification } from '@hooks/notification/useNotification';
 
 const Notification = ({ notifications = [] }) => {
   const [isAllRead, setIsAllRead] = useState(false);
   const [selectedNoti, setSelectedNoti] = useState([]);
+
+  const { mutate: readNotification } = useReadNotification();
 
   // TODO: API 수정되면 제거
   for (let i = 0; i < notifications.length; i++) {
@@ -20,6 +23,11 @@ const Notification = ({ notifications = [] }) => {
     } else {
       setSelectedNoti([...selectedNoti, notiId]);
     }
+  };
+
+  const handleReadNoti = () => {
+    const queryString = selectedNoti.map((id) => `notification-id=${id}`).join('&');
+    readNotification(queryString);
   };
 
   useEffect(() => {
@@ -41,7 +49,7 @@ const Notification = ({ notifications = [] }) => {
           {!isAllRead ? <Square size={16} /> : <CheckSquare size={16} />}
           모든 알림 선택
         </button>
-        <button type='button' className='read-buttons__button'>
+        <button type='button' onClick={handleReadNoti} className='read-buttons__button'>
           읽음으로 표시
         </button>
       </div>

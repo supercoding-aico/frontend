@@ -1,4 +1,5 @@
 .notification-container {
+  width: $sidebar-width;
   height: 100vh;
   padding: $padding-md;
   background-color: $color-background;
@@ -30,7 +31,7 @@
 }
 
 .notification {
-  width: $sidebar-width;
+  // width: $sidebar-width;
   padding: $padding-sm;
   border-bottom: 0.5px solid $color-secondary;
   display: flex;
