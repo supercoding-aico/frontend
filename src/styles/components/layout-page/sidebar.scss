@@ -1,5 +1,8 @@
 .sidebar {
-  width: 100%;
+  width: $sidebar-width;
+  height: 100%;
+  background-color: $color-section;
+  padding: $padding-md;
 
   &__subtitle {
     color: $color-secondary;
@@ -50,10 +53,4 @@
       line-height: 1rem;
     }
   }
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }

@@ -1,26 +1,37 @@
 import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import '@styles/pages/layout-page.scss';
 import Sidebar from '@components/layout-page/Sidebar';
+import Notification from '@components/layout-page/Notification';
+import { useGetNoitification } from '@hooks/notification/useNotification';
 
 const LayoutPage = () => {
   const dispatch = useDispatch();
 
-  const userId = useSelector((state) => state.user.userInfo.userId);
-  const messages = useSelector((state) => state.websocket.messages);
-  const subscribedTopics = useSelector((state) => state.websocket.subscribedTopics);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-  const topic = `topic/notification/${userId}`;
+  const { data: notifications } = useGetNoitification();
 
-  console.log('messages', messages);
-  console.log('subscribedTopics', subscribedTopics);
+  // const userId = useSelector((state) => state.user.userInfo.userId);
+  // const messages = useSelector((state) => state.websocket.messages);
+  // const subscribedTopics = useSelector((state) => state.websocket.subscribedTopics);
 
-  // TODO: 모바일 반응형 추가
+  // const topic = `topic/notification/${userId}`;
+
+  // console.log('messages', messages);
+  // console.log('subscribedTopics', subscribedTopics);
+
+  const handleNotificationClick = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
+
   return (
+    //TODO : 모바일 반응형 추가
     <div className='layout-page'>
       <aside className='layout-page__aside'>
-        <Sidebar />
+        <Sidebar handleNotificationClick={handleNotificationClick} />
+        {isNotificationOpen && <Notification notifications={notifications} />}
       </aside>
       <main className='layout-page__main'>
         <Outlet />

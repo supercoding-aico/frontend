@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { Bell, Menu } from 'react-feather';
+import { Bell } from 'react-feather';
 import { useState, useMemo } from 'react';
 import '@styles/components/layout-page/sidebar.scss';
 import SidebarMenuGroup from '@components/layout-page/SidebarMenuGroup';
@@ -8,14 +8,10 @@ import SidebarDropdown from '@components/layout-page/SidebarDropdown';
 import ProfileModal from '@components/layout-page/ProfileModal';
 import EmptyState from '@components/common/EmptyState';
 import { getTeamList } from '@api/teamApi';
-import {
-  SIDEBAR_MENU_HOME as homeMenu,
-  SIDEBAR_MENU_TEAM as teamMenu,
-  SIDEBAR_MENU_USER as userMenu,
-} from '@constants/sidebarMenu';
+import { SIDEBAR_MENU_HOME, SIDEBAR_MENU_TEAM, SIDEBAR_MENU_USER } from '@constants/sidebarMenu';
 import placeholder from '@assets/images/profile-placeholder.png';
 
-const Sidebar = () => {
+const Sidebar = ({ handleNotificationClick }) => {
   const user = useSelector((state) => state.user.userInfo);
   const latestTeamId = useSelector((state) => state.team.latestTeam.teamId);
 
@@ -29,11 +25,11 @@ const Sidebar = () => {
 
   const teamList = useMemo(() => data?.data?.content, [data]);
 
-  /* path에 팀 id 추가 */
+  /* 팀 메뉴 path에 id params 추가 */
   const updatedTeamMenu = useMemo(() => {
-    if (!latestTeamId) return teamMenu;
+    if (!latestTeamId) return SIDEBAR_MENU_TEAM;
 
-    return teamMenu.map((menu) => ({
+    return SIDEBAR_MENU_TEAM.map((menu) => ({
       ...menu,
       path: `/team/${latestTeamId}${menu.path}`,
     }));
@@ -53,7 +49,7 @@ const Sidebar = () => {
     <>
       <nav className='sidebar'>
         {/* Menu Header */}
-        <div className='header'>
+        <header className='header'>
           <div className='profile'>
             <img
               src={user.imageUrl ?? placeholder}
@@ -65,18 +61,13 @@ const Sidebar = () => {
               <span className='profile__info--email'>{user.email}</span>
             </div>
           </div>
-          <div className='buttons'>
-            <button className='buttons__icon buttons--notification'>
-              <Bell />
-            </button>
-            <button className='buttons__icon buttons--menu'>
-              <Menu />
-            </button>
-          </div>
-        </div>
+          <button onClick={handleNotificationClick}>
+            <Bell />
+          </button>
+        </header>
 
         {/* Menu Group 1 - HOME */}
-        <SidebarMenuGroup menus={homeMenu} />
+        <SidebarMenuGroup menus={SIDEBAR_MENU_HOME} />
 
         {/* Menu Group 2 - TEAM */}
         <h2 className='sidebar__subtitle'>팀스페이스</h2>
@@ -91,7 +82,7 @@ const Sidebar = () => {
 
         {/* Menu Group 3 - USER */}
         <h2 className='sidebar__subtitle'>마이스페이스</h2>
-        <SidebarMenuGroup menus={userMenu} onMenuClick={handleMenuClick} />
+        <SidebarMenuGroup menus={SIDEBAR_MENU_USER} onMenuClick={handleMenuClick} />
       </nav>
 
       {isProfileModalOpen && <ProfileModal closeProfileModal={closeProfileModal} />}

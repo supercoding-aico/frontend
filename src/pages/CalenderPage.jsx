@@ -2,6 +2,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useState } from 'react';
+import '@styles/pages/calendar-page.scss';
 import { useTeamId } from '@hooks/useTeamId';
 import { useGetTeamSchedule } from '@hooks/schedule/useSchedule';
 import { getMonthQueryString } from '@utils/getMonthQueryString';
