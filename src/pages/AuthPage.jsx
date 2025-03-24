@@ -20,7 +20,7 @@ const AuthPage = () => {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const [seachParams] = useSearchParams();
   const inviteToken = seachParams.get('token');
-  const queryString = inviteToken ? `token=${seachParams}`;
+  const queryString = `token=${inviteToken}`;
 
   const { mutate: signup } = useSignup();
   const { mutate: login } = useLogin();
