@@ -1,19 +1,17 @@
+import { useParams } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useState } from 'react';
 import '@styles/pages/calendar-page.scss';
-import { useTeamId } from '@hooks/useTeamId';
 import { useGetTeamSchedule } from '@hooks/schedule/useSchedule';
 import { getMonthQueryString } from '@utils/getMonthQueryString';
 import { formatCalendarEvents } from '@utils/\bformatCalendarEvents';
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
-
-  const teamId = useTeamId();
+  const { teamId } = useParams();
   const { queryString } = getMonthQueryString();
-
   const { data } = useGetTeamSchedule(teamId, queryString);
 
   const handleEventDrop = (info) => {
