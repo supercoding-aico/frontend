@@ -179,7 +179,7 @@ const AuthPage = () => {
         },
       });
     } else if (!hasError && !isLogin) {
-      signup(formValues, queryString);
+      signup({ formValues, queryString });
     }
   };
 

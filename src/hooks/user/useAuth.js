@@ -6,7 +6,7 @@ export const useSignup = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (formValues, queryString) => signup({ formValues, queryString }),
+    mutationFn: signup,
     onSuccess: () => {
       navigate('/login', { replace: true });
     },

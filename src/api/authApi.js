@@ -1,7 +1,7 @@
 import axios from '@axios/axios';
 
-export const signup = async ({ payload, queryString }) => {
-  const resp = await axios.post(`api/auth/sign-up?${queryString}`, payload);
+export const signup = async (payload) => {
+  const resp = await axios.post(`api/auth/sign-up?${payload.queryString}`, payload.formValues);
   return resp;
 };
 
