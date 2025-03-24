@@ -3,19 +3,11 @@ import { useEffect, useState } from 'react';
 import '@styles/components/layout-page/notification.scss';
 import { useReadNotification } from '@hooks/notification/useNotification';
 
-const Notification = ({ notifications = [] }) => {
+const Notification = ({ notifications }) => {
   const [isAllRead, setIsAllRead] = useState(false);
   const [selectedNoti, setSelectedNoti] = useState([]);
 
   const { mutate: readNotification } = useReadNotification();
-
-  // TODO: API 수정되면 제거
-  for (let i = 0; i < notifications.length; i++) {
-    notifications[i].content = notifications[i].content.replace(
-      '새로운 스케줄이 등록되었습니다: ',
-      ''
-    );
-  }
 
   const handleNotiClick = (notiId) => {
     if (selectedNoti.includes(notiId)) {
@@ -54,22 +46,24 @@ const Notification = ({ notifications = [] }) => {
         </button>
       </div>
       <ul className='notification-list'>
-        {notifications.map((noti) => (
-          <li
-            key={noti.notificationId}
-            className={`notification ${selectedNoti.includes(noti.notificationId) ? 'notification--selected' : ''}`}
-          >
-            <label className='notification__content'>
-              {noti.content}
-              <input
-                type='checkbox'
-                className='notification__checkbox'
-                onClick={() => handleNotiClick(noti.notificationId)}
-              />
-              <p className='notification__user'>유저닉네임{noti.notificationId}</p>
-            </label>
-          </li>
-        ))}
+        {notifications
+          ? notifications.map((noti, i) => (
+              <li
+                key={i}
+                className={`notification ${selectedNoti.includes(noti.notificationId) ? 'notification--selected' : ''}`}
+              >
+                <label className='notification__content'>
+                  {noti.content}
+                  <input
+                    type='checkbox'
+                    className='notification__checkbox'
+                    onClick={() => handleNotiClick(noti.notificationId)}
+                  />
+                  <p className='notification__user'>{noti.registeredBy}</p>
+                </label>
+              </li>
+            ))
+          : ''}
       </ul>
     </div>
   );

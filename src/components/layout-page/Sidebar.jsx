@@ -11,7 +11,7 @@ import { getTeamList } from '@api/teamApi';
 import { SIDEBAR_MENU_HOME, SIDEBAR_MENU_TEAM, SIDEBAR_MENU_USER } from '@constants/sidebarMenu';
 import placeholder from '@assets/images/profile-placeholder.png';
 
-const Sidebar = ({ handleNotificationClick }) => {
+const Sidebar = ({ handleNotificationClick, alertCount }) => {
   const user = useSelector((state) => state.user.userInfo);
   const latestTeamId = useSelector((state) => state.team.latestTeam.teamId);
 
@@ -61,9 +61,12 @@ const Sidebar = ({ handleNotificationClick }) => {
               <span className='profile__info--email'>{user.email}</span>
             </div>
           </div>
-          <button onClick={handleNotificationClick}>
-            <Bell />
-          </button>
+          <div className='notification'>
+            <button onClick={handleNotificationClick}>
+              <Bell />
+            </button>
+            {alertCount > 0 && <span className='notification__count'>{alertCount}</span>}
+          </div>
         </header>
 
         {/* Menu Group 1 - HOME */}

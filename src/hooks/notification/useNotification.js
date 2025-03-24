@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { getNotification, readNotification } from '@api/notificationApi';
 
-export const useGetNoitification = () => {
+export const useGetNotification = () => {
   return useQuery({
     queryKey: ['notification'],
     queryFn: async () => {

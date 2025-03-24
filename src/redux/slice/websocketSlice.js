@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Client } from '@stomp/stompjs';
 
 const initialState = {
-  messages: [],
-  subscribedTopics: [],
+  message: null,
 };
 
 const websocketSlice = createSlice({
@@ -11,51 +10,55 @@ const websocketSlice = createSlice({
   initialState,
   reducers: {
     addMessage: (state, action) => {
-      state.messages.push(action.payload);
+      state.message = action.payload;
     },
-    subscribeToTopic: (state, action) => {
-      if (!state.subscribedTopics.includes(action.payload)) {
-        state.subscribedTopics.push(action.payload);
-      }
-    },
-    unsubscribeFromTopic: (state, action) => {
-      state.subscribedTopics = state.subscribedTopics.filter((topic) => topic !== action.payload);
+    clearMessage: (state) => {
+      state.message = null;
+      state.notificationCount = 0;
     },
   },
 });
 
 export const __connectWebSocket = (topic) => (dispatch) => {
+  let isConnected = false;
+
   try {
+    if (isConnected) return;
+
     const client = new Client({
       brokerURL: process.env.REACT_APP_WS_URL,
       reconnectDelay: 5000,
       onConnect: () => {
-        console.log('WebSocket connected');
-        dispatch(subscribeToTopic(topic));
+        console.log('✅ WebSocket Connected');
+
+        isConnected = true;
+
+        client.subscribe(topic, (message) => {
+          return dispatch(addMessage(JSON.parse(message.body)));
+        });
       },
       onDisconnect: () => {
-        console.log('WebSocket disconnected');
+        isConnected = false;
+
+        console.log('⏸️ WebSocket disconnected');
         setTimeout(() => client.activate(), 5000);
       },
-      onWebSocketError: (err) => {
-        console.error('WebSocket error:', err);
+      onWebSocketError: (error) => {
+        isConnected = false;
+
+        console.error('⚠️ WebSocket error:', error);
       },
     });
 
     client.activate();
 
-    client.onStompMessage = (message) => {
-      const messageData = JSON.parse(message.body);
-      dispatch(addMessage(messageData));
-    };
-
     return () => {
       client.deactivate();
     };
   } catch (error) {
-    console.error('WebSocket connection failed', error);
+    console.error('⚠️ WebSocket connection failed', error);
   }
 };
 
-export const { addMessage, subscribeToTopic, unsubscribeFromTopic } = websocketSlice.actions;
+export const { addMessage, countNotification, clearMessage } = websocketSlice.actions;
 export default websocketSlice.reducer;

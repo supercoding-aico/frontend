@@ -54,3 +54,22 @@
     }
   }
 }
+
+.notification {
+  position: relative;
+
+  &__count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background-color: $color-accent;
+    color: #fff;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
