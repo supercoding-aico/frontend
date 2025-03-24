@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
 import { toast, ToastContainer } from 'react-toastify';
 import { useEffect, useRef, useState, useMemo } from 'react';
@@ -18,6 +18,9 @@ const AuthPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [seachParams] = useSearchParams();
+  const inviteToken = seachParams.get('token');
+  const queryString = inviteToken ? `token=${seachParams}`;
 
   const { mutate: signup } = useSignup();
   const { mutate: login } = useLogin();
@@ -176,7 +179,7 @@ const AuthPage = () => {
         },
       });
     } else if (!hasError && !isLogin) {
-      signup(formValues);
+      signup(formValues, queryString);
     }
   };
 
