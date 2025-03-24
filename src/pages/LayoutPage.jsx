@@ -35,7 +35,9 @@ const LayoutPage = () => {
           handleNotificationClick={handleNotificationClick}
           alertCount={realTimeNotification?.length ?? 0}
         />
-        {isNotificationOpen && <Notification notifications={realTimeNotification} />}
+        {isNotificationOpen && (
+          <Notification isOpen={isNotificationOpen} notifications={realTimeNotification} />
+        )}
       </aside>
       <main className='layout-page__main'>
         <Outlet />

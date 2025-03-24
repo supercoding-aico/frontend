@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '@styles/components/layout-page/notification.scss';
 import { useReadNotification } from '@hooks/notification/useNotification';
 
-const Notification = ({ notifications }) => {
+const Notification = ({ isOpen, notifications }) => {
   const [isAllRead, setIsAllRead] = useState(false);
   const [selectedNoti, setSelectedNoti] = useState([]);
 
@@ -31,7 +31,9 @@ const Notification = ({ notifications }) => {
   }, [isAllRead]);
 
   return (
-    <div className='notification-container'>
+    <div
+      className={`notification-container ${isOpen ? 'notification-container--open' : 'notification-container--close'}`}
+    >
       <div className='read-buttons'>
         <button
           type='button'

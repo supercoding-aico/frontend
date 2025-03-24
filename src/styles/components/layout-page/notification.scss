@@ -5,7 +5,14 @@
   background-color: $color-background;
   box-shadow: $shadow;
   overflow-y: auto;
-  z-index: 1;
+
+  //TODO: 애니메이션 적용
+  // &--open {
+  //   @include mixins.slideInFromLeft(0.5s, ease-out);
+  // }
+  // &--close {
+  //   @include mixins.slideOutToLeft(0.5s, ease-out);
+  // }
 }
 
 .read-buttons {
@@ -31,7 +38,6 @@
 }
 
 .notification {
-  // width: $sidebar-width;
   padding: $padding-sm;
   border-bottom: 0.5px solid $color-secondary;
   display: flex;
