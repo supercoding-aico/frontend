@@ -15,7 +15,6 @@ import TeamPage from '@pages/TeamPage';
 import TeamDetailPage from '@pages/TeamDetailPage';
 import CalendarPage from '@pages/CalenderPage';
 import ProjectPage from '@pages/ProjectPage';
-import ChattingPage from '@pages/ChattingPage';
 import SettingPage from '@pages/SettingPage';
 import ChatPage from '@pages/ChatPage';
 // components
