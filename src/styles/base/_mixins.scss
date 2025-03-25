@@ -54,6 +54,13 @@
   box-shadow: $shadow;
 }
 
+@mixin team-card {
+  @include section(12rem, 12rem);
+  &:hover {
+    opacity: $mouseover-opacity;
+  }
+}
+
 // 애니메이션
 @mixin translate-animation($direction: top, $max-height: 200px, $duration: 0.3s) {
   max-height: 0;

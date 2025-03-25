@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import '@styles/pages/calendar-page.scss';
 import { useGetTeamSchedule } from '@hooks/schedule/useSchedule';
 import { getMonthQueryString } from '@utils/getMonthQueryString';
-import { formatCalendarEvents } from '@utils/\bformatCalendarEvents';
+import { formatCalendarEvents } from '@utils/formatCalendarEvents';
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
