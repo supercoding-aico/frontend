@@ -1,15 +1,16 @@
 .layout-page {
-  display: flex;
   min-height: 100vh;
+  display: flex;
 
   &__aside {
-    width: 20rem;
-    background-color: $color-section;
-    padding: $padding-md;
+    position: fixed;
+    height: 100vh;
+    display: flex;
   }
 
   &__main {
     flex: 1;
+    margin-left: $sidebar-width;
     padding: $padding-md;
   }
 }

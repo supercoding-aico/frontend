@@ -17,7 +17,7 @@ const FormInput = ({
   options = [],
   ...rest
 }) => {
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value ?? '');
   const [isValid, setIsValid] = useState(true);
 
   const handleInputValue = (e) => {

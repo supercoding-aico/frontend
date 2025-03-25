@@ -1,30 +1,43 @@
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
 import '@styles/pages/layout-page.scss';
 import Sidebar from '@components/layout-page/Sidebar';
-import { connectSocket, disconnectSocket, removeListener } from '@services/socketService';
+import Notification from '@components/layout-page/Notification';
+import { __connectWebSocket } from '@redux/slice/websocketSlice';
+import { useGetNotification } from '@hooks/notification/useNotification';
 
 const LayoutPage = () => {
-  const userId = useSelector((state) => state.user.userInfo.userId);
+  const dispatch = useDispatch();
+
+  const { data: notifications } = useGetNotification();
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const { userId } = useSelector((state) => state.user.userInfo);
+  const { message } = useSelector((state) => state.websocket);
+
+  const realTimeNotification = useMemo(() => {
+    return message ? [...notifications, message] : notifications;
+  }, [notifications, message]);
+
+  const handleNotificationClick = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
 
   useEffect(() => {
-    if (!userId) return;
+    dispatch(__connectWebSocket(`/topic/notification/${userId}`));
+  }, []);
 
-    const url = `${process.env.REACT_APP_SOCKET_URL}/topic/notification/${userId}`;
-    connectSocket(url);
-
-    return () => {
-      disconnectSocket();
-      removeListener();
-    };
-  }, [userId]);
-
-  // TODO: 모바일 반응형 추가
   return (
+    //TODO : 모바일 반응형 추가
     <div className='layout-page'>
       <aside className='layout-page__aside'>
-        <Sidebar />
+        <Sidebar
+          handleNotificationClick={handleNotificationClick}
+          alertCount={realTimeNotification?.length ?? 0}
+        />
+        {isNotificationOpen && (
+          <Notification isOpen={isNotificationOpen} notifications={realTimeNotification} />
+        )}
       </aside>
       <main className='layout-page__main'>
         <Outlet />

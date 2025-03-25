@@ -7,15 +7,15 @@ import {
   deleteSchedule,
 } from '@api/scheduleApi';
 
-export const useTeamSchedule = (teamId) => {
+export const useGetTeamSchedule = (teamId, queryString) => {
   return useQuery({
-    queryKey: ['teamSchedule', teamId],
-    queryFn: () => getTeamSchedule(teamId),
+    queryKey: ['teamSchedule', teamId, JSON.stringify(queryString)],
+    queryFn: () => getTeamSchedule(teamId, queryString),
     enabled: !!teamId,
   });
 };
 
-export const useUserSchedule = (teamId) => {
+export const useGetUserSchedule = (teamId) => {
   return useQuery({
     queryKey: ['userSchedule', teamId],
     queryFn: () => getUserSchedule(teamId),
@@ -23,8 +23,8 @@ export const useUserSchedule = (teamId) => {
   });
 };
 
-export const useCreateSchedule = () => {
+export const useCreateSchedule = (teamId) => {
   return useMutation({
-    mutationFn: ({ teamId, schedule }) => createSchedule(teamId, schedule),
+    mutationFn: (schedule) => createSchedule(teamId, schedule),
   });
 };
