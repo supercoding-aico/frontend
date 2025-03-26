@@ -11,14 +11,9 @@
   align-items: center;
   justify-content: space-between;
 
-  &__input {
-    width: 25%;
-    height: 2rem;
-    padding: 0 1rem;
-    background-color: $color-background;
-    border: 1px solid $color-secondary;
-    border-radius: $border-radius-sm;
-    box-shadow: $shadow;
+  &__date-inputs {
+    display: flex;
+    gap: 1rem;
   }
 
   &__button {
@@ -37,7 +32,7 @@
 }
 
 .board-container {
-  flex: 1;
+  width: 100%;
   display: flex;
   gap: 1rem;
 }

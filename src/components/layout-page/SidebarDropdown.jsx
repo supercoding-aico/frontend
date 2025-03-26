@@ -32,11 +32,11 @@ const SidebarDropdown = ({ teams = [] }) => {
     }
   });
 
-  /* 사이드바의 팀목록에서 가장 최근에 접속한 팀을 기본으로 선택 */
+  /* 마지막으로 채팅방을 확인한 팀을 기본으로 선택 */
   useEffect(() => {
     if (teams.length > 0) {
       const latestTeam = [...teams].sort(
-        (a, b) => new Date(b.lastReadAt) - new Date(a.lastReadAt)
+        (a, b) => new Date(b.lastMessageAt) - new Date(a.lastMessageAt)
       )[0];
       setSelectedTeam(latestTeam);
       dispatch(setLatestTeam(latestTeam));

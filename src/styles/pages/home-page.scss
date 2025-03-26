@@ -1,0 +1,11 @@
+.team-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  &__add-button {
+    @include mixins.team-card;
+  }
+}

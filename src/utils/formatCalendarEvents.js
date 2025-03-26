@@ -1,4 +1,5 @@
-// TODO: 포맷팅 수정
+import { CalendarColorCode } from '@constants/calendarColorCode';
+
 // Event 속성
 // {
 //   title: '팀 회의',
@@ -16,12 +17,18 @@
 //     priority: 'high',
 //   },
 // }
+
 export const formatCalendarEvents = (events) => {
-  return events.map((event) => {
+  return events.map((event, i) => {
+    const colorIndex = i % CalendarColorCode.length;
     return {
       ...event,
-      start: new Date(event.start),
-      end: new Date(event.end),
+      title: event.content,
+      start: new Date(event.startDate),
+      end: new Date(event.endDate),
+      backgroundColor: CalendarColorCode[colorIndex],
+      borderColor: CalendarColorCode[colorIndex],
+      editable: true,
     };
   });
 };
