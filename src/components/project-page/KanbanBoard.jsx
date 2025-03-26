@@ -1,27 +1,24 @@
+import { useDrop } from 'react-dnd';
 import '@styles/components/project-page/kanban-board.scss';
+import DraggableTask from '@components/project-page/DraggableTask';
 
-const KanbanBoard = ({ status, tasks }) => {
+const KanbanBoard = ({ status, tasks, moveTask }) => {
+  const [, drop] = useDrop({
+    accept: 'TASK',
+    drop: (item) => {
+      moveTask(item.id, status.id);
+    },
+  });
+
   return (
-    <section className='board-wrapper'>
+    <section ref={drop} className='board-wrapper'>
       <div>
         <span>{status.emoji}</span>
         <span>{status.name}</span>
       </div>
       <ul className='board'>
         {tasks.map((task) => (
-          <li key={task.scheduleId} className='board__task'>
-            <p className='board__task--content'>{task.content}</p>
-            <p className='board__task--date'>
-              {task.startDate} ~ {task.endDate}
-            </p>
-            <div className='board__task--users'>
-              {task.users.map((user) => (
-                <span className='board__task--user' key={user.userId}>
-                  {user.nickName}
-                </span>
-              ))}
-            </div>
-          </li>
+          <DraggableTask key={task.scheduleId} task={task} />
         ))}
       </ul>
     </section>
