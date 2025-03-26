@@ -22,17 +22,17 @@ const CalendarPage = () => {
 
     const formatDate = (date) => date.toISOString().split('T')[0];
 
-    const updatedStartDate = formatDate(info.event.start);
-    const updatedEndDate = info.event.end ? formatDate(info.event.end) : updatedStartDate;
+    const editedStartDate = formatDate(info.event.start);
+    const edittedEndDate = info.event.end ? formatDate(info.event.end) : editedStartDate;
 
-    const updatedSchedule = {
+    const editedSchedule = {
       ...schedule,
-      startDate: updatedStartDate,
-      endDate: updatedEndDate,
+      startDate: editedStartDate,
+      endDate: edittedEndDate,
       users: schedule.users.map((user) => user.userId),
     };
 
-    updateSchedule(updatedSchedule);
+    updateSchedule(editedSchedule);
   };
 
   const handleDatesSet = useCallback((info) => {

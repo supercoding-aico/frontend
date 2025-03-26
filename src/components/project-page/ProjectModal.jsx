@@ -42,16 +42,11 @@ const ProjectModal = ({ closeProjectModal }) => {
       content: formData.get('content'),
       startDate: formData.get('startDate'),
       endDate: formData.get('endDate'),
-      scheduleStatus: formData.get('status'),
+      scheduleStatus: formData.get('scheduleStatus'),
       users: selectedUsers,
     };
 
-    createSchedule(schedule, {
-      onSuccess: () => {
-        closeProjectModal();
-      },
-    });
-
+    createSchedule(schedule);
     closeProjectModal();
   };
 

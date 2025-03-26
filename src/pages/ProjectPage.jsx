@@ -39,9 +39,17 @@ const ProjectPage = () => {
       setTasks((prevTasks) =>
         prevTasks.map((task) => {
           if (task.scheduleId === taskId) {
-            const updatedTask = { ...task, status: newStatus };
+            const updatedTask = {
+              ...task,
+              scheduleStatus: newStatus,
+              users: task.users.map((user) => user.userId),
+            };
+            const updatedTask2 = {
+              ...task,
+              scheduleStatus: newStatus,
+            };
             updateSchedule(updatedTask);
-            return updatedTask;
+            return updatedTask2;
           }
           return task;
         })
@@ -53,7 +61,7 @@ const ProjectPage = () => {
   const closeProjectModal = () => setIsProjectModalOpen(false);
 
   useEffect(() => {
-    if (data?.data) {
+    if (data && data.data) {
       setTasks(data.data);
     }
   }, [data]);
@@ -80,7 +88,7 @@ const ProjectPage = () => {
         <DndProvider backend={HTML5Backend}>
           <div className='board-container'>
             {PROJECT_STATUS.map((status) => {
-              const filteredTasks = tasks.filter((task) => task.status === status.id);
+              const filteredTasks = tasks.filter((task) => task.scheduleStatus === status.id);
               return (
                 <KanbanBoard
                   key={status.id}

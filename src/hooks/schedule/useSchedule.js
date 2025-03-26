@@ -24,8 +24,13 @@ export const useGetUserSchedule = (teamId) => {
 };
 
 export const useCreateSchedule = (teamId) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (schedule) => createSchedule(teamId, schedule),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teamSchedule', teamId] });
+    },
   });
 };
 

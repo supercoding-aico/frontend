@@ -10,18 +10,14 @@ const DraggableTask = ({ task }) => {
   });
 
   return (
-    <li
-      key={task.scheduleId}
-      ref={drag}
-      className={`board__task ${isDragging ? 'board__task--dragging' : ''}`}
-    >
+    <li ref={drag} className={`board__task ${isDragging ? 'board__task--dragging' : ''}`}>
       <p className='board__task--content'>{task.content}</p>
       <p className='board__task--date'>
         {task.startDate} ~ {task.endDate}
       </p>
       <div className='board__task--users'>
-        {task.users.map((user) => (
-          <span className='board__task--user' key={user.userId}>
+        {task.users.map((user, i) => (
+          <span key={i} className='board__task--user'>
             {user.nickName}
           </span>
         ))}
