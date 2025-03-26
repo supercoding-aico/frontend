@@ -21,7 +21,6 @@ const ProjectPage = () => {
   const [startDate, setStartDate] = useState(firstDay);
   const [endDate, setEndDate] = useState(lastDay);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-  let updatedTask;
 
   const dateInputs = useMemo(
     () => [

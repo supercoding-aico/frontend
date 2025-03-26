@@ -5,6 +5,7 @@
   background-color: $color-background;
   box-shadow: $shadow;
   overflow-y: auto;
+  z-index: 10 !important;
 
   //TODO: 애니메이션 적용
   // &--open {
