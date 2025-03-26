@@ -1,10 +1,7 @@
 import '@styles/components/home-page/team-card.scss';
 import { getRelativeTime } from '@utils/getRelativeTime';
 
-const teamCardInfo = [
-  { id: 'lastMessageAt', label: '마지막 메시지' },
-  { id: 'lastReadAt', label: '최근 열람' },
-];
+const teamCardInfo = [{ id: 'lastMessageAt', label: '마지막 메시지' }];
 
 const TeamCard = ({ team }) => {
   return (
