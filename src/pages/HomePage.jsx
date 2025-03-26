@@ -12,8 +12,6 @@ const HomePage = () => {
     select: (data) => data?.data?.content ?? [],
   });
 
-  console.log(teams);
-
   return (
     <div>
       <div className='team-container'>
