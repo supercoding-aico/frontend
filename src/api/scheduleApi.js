@@ -15,12 +15,7 @@ export const createSchedule = async (teamId, payload) => {
   return resp;
 };
 
-export const updateSchedule = async (scheduleId, payload) => {
-  const resp = await axios.put(`api/schedule/${scheduleId}`, payload);
-  return resp;
-};
-
-export const deleteSchedule = async (scheduleId) => {
-  const resp = await axios.delete(`api/schedule/${scheduleId}`);
+export const updateSchedule = async (payload) => {
+  const resp = await axios.put(`api/schedule/${payload.scheduleId}`, payload);
   return resp;
 };

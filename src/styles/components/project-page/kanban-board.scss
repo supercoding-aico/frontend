@@ -1,7 +1,41 @@
 .board-wrapper {
-  width: 100%;
+  flex: 1;
 }
 
 .board {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
   @include mixins.section(_, 100%);
+
+  &__task {
+    background-color: $color-background;
+    border-radius: $border-radius-sm;
+    padding: 0.875rem;
+    box-shadow: $shadow;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &--content {
+    }
+
+    &--date {
+      font-size: 0.875rem;
+    }
+
+    &--users {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    &--user {
+      font-size: 0.75rem;
+      color: $color-background;
+      background-color: $color-accent;
+      padding: 0 0.5rem;
+      border-radius: $border-radius-xs;
+    }
+  }
 }

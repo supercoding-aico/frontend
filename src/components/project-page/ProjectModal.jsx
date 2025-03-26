@@ -51,7 +51,8 @@ const ProjectModal = ({ closeProjectModal }) => {
         closeProjectModal();
       },
     });
-    // closeProjectModal();
+
+    closeProjectModal();
   };
 
   return (

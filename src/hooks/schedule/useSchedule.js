@@ -28,3 +28,9 @@ export const useCreateSchedule = (teamId) => {
     mutationFn: (schedule) => createSchedule(teamId, schedule),
   });
 };
+
+export const useUpdateSchedule = () => {
+  return useMutation({
+    mutationFn: updateSchedule,
+  });
+};
