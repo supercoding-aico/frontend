@@ -1,12 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getTeamMember, removeMember } from '@api/teamApi';
+import { useQuery } from '@tanstack/react-query';
+import { getTeamMember } from '@api/teamApi';
 import '@styles/components/team-detail-page/team-member-list.scss';
 import { AlignJustify } from 'react-feather';
 import { useState } from 'react';
+import useTeamMutations from '@hooks/team/useTeam';
 
-const TeamMemberList = ({ teamId, loggedInUserId, loggedInUserRole }) => {
-  const queryClient = useQueryClient();
+const TeamMemberList = ({ teamId, loggedInUserId }) => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
+  const { removeMemberMutation } = useTeamMutations();
 
   const {
     data: memberData,
@@ -18,23 +19,12 @@ const TeamMemberList = ({ teamId, loggedInUserId, loggedInUserRole }) => {
     enabled: !!teamId,
   });
 
-  // 멤버 탈퇴 처리(관리자만 가능)
-  const removeMemberMutation = useMutation({
-    mutationFn: ({ teamId, userId }) => removeMember(teamId, userId),
-    onSuccess: (_, { userId }) => {
-      queryClient.setQueryData(['teamMembers', teamId], (oldData) =>
-        oldData ? { ...oldData, data: oldData.data.filter((m) => m.userId !== userId) } : oldData
-      );
-      alert('멤버를 성공적으로 탈퇴시켰습니다.');
-      setDropdownOpen(null);
-    },
-    onError: () => {
-      alert('멤버 탈퇴에 실패했습니다.');
-    },
-  });
-
+  const loggedInUserRole =
+    memberData?.data?.find((member) => member.userId === loggedInUserId)?.teamRole || 'MEMBER';
+  console.log(loggedInUserId);
   const handleRemoveMember = (userId) => {
     removeMemberMutation.mutate({ teamId, userId });
+    setDropdownOpen(null);
   };
 
   if (isLoading) return <div className='team-member-list__loading'>로딩 중...</div>;
@@ -48,7 +38,7 @@ const TeamMemberList = ({ teamId, loggedInUserId, loggedInUserRole }) => {
           <tr>
             <th className='team-member-list__header'>멤버</th>
             <th className='team-member-list__header'>역할</th>
-            <th className='team-member-list__header'>관리</th>
+            <th className='team-member-list__header' />
           </tr>
         </thead>
         <tbody>
@@ -57,12 +47,12 @@ const TeamMemberList = ({ teamId, loggedInUserId, loggedInUserRole }) => {
               <tr key={member.userId} className='team-member-list__row'>
                 <td className='team-member-list__name'>{member.nickname}</td>
                 <td className='team-member-list__role'>{member.teamRole}</td>
-                {loggedInUserRole === 'Manager' && member.userId !== loggedInUserId && (
+                {loggedInUserRole === 'MANAGER' && member.userId !== loggedInUserId && (
                   <td className='team-member-list__actions'>
                     <AlignJustify
                       className='team-member-list__icon'
                       onClick={() =>
-                        setDropdownOpen(dropdownOpen === member.userId ? null : member.userId)
+                        setDropdownOpen((prev) => (prev === member.userId ? null : member.userId))
                       }
                     />
                     {dropdownOpen === member.userId && (

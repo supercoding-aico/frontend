@@ -10,11 +10,11 @@
     font-weight: bold;
     text-align: left;
     padding: 10px;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid $color-key-1;
   }
 
   &__row {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $color-key-1;
   }
 
   &__name,
@@ -30,14 +30,6 @@
   &__empty {
     text-align: center;
     padding: 15px;
-    color: #888;
-  }
-
-  &__loading,
-  &__error {
-    text-align: center;
-    color: #888;
-    font-size: 14px;
-    padding: 10px;
+    color: $color-primary;
   }
 }

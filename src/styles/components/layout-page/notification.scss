@@ -1,0 +1,66 @@
+.notification-container {
+  width: $sidebar-width;
+  height: 100vh;
+  padding: $padding-md;
+  background-color: $color-background;
+  box-shadow: $shadow;
+  overflow-y: auto;
+}
+
+.read-buttons {
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__button {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.notification-list {
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notification {
+  padding: $padding-sm;
+  border-bottom: 0.5px solid $color-secondary;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  &--selected {
+    background-color: $color-section;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: $color-section;
+  }
+
+  &__content {
+    width: 100%;
+    font-size: 0.875rem;
+    @include mixins.text-ellipsis();
+    cursor: pointer;
+  }
+
+  &__checkbox {
+    display: none;
+  }
+
+  &__user {
+    font-size: 0.75rem;
+    text-align: right;
+  }
+}

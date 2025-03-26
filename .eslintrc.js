@@ -18,7 +18,7 @@ module.exports = {
     },
   },
   rules: {
-    'no-console': 'warn', // console.log 사용에 경고
+    'no-console': 'off', // console.log 사용에 경고 안 함
     'no-unused-vars': 'warn', // 사용되지 않는 변수에 경고
     'react/prop-types': 'off', // prop-types 규칙을 끔 (선택 사항)
     'react/react-in-jsx-scope': 'off', // React 17 이후 자동으로 JSX를 변환하므로 이 규칙을 끔

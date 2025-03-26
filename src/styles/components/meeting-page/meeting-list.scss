@@ -1,0 +1,115 @@
+.meetingList {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: $color-background;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  h4 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    color: $color-primary;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .meetingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid $color-secondary;
+    font-size: 13px;
+    color: $color-primary;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba($color-primary, 0.05);
+      border-radius: 6px;
+    }
+
+    .date {
+      font-size: 12px;
+      color: $color-tertiary;
+    }
+  }
+
+  .noMeeting {
+    color: $color-tertiary;
+    text-align: center;
+    padding: 12px;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meetingModal {
+  background: $color-background;
+  padding: 25px;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  text-align: left;
+  font-size: 14px;
+  color: $color-primary;
+
+  h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  p {
+    margin: 10px 0;
+    line-height: 1.5;
+  }
+
+  ul {
+    margin-top: 8px;
+    padding-left: 20px;
+    list-style-type: disc;
+
+    li {
+      line-height: 1.6;
+    }
+  }
+}
+
+.meetingSummary {
+  background: $color-background;
+  padding: 12px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.closeBtn {
+  margin-top: 15px;
+  color: white;
+  background-color: $color-accent;
+  border: none;
+  padding: 10px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}

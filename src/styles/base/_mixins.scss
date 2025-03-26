@@ -47,18 +47,36 @@
 // 섹션
 @mixin section($width: 100%, $height: auto) {
   width: $width;
+  height: $height;
   background-color: $color-section;
   border-radius: $border-radius-md;
   padding: $padding-md;
   box-shadow: $shadow;
 }
 
+@mixin team-card {
+  @include section(12rem, 12rem);
+  &:hover {
+    opacity: $mouseover-opacity;
+  }
+}
+
 // 애니메이션
-@mixin translate-y-animation($max-height: 200px, $duration: 0.3s) {
+@mixin translate-animation($direction: top, $max-height: 200px, $duration: 0.3s) {
   max-height: 0;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-1rem);
+
+  @if $direction == 'top' {
+    transform: translateY(-1rem);
+  } @else if $direction == 'bottom' {
+    transform: translateY(1rem);
+  } @else if $direction == 'left' {
+    transform: translateX(-1rem);
+  } @else if $direction == 'right' {
+    transform: translateX(1rem);
+  }
+
   transition:
     opacity $duration ease,
     transform $duration ease,
@@ -67,8 +85,38 @@
 
   &--show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(0, 0);
     max-height: $max-height;
     visibility: visible;
   }
+}
+
+@mixin slideInFromLeft($duration: 0.5s, $timing: ease-out) {
+  @keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  animation: slideInFromLeft $duration $timing forwards;
+}
+
+@mixin slideOutToLeft($duration: 0.5s, $timing: ease-in) {
+  @keyframes slideOutToLeft {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  animation: slideOutToLeft $duration $timing forwards;
 }

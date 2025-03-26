@@ -1,0 +1,21 @@
+.team-card {
+  @include mixins.team-card;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  &__team-name {
+    flex: 1;
+    color: $color-accent;
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+
+  &__info {
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+}

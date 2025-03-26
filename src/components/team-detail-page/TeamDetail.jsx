@@ -7,18 +7,14 @@ import TeamMemberList from './TeamMemberList';
 import TeamInvite from './TeamInvites';
 import TeamLeave from './TeamLeave';
 import { ArrowDownCircle } from 'react-feather';
-import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 const TeamDetail = () => {
   const { teamId } = useParams();
   const [openAccordion, setOpenAccordion] = useState(null);
+  const loggedInUserId = useSelector((state) => state.user.userInfo.userId);
 
-  // 리액트 쿼리로 팀 데이터 가져오기
-  const {
-    data: teamData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: teamData } = useQuery({
     queryKey: ['teamDetail', teamId],
     queryFn: async () => {
       const data = await getTeamList();
@@ -31,15 +27,11 @@ const TeamDetail = () => {
     setOpenAccordion(openAccordion === section ? null : section);
   };
 
-  if (isLoading) return <p>⏳ 팀 정보를 불러오는 중...</p>;
-  if (isError || !teamData) return <p>🚨 팀 정보를 불러오지 못했습니다.</p>;
-
   return (
     <div className='team-detail'>
-      <h1 className='team-detail__title'>{teamData.name}</h1>
+      <h1 className='team-detail__title'>{teamData?.name || '로딩 중...'}</h1>
 
       <div className='team-detail__accordion'>
-        {/* 🟢 팀 멤버 리스트 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'
@@ -50,10 +42,11 @@ const TeamDetail = () => {
               className={`team-detail__icon ${openAccordion === 'members' ? 'rotated' : ''}`}
             />
           </button>
-          {openAccordion === 'members' && <TeamMemberList teamId={Number(teamId)} />}
+          {openAccordion === 'members' && (
+            <TeamMemberList teamId={Number(teamId)} loggedInUserId={loggedInUserId} />
+          )}
         </div>
 
-        {/* 팀 초대 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'
@@ -67,7 +60,6 @@ const TeamDetail = () => {
           {openAccordion === 'invite' && <TeamInvite teamId={teamId} />}
         </div>
 
-        {/*팀 탈퇴 */}
         <div className='team-detail__accordion-item'>
           <button
             className='team-detail__accordion-item-header'
@@ -78,7 +70,9 @@ const TeamDetail = () => {
               className={`team-detail__icon ${openAccordion === 'leave' ? 'rotated' : ''}`}
             />
           </button>
-          {openAccordion === 'leave' && <TeamLeave teamId={teamId} />}
+          {openAccordion === 'leave' && (
+            <TeamLeave teamId={teamId} loggedInUserId={loggedInUserId} />
+          )}
         </div>
       </div>
     </div>

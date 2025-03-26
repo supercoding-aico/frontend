@@ -4,95 +4,67 @@ import P from '@components/common/P';
 import '@styles/components/team-page/team-list.scss';
 import Modal from '@components/common/Modal';
 import FormInput from '@components/common/FormInput';
-import { deleteTeam, getTeamList, updateTeam } from '@api/teamApi';
-import { AlignJustify } from 'react-feather';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getTeamList } from '@api/teamApi';
+import useTeamMutations from '@hooks/team/useTeam';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+import DropdownMenu from '@components/common/DropdownMenu';
 
 const TeamList = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
+  const { deleteMutation, updateMutation } = useTeamMutations();
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [editedName, setEditedName] = useState('');
 
-  // 팀 목록 가져오기
-  const {
-    data: teamData = [],
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: teamData = [] } = useQuery({
     queryKey: ['teamList'],
     queryFn: getTeamList,
     select: (data) => data?.data?.content ?? [],
   });
 
-  // 팀 삭제 Mutation
-  const deleteMutation = useMutation({
-    mutationFn: deleteTeam,
-    onSuccess: (_, deletedTeamId) => {
-      queryClient.setQueryData(['teamList'], (oldData) =>
-        oldData ? oldData.filter((team) => team.teamId !== deletedTeamId) : []
-      );
-      alert('팀이 삭제되었습니다.');
-    },
-    onError: () => {
-      alert('팀 삭제 실패! 다시 시도해 주세요.');
-    },
-  });
+  console.log(teamData, '팀데이터');
 
-  // 팀 상세 페이지 이동
-  const handleTitleClick = (team) => {
-    navigate(`/team/detail/${team.teamId}`);
-  };
-
-  // 드롭다운 토글
-  const toggleDropdown = (teamId) => {
-    setDropdownOpen(dropdownOpen === teamId ? null : teamId);
-  };
-
-  // 팀 수정 버튼 클릭 시
-  const handleEditTeam = (team) => {
-    setSelectedTeam(team);
-    setEditedName(team.name);
-    setEditModalOpen(true);
-    setDropdownOpen(null);
-  };
-
-  // 팀 이름 변경 API 요청
-  const updateMutation = useMutation({
-    mutationFn: ({ teamId, name }) => updateTeam(teamId, { name }),
-    onSuccess: (_, { teamId, name }) => {
-      queryClient.setQueryData(['teamList'], (oldData) =>
-        oldData ? oldData.map((team) => (team.teamId === teamId ? { ...team, name } : team)) : []
-      );
-      alert('팀 이름이 수정되었습니다');
-      setEditModalOpen(false);
-    },
-    onError: () => {
-      alert('팀 수정 실패! 다시 시도해 주세요.');
-    },
-  });
-
-  // 팀 이름 입력 변경 핸들러
   const handleTeamNameChange = (editedTeamName) => {
     setEditedName(editedTeamName);
   };
 
-  // 팀 삭제 실행
   const handleDeleteTeam = (teamId) => {
     deleteMutation.mutate(teamId);
     setDropdownOpen(null);
   };
 
-  // 팀 이름 변경 실행
   const handleEditedNameSend = () => {
     if (!editedName.trim()) {
-      alert('팀 이름을 입력해 주세요.');
+      toast.error('팀 이름을 입력해 주세요.');
       return;
     }
-    updateMutation.mutate({ teamId: selectedTeam.teamId, name: editedName });
+    updateMutation.mutate(
+      { teamId: selectedTeam.teamId, name: editedName },
+      {
+        onSuccess: () => {
+          setEditModalOpen(false);
+          setEditedName('');
+        },
+      }
+    );
+  };
+
+  const handleTitleClick = (team) => {
+    navigate(`/team/detail/${team.teamId}`);
+  };
+
+  const toggleDropdown = (teamId) => {
+    setDropdownOpen(dropdownOpen === teamId ? null : teamId);
+  };
+
+  const handleEditTeam = (team) => {
+    console.log('수정 클릭됨:', team);
+    setSelectedTeam(team);
+    setEditedName(team.name);
+    setEditModalOpen(true);
+    setDropdownOpen(null);
   };
 
   return (
@@ -103,22 +75,18 @@ const TeamList = () => {
           <span className='team-list-item__title' onClick={() => handleTitleClick(team)}>
             {team.name}
           </span>
-
-          <AlignJustify
-            className='team-list-item__menu'
-            onClick={() => toggleDropdown(team.teamId)}
+          <DropdownMenu
+            menuId={team.teamId}
+            isOpen={dropdownOpen === team.teamId}
+            onToggle={(id) => toggleDropdown(id)}
+            options={[
+              { label: '팀 이름 수정', onClick: () => handleEditTeam(team) },
+              { label: '팀 삭제', onClick: () => handleDeleteTeam(team.teamId) },
+            ]}
           />
-
-          {dropdownOpen === team.teamId && (
-            <div className='team-list-item__dropdown'>
-              <button onClick={() => handleEditTeam(team)}>팀 이름 수정</button>
-              <button onClick={() => handleDeleteTeam(team.teamId)}>팀 삭제</button>
-            </div>
-          )}
         </div>
       ))}
 
-      {/* 팀 수정 모달 */}
       {editModalOpen && (
         <Modal onClose={() => setEditModalOpen(false)} onClick={handleEditedNameSend}>
           <FormInput

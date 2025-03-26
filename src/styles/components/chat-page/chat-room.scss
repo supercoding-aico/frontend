@@ -1,0 +1,138 @@
+.chatPage {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.chatContainer {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  .chatHeaderFixed {
+    color: $color-primary;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid $color-secondary;
+  }
+
+  .messageList {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
+    background-color: $color-background;
+  }
+
+  .message {
+    max-width: 80%;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    word-wrap: break-word;
+    line-height: 1.4;
+    background: $color-key-1;
+
+    &.mine {
+      align-self: flex-end;
+    }
+
+    &.other {
+      align-self: flex-start;
+    }
+  }
+
+  .nickname {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: block;
+    color: $color-primary;
+  }
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  border-top: 1px solid $color-key-1;
+  padding-top: 10px;
+
+  .input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid $color-secondary;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .sendBtn {
+    background: $color-accent;
+    color: $color-background;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+}
+
+.meetingContainer {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  .meetingHeader {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .summarizeBtn {
+    background-color: $color-accent;
+    color: $color-background;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
+.summaryBox {
+  border: 1px solid $color-secondary;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: $color-background;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
