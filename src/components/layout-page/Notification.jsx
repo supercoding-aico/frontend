@@ -31,9 +31,7 @@ const Notification = ({ isOpen, notifications }) => {
   }, [isAllRead]);
 
   return (
-    <div
-      className={`notification-container ${isOpen ? 'notification-container--open' : 'notification-container--close'}`}
-    >
+    <div className='notification-container'>
       <div className='read-buttons'>
         <button
           type='button'
