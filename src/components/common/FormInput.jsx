@@ -28,6 +28,7 @@ const FormInput = ({
     }
 
     setInputValue(value);
+
     if (onChange) {
       onChange(value);
     }
