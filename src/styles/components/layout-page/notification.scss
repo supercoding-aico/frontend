@@ -5,15 +5,6 @@
   background-color: $color-background;
   box-shadow: $shadow;
   overflow-y: auto;
-  z-index: 10 !important;
-
-  //TODO: 애니메이션 적용
-  // &--open {
-  //   @include mixins.slideInFromLeft(0.5s, ease-out);
-  // }
-  // &--close {
-  //   @include mixins.slideOutToLeft(0.5s, ease-out);
-  // }
 }
 
 .read-buttons {
