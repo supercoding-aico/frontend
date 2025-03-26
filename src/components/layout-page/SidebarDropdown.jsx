@@ -36,7 +36,7 @@ const SidebarDropdown = ({ teams = [] }) => {
   useEffect(() => {
     if (teams.length > 0) {
       const latestTeam = [...teams].sort(
-        (a, b) => new Date(b.lastReadAt) - new Date(a.lastReadAt)
+        (a, b) => new Date(b.lastMessageAt) - new Date(a.lastMessageAt)
       )[0];
       setSelectedTeam(latestTeam);
       dispatch(setLatestTeam(latestTeam));

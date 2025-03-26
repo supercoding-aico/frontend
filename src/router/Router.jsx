@@ -13,12 +13,13 @@ import NotFoundPage from '@pages/NotFoundPage';
 import AuthPage from '@pages/AuthPage';
 import TeamPage from '@pages/TeamPage';
 import TeamDetailPage from '@pages/TeamDetailPage';
-import CalendarPage from '@pages/CalenderPage';
+import CalendarPage from '@pages/CalendarPage';
 import ProjectPage from '@pages/ProjectPage';
 import SettingPage from '@pages/SettingPage';
 import ChatPage from '@pages/ChatPage';
 // components
 import LoadingFullScreen from '@components/common/LoadingFullScreen';
+
 const Router = () => {
   const dispatch = useDispatch();
 

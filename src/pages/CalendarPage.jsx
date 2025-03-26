@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useState } from 'react';
 import '@styles/pages/calendar-page.scss';
-import { useGetTeamSchedule } from '@hooks/schedule/useSchedule';
+import { useGetTeamSchedule, useUpdateSchedule } from '@hooks/schedule/useSchedule';
 import { getMonthQueryString } from '@utils/getMonthQueryString';
 import { formatCalendarEvents } from '@utils/formatCalendarEvents';
 
@@ -13,33 +13,25 @@ const CalendarPage = () => {
   const { teamId } = useParams();
   const { queryString } = getMonthQueryString();
   const { data } = useGetTeamSchedule(teamId, queryString);
+  const { mutate: updateSchedule } = useUpdateSchedule();
 
   const handleEventDrop = (info) => {
-    const updatedEvent = {
-      ...info.event,
-      start: info.event.start,
-      end: info.event.end,
+    const schedule = info.event.extendedProps;
+
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const updatedStartDate = formatDate(info.event.start);
+    const updatedEndDate = info.event.end ? formatDate(info.event.end) : updatedStartDate;
+
+    const updatedSchedule = {
+      ...schedule,
+      startDate: updatedStartDate,
+      endDate: updatedEndDate,
+      users: schedule.users.map((user) => user.userId),
     };
-    // TODO: 서버에 업데이트
+
+    updateSchedule(updatedSchedule);
   };
-
-  //   {
-  //     "scheduleId": 15,
-  //     "content": "test1",
-  //     "status": "BEFORE",
-  //     "startDate": "2025-03-21",
-  //     "endDate": "2025-03-23",
-  //     "users": []
-  // }
-
-  // {
-  //   title: '팀 회의',
-  //   start: '2025-03-20T10:00:00',
-  //   end: '2025-03-20T12:00:00',
-  //   description: '매주 팀 회의',
-  //   backgroundColor: '#ff5733',
-  //   borderColor: '#ff5733',
-  // },
 
   useEffect(() => {
     if (data?.data) {
@@ -48,14 +40,11 @@ const CalendarPage = () => {
     }
   }, [data]);
 
-  // console.log('events', events);
-
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
       initialView='dayGridMonth'
       events={events}
-      dateClick={(info) => alert(`날짜 클릭: ${info.dateStr}`)}
       eventTimeFormat={{
         hour: '2-digit',
         minute: '2-digit',
