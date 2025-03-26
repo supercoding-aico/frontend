@@ -2,16 +2,18 @@ import { useParams } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import '@styles/pages/calendar-page.scss';
 import { useGetTeamSchedule, useUpdateSchedule } from '@hooks/schedule/useSchedule';
 import { getMonthQueryString } from '@utils/getMonthQueryString';
 import { formatCalendarEvents } from '@utils/formatCalendarEvents';
 
 const CalendarPage = () => {
+  const { queryString: initialQueryString } = getMonthQueryString();
+  const [queryString, setQueryString] = useState(initialQueryString);
   const [events, setEvents] = useState([]);
+
   const { teamId } = useParams();
-  const { queryString } = getMonthQueryString();
   const { data } = useGetTeamSchedule(teamId, queryString);
   const { mutate: updateSchedule } = useUpdateSchedule();
 
@@ -33,6 +35,17 @@ const CalendarPage = () => {
     updateSchedule(updatedSchedule);
   };
 
+  const handleDatesSet = useCallback((info) => {
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const updatedStartDate = formatDate(info.start);
+    const updatedEndDate = formatDate(info.end);
+
+    const newQueryString = `startDate=${updatedStartDate}&endDate=${updatedEndDate}`;
+
+    setQueryString(newQueryString);
+  }, []);
+
   useEffect(() => {
     if (data?.data) {
       const formattedEvents = formatCalendarEvents(data?.data);
@@ -52,6 +65,11 @@ const CalendarPage = () => {
       }}
       eventDrop={handleEventDrop}
       editable={true}
+      headerToolbar={{
+        left: 'dayGridMonth,dayGridWeek',
+        right: 'prev,next today',
+      }}
+      datesSet={handleDatesSet}
     />
   );
 };

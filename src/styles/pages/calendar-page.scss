@@ -1,3 +1,12 @@
+.fc-toolbar-title {
+  color: $color-accent !important;
+}
+
+.fc-button-primary {
+  background-color: $color-accent !important;
+  border: none !important;
+}
+
 .fc-daygrid-body {
   z-index: 0 !important;
 }
