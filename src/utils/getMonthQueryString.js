@@ -3,8 +3,8 @@ export const getMonthQueryString = () => {
   const year = today.getFullYear();
   const month = today.getMonth();
 
-  const firstDay = new Date(year, month, 1).toISOString().split('T')[0];
-  const lastDay = new Date(year, month + 1, 0).toISOString().split('T')[0];
+  const firstDay = new Date(year, month, 2).toISOString().split('T')[0];
+  const lastDay = new Date(year, month + 1, 1).toISOString().split('T')[0];
 
   const queryString = new URLSearchParams({
     startDate: firstDay,
