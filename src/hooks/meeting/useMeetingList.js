@@ -1,13 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from '@axios/axios';
+import { getMeetingList } from '@api/meetingApi';
 
 export const useMeetingList = (teamId) => {
   return useQuery({
     queryKey: ['meetingList', teamId],
-    queryFn: async () => {
-      const response = await axios.get(`/api/meeting/${teamId}?page=0`);
-      return response.data.data;
-    },
+    queryFn: () => getMeetingList(teamId),
     staleTime: 1000 * 60 * 5,
     enabled: !!teamId,
   });

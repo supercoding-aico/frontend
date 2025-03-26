@@ -110,5 +110,5 @@ export const useChatSocket = ({ teamId, userId, nickname }) => {
     });
   };
 
-  return { sendMessage, isConnected };
+  return { sendMessage, isConnected, stompClient };
 };

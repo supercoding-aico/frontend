@@ -2,7 +2,7 @@ import axios from '@axios/axios';
 
 export const getMeetingList = async (teamId) => {
   const response = await axios.get(`/api/meeting/${teamId}?page=0`);
-  return response.data;
+  return response.data.data;
 };
 
 export const postMeetingSummary = async ({ teamId, messages }) => {

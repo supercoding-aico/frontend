@@ -11,7 +11,10 @@ const SidebarMenuGroup = ({ menus, onMenuClick = undefined }) => {
             <li key={menu.id}>
               <button className='menu' onClick={() => onMenuClick(menu.id)}>
                 <span className='menu__item menu__item--icon'>{menu.icon}</span>
-                <span className='menu__item menu__item--name'>{menu.name}</span>
+                <span className='menu__item menu__item--name'>
+                  {menu.name}
+                  {isChatMenu && menu.hasNewMessage && <span className='redDot' />}
+                </span>
               </button>
             </li>
           );
@@ -20,7 +23,10 @@ const SidebarMenuGroup = ({ menus, onMenuClick = undefined }) => {
           <li key={menu.id}>
             <Link to={menu.path} className='menu'>
               <span className='menu__item menu__item--icon'>{menu.icon}</span>
-              <span className='menu__item menu__item--name'>{menu.name}</span>
+              <span className='menu__item menu__item--name'>
+                {menu.name}
+                {isChatMenu && menu.hasNewMessage && <span className='redDot' />}
+              </span>
             </Link>
           </li>
         );

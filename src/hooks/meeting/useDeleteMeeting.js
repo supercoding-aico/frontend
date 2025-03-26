@@ -10,7 +10,6 @@ export const useDeleteMeeting = (teamId) => {
     onSuccess: (_, deletedMeetingId) => {
       toast.success('회의록이 삭제되었습니다.');
 
-      // ✅ 캐시 직접 수정하여 즉시 반영
       queryClient.setQueryData(['meetingList', teamId], (oldData) =>
         oldData?.filter((meeting) => meeting.meetingId !== deletedMeetingId)
       );

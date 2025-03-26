@@ -7,6 +7,7 @@ import MeetingList from './MeetingList';
 import MeetingSummary from './MeetingSummary';
 import { useChatMessages } from '@hooks/chat/useChatMessages';
 import { useChatSocket } from '@hooks/chat/useChatSocket';
+import { sendPresence } from '@utils/presence';
 
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
@@ -21,11 +22,27 @@ const ChatRoom = () => {
   const { messages, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useChatMessages(teamId);
 
-  const { sendMessage } = useChatSocket({
+  const { sendMessage, stompClient, isConnected } = useChatSocket({
     teamId,
     userId: user.userId,
     nickname: user.nickname,
   });
+
+  useEffect(() => {
+    if (isConnected && stompClient) {
+      sendPresence(stompClient, teamId, userId, location.pathname);
+    }
+
+    return () => {
+      if (isConnected && stompClient) {
+        stompClient.publish({
+          destination: '/app/room/inactive',
+          body: JSON.stringify({ teamId, userId }),
+        });
+        console.log('[Presence] inactive 상태 전송됨');
+      }
+    };
+  }, [isConnected, stompClient, teamId, userId, location.pathname]);
 
   const handleSendMessage = () => {
     sendMessage(message);

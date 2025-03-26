@@ -10,10 +10,15 @@ import EmptyState from '@components/common/EmptyState';
 import { getTeamList } from '@api/teamApi';
 import { SIDEBAR_MENU_HOME, SIDEBAR_MENU_TEAM, SIDEBAR_MENU_USER } from '@constants/sidebarMenu';
 import placeholder from '@assets/images/profile-placeholder.png';
+import useNewMessage from '@hooks/chat/useNewMessage';
 
 const Sidebar = ({ handleNotificationClick, alertCount }) => {
   const user = useSelector((state) => state.user.userInfo);
   const latestTeamId = useSelector((state) => state.team.latestTeam.teamId);
+
+  const [hasNewMessage, setHasNewMessage] = useState(false);
+
+  useNewMessage(user?.userId, setHasNewMessage);
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
@@ -32,8 +37,9 @@ const Sidebar = ({ handleNotificationClick, alertCount }) => {
     return SIDEBAR_MENU_TEAM.map((menu) => ({
       ...menu,
       path: `/team/${latestTeamId}${menu.path}`,
+      hasNewMessage: menu.id === 'chatting' ? hasNewMessage : undefined, // ✅ 여기서만 표시
     }));
-  }, [latestTeamId]);
+  }, [latestTeamId, hasNewMessage]);
 
   const handleMenuClick = (menuId) => {
     if (menuId === 'profile') {

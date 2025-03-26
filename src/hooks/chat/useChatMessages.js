@@ -7,7 +7,7 @@ export const useChatMessages = (teamId) => {
       queryKey: ['chatMessages', teamId],
       queryFn: async ({ pageParam = 0 }) => {
         const res = await axios.get(`/api/chat/${teamId}?page=${pageParam}`);
-        console.log(res.data.data, '데이터');
+
         return res.data?.data;
       },
       getNextPageParam: (lastPage, allPages) => {

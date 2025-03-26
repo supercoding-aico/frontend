@@ -24,6 +24,8 @@ const TeamList = () => {
     select: (data) => data?.data?.content ?? [],
   });
 
+  console.log(teamData, '팀데이터');
+
   const handleTeamNameChange = (editedTeamName) => {
     setEditedName(editedTeamName);
   };
